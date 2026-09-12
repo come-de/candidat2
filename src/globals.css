@@ -150,14 +150,14 @@ body {
 }
 
 .hero-title {
-  font-size: clamp(2.25rem, 4.6vw, 3.8rem);
+  font-size: clamp(2rem, 4vw, 3.35rem);
   font-weight: 760;
   letter-spacing: 0;
   line-height: 1.04;
 }
 
 .section-title {
-  font-size: clamp(1.55rem, 2.6vw, 2.15rem);
+  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
   font-weight: 740;
   letter-spacing: 0;
   line-height: 1.14;
@@ -171,8 +171,8 @@ body {
 }
 
 .body-large {
-  font-size: 1rem;
-  line-height: 1.72;
+  font-size: 0.98rem;
+  line-height: 1.65;
 }
 
 .brand-button {
@@ -225,15 +225,11 @@ body {
   border: 1px solid rgb(8 85 120 / 12%);
   border-radius: 0.5rem;
   background: #f7faf9;
-  box-shadow: 0 28px 90px rgb(8 85 120 / 14%);
+  box-shadow: 0 18px 56px rgb(8 85 120 / 10%);
 }
 
-.quick-apply-panel {
-  overflow: hidden;
-  border: 1px solid rgb(8 85 120 / 12%);
-  border-radius: 0.5rem;
-  background: #ffffff;
-  box-shadow: 0 26px 86px rgb(8 85 120 / 14%);
+.compact-hero-media figcaption {
+  border-top: 1px solid rgb(8 85 120 / 10%);
 }
 
 .school-strip {
@@ -249,9 +245,9 @@ body {
   border: 1px solid rgb(30 122 74 / 14%);
   border-radius: 0.5rem;
   background: #ffffff;
-  padding: 0.85rem 0.95rem;
+  padding: 0.72rem 0.85rem;
   color: #073f5c;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
   font-weight: 650;
   box-shadow: 0 10px 30px rgb(8 85 120 / 5%);
 }
@@ -263,12 +259,12 @@ body {
   border: 1px solid rgb(8 85 120 / 12%);
   border-radius: 0.5rem;
   background: #ffffff;
-  padding: 1rem;
+  padding: 0.85rem;
   color: #073f5c;
-  font-size: 0.98rem;
+  font-size: 0.92rem;
   font-weight: 650;
   line-height: 1.5;
-  box-shadow: 0 12px 36px rgb(8 85 120 / 6%);
+  box-shadow: 0 8px 24px rgb(8 85 120 / 5%);
 }
 
 .step-card {
@@ -277,8 +273,8 @@ body {
   border: 1px solid rgb(8 85 120 / 12%);
   border-radius: 0.5rem;
   background: #ffffff;
-  padding: 1rem;
-  box-shadow: 0 14px 42px rgb(8 85 120 / 6%);
+  padding: 0.9rem;
+  box-shadow: 0 8px 24px rgb(8 85 120 / 5%);
 }
 
 .step-number {
@@ -297,17 +293,45 @@ body {
 
 .quality-card {
   display: flex;
-  min-height: 4.25rem;
+  min-height: 3.75rem;
   align-items: center;
   gap: 0.75rem;
   border: 1px solid rgb(30 122 74 / 16%);
   border-radius: 0.5rem;
   background: #ffffff;
-  padding: 1rem;
+  padding: 0.9rem;
   color: #073f5c;
-  font-size: 0.98rem;
+  font-size: 0.92rem;
   font-weight: 650;
-  box-shadow: 0 12px 36px rgb(30 122 74 / 7%);
+  box-shadow: 0 8px 24px rgb(30 122 74 / 6%);
+}
+
+.school-proof-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.school-proof-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  border: 1px solid rgb(8 85 120 / 12%);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  padding: 0.9rem;
+  box-shadow: 0 8px 24px rgb(8 85 120 / 5%);
+}
+
+.cta-band {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid rgb(255 117 31 / 18%);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  padding: 1rem;
+  box-shadow: 0 12px 36px rgb(255 117 31 / 8%);
 }
 
 .map-card {
@@ -315,7 +339,7 @@ body {
   border: 1px solid rgb(8 85 120 / 12%);
   border-radius: 0.5rem;
   background: #ffffff;
-  box-shadow: 0 24px 76px rgb(8 85 120 / 12%);
+  box-shadow: 0 14px 44px rgb(8 85 120 / 9%);
 }
 
 .map-card img {
@@ -337,13 +361,13 @@ body {
   border: 1px solid rgb(8 85 120 / 12%);
   border-radius: 0.5rem;
   background: #ffffff;
-  box-shadow: 0 24px 76px rgb(8 85 120 / 12%);
+  box-shadow: 0 14px 44px rgb(8 85 120 / 9%);
 }
 
 .app-card img {
   display: block;
   width: 100%;
-  max-height: 34rem;
+  max-height: 24rem;
   object-fit: cover;
   object-position: top center;
 }
@@ -368,9 +392,34 @@ body {
 
   .school-strip {
     grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .school-strip-item {
+    padding: 0.65rem 0.75rem;
   }
 
   .app-card img {
-    max-height: 28rem;
+    max-height: 18rem;
+  }
+
+  .app-card figcaption,
+  .map-card figcaption,
+  .compact-hero-media figcaption {
+    display: none;
+  }
+
+  .map-card {
+    display: none;
+  }
+
+  .cta-band {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .cta-band a,
+  .mobile-full-cta {
+    width: 100%;
   }
 }

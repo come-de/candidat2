@@ -157,7 +157,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto grid w-full max-w-6xl items-start gap-10 px-5 pb-16 pt-8 sm:px-8 lg:grid-cols-[0.82fr_1.18fr] lg:pb-20 lg:pt-12">
+      <section className="mx-auto grid w-full max-w-6xl items-center gap-8 px-5 pb-12 pt-7 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:pb-14 lg:pt-10">
         <div className="max-w-3xl">
           <p className="eyebrow mb-4 inline-flex rounded-full border border-[#1e7a4a]/20 bg-[#1e7a4a]/8 px-3 py-1 text-[#1e7a4a]">
             Rejoindre le réseau de tuteurs Étude Alpha
@@ -176,10 +176,10 @@ function HomePage() {
             réalisée en moins de 24h.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a href="/postuler" className="brand-button inline-flex h-12 items-center justify-center gap-2 rounded-lg px-5 text-[0.95rem] font-semibold">
+            <a href="/postuler" className="brand-button mobile-full-cta inline-flex h-12 items-center justify-center gap-2 rounded-lg px-5 text-[0.95rem] font-semibold">
               Postuler en 2 minutes <ArrowRight className="size-4" />
             </a>
-            <a href="#mission" className="inline-flex h-12 items-center justify-center rounded-lg border border-[#085578]/20 px-5 text-[0.95rem] font-semibold text-[#085578]">
+            <a href="#mission" className="hidden h-12 items-center justify-center rounded-lg border border-[#085578]/20 px-5 text-[0.95rem] font-semibold text-[#085578] sm:inline-flex">
               Comprendre la mission
             </a>
           </div>
@@ -190,11 +190,18 @@ function HomePage() {
           </div>
         </div>
 
-        <QuickApplyPanel />
+        <figure className="hero-media compact-hero-media">
+          <img src="/college.png" alt="Tutrice accompagnant des élèves de collège" className="h-56 w-full object-cover sm:h-72 lg:h-80" />
+          <figcaption className="grid gap-2 p-4 text-sm text-slate-650 sm:grid-cols-3">
+            <span className="inline-flex items-center gap-2"><CheckCircle2 className="size-4 text-[#1e7a4a]" /> Établissements</span>
+            <span className="inline-flex items-center gap-2"><BookOpenCheck className="size-4 text-[#085578]" /> CP à terminale</span>
+            <span className="inline-flex items-center gap-2"><UserCheck className="size-4 text-[#ff751f]" /> Référent sur place</span>
+          </figcaption>
+        </figure>
       </section>
 
       <section className="bg-[#f7faf9]">
-        <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <div className="mx-auto grid max-w-6xl gap-7 px-5 py-10 sm:px-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
           <figure className="app-card">
             <img src="/application-etude-alpha.png" alt="Application Étude Alpha pour gérer ses missions et disponibilités" />
             <figcaption>
@@ -225,34 +232,15 @@ function HomePage() {
                 <span>Choisir uniquement les missions qui correspondent à votre profil.</span>
               </div>
             </div>
+            <a href="/postuler" className="brand-button mobile-full-cta mt-6 inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold">
+              Postuler en 2 minutes <ArrowRight className="size-4" />
+            </a>
           </div>
         </div>
       </section>
 
       <section className="bg-white">
-        <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-          <div className="hero-media">
-            <img src="/college.png" alt="Tutrice accompagnant des élèves de collège" className="h-72 w-full object-cover sm:h-[25rem]" />
-            <div className="p-5">
-              <div className="rounded-md bg-[#085578] p-5 text-white">
-                <p className="eyebrow text-white/75">Cadre des missions</p>
-                <h2 className="mt-3 panel-title">Toujours dans un établissement scolaire, jamais au domicile des familles.</h2>
-              </div>
-              <div className="mt-4 grid gap-3">
-                {strengths.map((item) => (
-                  <div key={item.title} className="flex gap-4 rounded-md border border-slate-200 bg-white p-4">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-white text-[#085578] shadow-sm">
-                      <item.icon className="size-5" />
-                    </span>
-                    <div>
-                      <h3 className="font-semibold text-slate-950">{item.title}</h3>
-                      <p className="mt-1 text-sm leading-6 text-slate-600">{item.text}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+        <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
           <div>
             <p className="eyebrow text-[#ff751f]">Établissements scolaires</p>
             <h2 className="mt-3 section-title text-[#073f5c]">Un cadre identifié, avec une personne présente sur place.</h2>
@@ -262,12 +250,28 @@ function HomePage() {
               place, un référent peut aider les intervenants, répondre aux
               questions et faciliter l’organisation.
             </p>
+            <a href="/postuler" className="brand-button mobile-full-cta mt-6 inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold">
+              Commencer la présélection <ArrowRight className="size-4" />
+            </a>
+          </div>
+          <div className="school-proof-grid">
+            {strengths.map((item) => (
+              <article key={item.title} className="school-proof-card">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-[#f7faf9] text-[#085578]">
+                  <item.icon className="size-5" />
+                </span>
+                <div>
+                  <h3 className="font-semibold text-[#073f5c]">{item.title}</h3>
+                  <p className="mt-1 text-sm leading-6 text-slate-600">{item.text}</p>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="bg-[#f7faf9]">
-        <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
+        <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div>
               <p className="eyebrow text-[#ff751f]">Parcours candidat</p>
@@ -291,13 +295,14 @@ function HomePage() {
               ))}
             </div>
           </div>
+          <CtaBand text="Prêt à nous transmettre votre profil ?" />
         </div>
       </section>
 
       <section id="mission" className="border-y border-slate-200 bg-white">
-        <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:px-8 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="mx-auto grid max-w-6xl gap-7 px-5 py-10 sm:px-8 lg:grid-cols-[0.82fr_1.18fr]">
           <div className="overflow-hidden rounded-lg border border-slate-200">
-            <img src="/lycee.png" alt="Tuteur accompagnant des lycéens pendant leurs devoirs" className="h-full min-h-80 w-full object-cover" />
+            <img src="/lycee.png" alt="Tuteur accompagnant des lycéens pendant leurs devoirs" className="h-64 w-full object-cover sm:h-80 lg:h-full" />
           </div>
           <div>
             <p className="eyebrow text-[#ff751f]">Ce que vous apportez</p>
@@ -375,7 +380,7 @@ function HomePage() {
       </section>
 
       <section className="bg-white">
-        <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <div className="mx-auto grid max-w-6xl gap-7 px-5 py-10 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <div>
             <p className="eyebrow text-[#ff751f]">Réseau national</p>
             <h2 className="mt-3 section-title text-[#073f5c]">Des missions encadrées dans une soixantaine de villes.</h2>
@@ -403,10 +408,13 @@ function HomePage() {
             </figcaption>
           </figure>
         </div>
+        <div className="mx-auto max-w-6xl px-5 pb-10 sm:px-8">
+          <CtaBand text="Rejoignez un réseau déjà actif dans toute la France." />
+        </div>
       </section>
 
       <section className="bg-[#f7faf9]">
-        <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <div className="mx-auto grid max-w-6xl gap-7 px-5 py-10 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <div>
             <p className="eyebrow text-[#1e7a4a]">Profils recherchés</p>
             <h2 className="mt-3 section-title text-[#073f5c]">De l’exigence, mais un cadre simple pour candidater.</h2>
@@ -426,26 +434,25 @@ function HomePage() {
             ))}
           </div>
         </div>
+        <div className="mx-auto max-w-6xl px-5 pb-10 sm:px-8">
+          <CtaBand text="La première étape ne prend que quelques minutes." />
+        </div>
       </section>
     </main>
   );
 }
 
-function QuickApplyPanel() {
+function CtaBand({ text }: { text: string }) {
   return (
-    <aside className="quick-apply-panel">
-      <div className="flex flex-col gap-3 border-b border-[#085578]/10 px-5 py-5 sm:px-6">
-        <p className="eyebrow text-[#ff751f]">Candidature super rapide</p>
-        <h2 className="panel-title text-[#073f5c]">Déposez votre profil en 2 minutes.</h2>
-        <p className="text-sm leading-6 text-slate-650">
-          Quelques informations suffisent pour cette première présélection. Aucun
-          CV n’est demandé à cette étape.
-        </p>
+    <div className="cta-band mt-8">
+      <div>
+        <p className="eyebrow text-[#ff751f]">Candidature rapide</p>
+        <p className="mt-1 font-semibold text-[#073f5c]">{text}</p>
       </div>
-      <div className="px-5 pb-5 sm:px-6">
-        <ApplicationForm compact />
-      </div>
-    </aside>
+      <a href="/postuler" className="brand-button mobile-full-cta inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold">
+        Postuler en 2 minutes <ArrowRight className="size-4" />
+      </a>
+    </div>
   );
 }
 
@@ -502,7 +509,7 @@ function ApplyPage() {
   );
 }
 
-function ApplicationForm({ compact = false }: { compact?: boolean }) {
+function ApplicationForm() {
   const [activity, setActivity] = useState('');
   const [consent, setConsent] = useState(false);
   const [error, setError] = useState('');
@@ -546,8 +553,8 @@ function ApplicationForm({ compact = false }: { compact?: boolean }) {
   }
 
   return (
-    <form onSubmit={submitApplication} className={`${compact ? 'mt-5 gap-4' : 'mt-8 gap-5'} grid`}>
-      <div className={`grid gap-4 ${compact ? 'sm:grid-cols-2' : 'sm:grid-cols-2'}`}>
+    <form onSubmit={submitApplication} className="mt-8 grid gap-5">
+      <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Prénom" name="firstName" autoComplete="given-name" />
         <Field label="Nom" name="lastName" autoComplete="family-name" />
         <Field label="Adresse e-mail" name="email" type="email" autoComplete="email" />
