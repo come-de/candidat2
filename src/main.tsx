@@ -104,13 +104,13 @@ function HomePage() {
 
       <section className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 pb-16 pt-6 sm:px-8 lg:grid-cols-[1.08fr_0.92fr] lg:pb-24 lg:pt-14">
         <div className="max-w-3xl">
-          <p className="mb-4 inline-flex rounded-full border border-[#1e7a4a]/20 bg-[#1e7a4a]/8 px-3 py-1 text-sm font-semibold text-[#1e7a4a]">
+          <p className="eyebrow mb-4 inline-flex rounded-full border border-[#1e7a4a]/20 bg-[#1e7a4a]/8 px-3 py-1 text-[#1e7a4a]">
             Rejoindre le reseau de tuteurs Etude Alpha
           </p>
-          <h1 className="max-w-4xl text-4xl font-semibold leading-[1.05] text-[#073f5c] sm:text-5xl lg:text-6xl">
+          <h1 className="max-w-4xl hero-title text-[#073f5c]">
             Aidez les eleves a progresser dans un cadre clair, humain et exigeant.
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-650">
+          <p className="mt-6 max-w-2xl body-large text-slate-650">
             Etude Alpha recrute des tuteurs pour accompagner les eleves dans
             leurs devoirs, renforcer leurs acquis et assurer un encadrement
             regulier aupres des familles.
@@ -120,10 +120,10 @@ function HomePage() {
             recevront ensuite un formulaire plus complet a renseigner sur leur profil.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a href="/postuler" className="brand-button inline-flex h-12 items-center justify-center gap-2 rounded-lg px-5 text-base font-medium">
+            <a href="/postuler" className="brand-button inline-flex h-12 items-center justify-center gap-2 rounded-lg px-5 text-[0.95rem] font-semibold">
               Postuler en 2 minutes <ArrowRight className="size-4" />
             </a>
-            <a href="#mission" className="inline-flex h-12 items-center justify-center rounded-lg border border-[#085578]/20 px-5 text-base font-medium text-[#085578]">
+            <a href="#mission" className="inline-flex h-12 items-center justify-center rounded-lg border border-[#085578]/20 px-5 text-[0.95rem] font-semibold text-[#085578]">
               Comprendre la mission
             </a>
           </div>
@@ -138,9 +138,9 @@ function HomePage() {
           <img src="/college.png" alt="Tutrice accompagnant des eleves de college" className="h-64 w-full object-cover sm:h-80" />
           <div className="p-5">
             <div className="rounded-md bg-[#085578] p-6 text-white">
-              <p className="text-sm font-semibold text-white/75">Mission</p>
-              <h2 className="mt-3 text-3xl font-semibold">Accompagner les jeunes avec methode et attention.</h2>
-              <p className="mt-4 leading-7 text-white/78">
+              <p className="eyebrow text-white/75">Mission</p>
+              <h2 className="mt-3 panel-title">Accompagner les jeunes avec methode et attention.</h2>
+              <p className="mt-4 text-[0.98rem] leading-7 text-white/78">
                 Nous cherchons des profils fiables, pedagogues et ponctuels,
                 capables de transformer le temps des devoirs en moment de progression.
               </p>
@@ -168,9 +168,9 @@ function HomePage() {
             <img src="/lycee.png" alt="Tuteur accompagnant des lyceens pendant leurs devoirs" className="h-full min-h-80 w-full object-cover" />
           </div>
           <div>
-            <p className="text-sm font-semibold uppercase text-[#ff751f]">Ce que vous apportez</p>
-            <h2 className="mt-3 text-3xl font-semibold text-[#073f5c]">Une presence qui aide les eleves a tenir le rythme.</h2>
-            <p className="mt-5 text-lg leading-8 text-slate-650">
+            <p className="eyebrow text-[#ff751f]">Ce que vous apportez</p>
+            <h2 className="mt-3 section-title text-[#073f5c]">Une presence qui aide les eleves a tenir le rythme.</h2>
+            <p className="mt-5 body-large text-slate-650">
               Les tuteurs Etude Alpha accompagnent les eleves dans la
               comprehension des consignes, l’organisation du travail et la
               consolidation des apprentissages.
@@ -209,9 +209,9 @@ function ApplyPage() {
         <section className="mt-6 rounded-lg border border-[#085578]/12 bg-white p-5 shadow-[0_18px_60px_rgba(8,85,120,0.10)] sm:p-8">
           <img src="/logo-etude-alpha.png" alt="L'Etude Alpha" className="h-12 w-auto" />
           <div className="mt-8">
-            <p className="text-sm font-semibold uppercase text-[#ff751f]">Candidature tuteur</p>
-            <h1 className="mt-2 text-3xl font-semibold text-[#073f5c] sm:text-4xl">Postuler en 2 minutes</h1>
-            <p className="mt-3 leading-7 text-slate-600">
+            <p className="eyebrow text-[#ff751f]">Candidature tuteur</p>
+            <h1 className="mt-2 section-title text-[#073f5c]">Postuler en 2 minutes</h1>
+            <p className="mt-3 body-large text-slate-600">
               Ce formulaire est une premiere preselection. Quelques informations
               suffisent pour que notre equipe puisse etudier votre profil.
             </p>
@@ -297,7 +297,7 @@ function ApplicationForm() {
         <span>J’accepte que mes donnees personnelles soient utilisees par Etude Alpha pour traiter ma candidature et me recontacter.</span>
       </label>
       {error ? <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
-      <Button type="submit" disabled={isSubmitting} className="brand-button h-12 text-base">
+      <Button type="submit" disabled={isSubmitting} className="brand-button h-12 text-[0.95rem] font-semibold">
         {isSubmitting ? 'Envoi en cours...' : 'Envoyer ma candidature'} <Send />
       </Button>
     </form>
@@ -319,8 +319,8 @@ function ConfirmationPage() {
     <main className="flex min-h-screen items-center justify-center bg-[#f7faf9] px-5 py-10">
       <section className="w-full max-w-2xl rounded-lg border border-[#085578]/12 bg-white p-6 text-center shadow-[0_18px_60px_rgba(8,85,120,0.10)] sm:p-10">
         <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-[#1e7a4a]/10 text-[#1e7a4a]"><CheckCircle2 className="size-7" /></div>
-        <h1 className="mt-6 text-3xl font-semibold text-[#073f5c]">Candidature envoyee</h1>
-        <p className="mx-auto mt-4 max-w-xl leading-7 text-slate-600">
+        <h1 className="mt-6 section-title text-[#073f5c]">Candidature envoyee</h1>
+        <p className="mx-auto mt-4 max-w-xl body-large text-slate-600">
           Merci pour votre interet. L’equipe Etude Alpha va etudier votre profil
           et reviendra vers vous si votre candidature correspond aux besoins du moment.
           Les candidats retenus recevront ensuite un formulaire plus complet.
@@ -395,7 +395,7 @@ function AdminPanel() {
     return (
       <section className="mt-10 max-w-md rounded-lg border border-[#085578]/12 bg-white p-6 shadow-[0_18px_60px_rgba(8,85,120,0.10)]">
         <div className="flex size-11 items-center justify-center rounded-md bg-[#085578]/10 text-[#085578]"><Lock className="size-5" /></div>
-        <h1 className="mt-5 text-3xl font-semibold text-[#073f5c]">Espace equipe</h1>
+        <h1 className="mt-5 section-title text-[#073f5c]">Espace equipe</h1>
         <p className="mt-2 text-sm leading-6 text-slate-600">Connectez-vous avec le mot de passe admin pour consulter et suivre les candidatures.</p>
         <form className="mt-6 grid gap-4" onSubmit={(event) => { event.preventDefault(); loadApplications(password); }}>
           <Input type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Mot de passe" className="h-11 bg-white" required />
@@ -410,7 +410,7 @@ function AdminPanel() {
     <section className="mt-8">
       <div className="flex flex-col gap-4 rounded-lg border border-[#085578]/12 bg-white p-5 shadow-[0_18px_60px_rgba(8,85,120,0.08)] sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold text-[#073f5c]">Candidatures</h1>
+          <h1 className="section-title text-[#073f5c]">Candidatures</h1>
           <p className="mt-1 text-sm text-slate-600">{visibleApplications.length} candidature(s) affichee(s)</p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
