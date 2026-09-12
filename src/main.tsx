@@ -406,7 +406,7 @@ function AdminPanel() {
         <form className="mt-6 grid gap-4" onSubmit={(event) => { event.preventDefault(); loadApplications(password); }}>
           <Input type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Mot de passe" className="h-11 bg-white" required />
           {error ? <p className="text-sm text-red-700">{error}</p> : null}
-          <Button className="brand-button h-11" disabled={isLoading}>{isLoading ? 'Connexion...' : 'Se connecter'}</Button>
+          <Button type="submit" className="brand-button h-11" disabled={isLoading}>{isLoading ? 'Connexion...' : 'Se connecter'}</Button>
         </form>
       </section>
     );
@@ -424,8 +424,8 @@ function AdminPanel() {
             <SelectTrigger className="h-10 w-full bg-white sm:w-44"><SelectValue /></SelectTrigger>
             <SelectContent>{statuses.map((status) => <SelectItem key={status.value} value={status.value}>{status.label}</SelectItem>)}</SelectContent>
           </Select>
-          <Button variant="outline" onClick={() => loadApplications()} className="h-10"><RefreshCcw /> Actualiser</Button>
-          <Button onClick={() => { window.location.href = `/.netlify/functions/applications-export?password=${encodeURIComponent(savedPassword)}`; }} className="brand-button h-10"><Download /> Export CSV</Button>
+          <Button type="button" variant="outline" onClick={() => loadApplications()} className="h-10"><RefreshCcw /> Actualiser</Button>
+          <Button type="button" onClick={() => { window.location.href = `/.netlify/functions/applications-export?password=${encodeURIComponent(savedPassword)}`; }} className="brand-button h-10"><Download /> Export CSV</Button>
         </div>
       </div>
       {error ? <p className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p> : null}
@@ -466,7 +466,7 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
           <SelectContent>{statuses.slice(1).map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
         </Select>
         <Textarea value={comment} onChange={(event) => setComment(event.target.value)} placeholder="Commentaire interne" className="min-h-24 bg-white" />
-        <Button className="brand-button h-10" disabled={isSaving} onClick={async () => { setIsSaving(true); await onSave(application.id, status, comment); setIsSaving(false); }}>
+        <Button type="button" className="brand-button h-10" disabled={isSaving} onClick={async () => { setIsSaving(true); await onSave(application.id, status, comment); setIsSaving(false); }}>
           <Save /> {isSaving ? 'Enregistrement...' : 'Enregistrer'}
         </Button>
       </div>
