@@ -10,6 +10,7 @@ export type Application = {
   phone: string;
   city: string;
   current_activity: string;
+  referral_source: string;
   profile_note: string;
   consent: boolean;
   status: ApplicationStatus;
@@ -56,6 +57,7 @@ export function validateApplication(input: Record<string, unknown>) {
     'phone',
     'city',
     'currentActivity',
+    'referralSource',
     'profileNote',
   ];
 
@@ -107,6 +109,7 @@ export function createApplication(input: Record<string, unknown>): Application {
     phone: String(input.phone).trim(),
     city: String(input.city).trim(),
     current_activity: String(input.currentActivity).trim(),
+    referral_source: String(input.referralSource).trim(),
     profile_note: String(input.profileNote).trim(),
     consent: true,
     status: 'nouveau',

@@ -43,6 +43,7 @@ type Application = {
   phone: string;
   city: string;
   current_activity: string;
+  referral_source?: string;
   profile_note: string;
   status: Status;
   admin_comment: string | null;
@@ -93,6 +94,8 @@ const statusLabels: Record<Status, string> = {
   refuse: 'Refusé',
   ecarte: 'Écartée',
 };
+
+const editableStatuses = statuses.filter((status) => status.value !== 'tous' && status.value !== 'ecarte') as { value: Status; label: string }[];
 
 const ADMIN_PASSWORD_STORAGE_KEY = 'etude-alpha-admin-password';
 
@@ -544,6 +547,7 @@ function ApplicationForm() {
       phone: String(form.get('phone') || '').trim(),
       city: String(form.get('city') || '').trim(),
       currentActivity: activity,
+      referralSource: String(form.get('referralSource') || '').trim(),
       profileNote: String(form.get('profileNote') || '').trim(),
       consent,
     };
@@ -576,6 +580,7 @@ function ApplicationForm() {
         <Field label="Adresse e-mail" name="email" type="email" autoComplete="email" />
         <Field label="Numéro de téléphone" name="phone" type="tel" autoComplete="tel" />
         <Field label="Ville dans laquelle vous souhaitez travailler" name="city" autoComplete="address-level2" />
+        <Field label="Comment nous avez-vous connu ?" name="referralSource" placeholder="Ami, école, affiche, réseau social..." />
         <label className="grid gap-2 text-sm font-medium text-slate-700">
           Activité actuelle
           <Select value={activity} onValueChange={(value) => setActivity(value || '')} required>
@@ -668,6 +673,9 @@ function AdminPanel() {
     [applications, filter],
   );
 
+  const mainApplicationsCount = applications.filter((application) => application.status !== 'ecarte').length;
+  const discardedApplicationsCount = applications.filter((application) => application.status === 'ecarte').length;
+
   useEffect(() => {
     if (savedPassword) {
       loadApplications(savedPassword);
@@ -728,15 +736,27 @@ function AdminPanel() {
       <div className="flex flex-col gap-4 rounded-lg border border-[#085578]/12 bg-white p-5 shadow-[0_18px_60px_rgba(8,85,120,0.08)] sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="section-title text-[#073f5c]">Suivi des candidatures</h1>
-          <p className="mt-1 text-sm text-slate-600">{visibleApplications.length} candidature(s) affichée(s)</p>
+          <p className="mt-1 text-sm text-slate-600">
+            {visibleApplications.length} candidature(s) affichée(s)
+          </p>
         </div>
-        <div className="flex flex-col gap-2 sm:flex-row">
+        <div className="grid gap-2 sm:flex-row">
+          <div className="grid grid-cols-2 gap-2">
+            <Button type="button" variant={filter === 'tous' ? 'default' : 'outline'} onClick={() => setFilter('tous')} className={filter === 'tous' ? 'brand-button h-10' : 'h-10'}>
+              Liste principale ({mainApplicationsCount})
+            </Button>
+            <Button type="button" variant={filter === 'ecarte' ? 'default' : 'outline'} onClick={() => setFilter('ecarte')} className={filter === 'ecarte' ? 'brand-button h-10' : 'h-10'}>
+              Écartées ({discardedApplicationsCount})
+            </Button>
+          </div>
           <Select value={filter} onValueChange={(value) => setFilter(value as Status | 'tous')}>
             <SelectTrigger className="h-10 w-full bg-white sm:w-44"><SelectValue /></SelectTrigger>
             <SelectContent>{statuses.map((status) => <SelectItem key={status.value} value={status.value}>{status.label}</SelectItem>)}</SelectContent>
           </Select>
-          <Button type="button" variant="outline" onClick={() => loadApplications()} className="h-10"><RefreshCcw /> Actualiser</Button>
-          <Button type="button" onClick={() => { window.location.href = `/.netlify/functions/applications-export?password=${encodeURIComponent(savedPassword)}`; }} className="brand-button h-10"><Download /> Export CSV</Button>
+          <div className="grid grid-cols-2 gap-2">
+            <Button type="button" variant="outline" onClick={() => loadApplications()} className="h-10"><RefreshCcw /> Actualiser</Button>
+            <Button type="button" onClick={() => { window.location.href = `/.netlify/functions/applications-export?password=${encodeURIComponent(savedPassword)}`; }} className="brand-button h-10"><Download /> Export CSV</Button>
+          </div>
         </div>
       </div>
       {error ? <p className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p> : null}
@@ -751,6 +771,7 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
   const [status, setStatus] = useState<Status>(application.status);
   const [comment, setComment] = useState(application.admin_comment || '');
   const [platformApplied, setPlatformApplied] = useState(application.platform_applied === true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   async function saveChanges(nextStatus = status, nextPlatformApplied = platformApplied) {
@@ -763,31 +784,54 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
     setIsSaving(false);
   }
 
+  async function discardApplication() {
+    const confirmation = window.prompt('Pour écarter cette candidature, tapez ECARTER.');
+    if (confirmation !== 'ECARTER') return;
+    await saveChanges('ecarte', platformApplied);
+  }
+
+  const hasLongProfile = application.profile_note.length > 260;
+  const profileText = isExpanded || !hasLongProfile
+    ? application.profile_note
+    : `${application.profile_note.slice(0, 260).trim()}...`;
+
   return (
-    <article className="grid gap-5 rounded-lg border border-slate-200 bg-white p-5 lg:grid-cols-[1fr_260px]">
+    <article className="grid gap-4 rounded-lg border border-slate-200 bg-white p-4 lg:grid-cols-[1fr_240px]">
       <div>
         <div className="flex flex-wrap items-center gap-3">
-          <h2 className="text-xl font-semibold text-slate-950">{application.first_name} {application.last_name}</h2>
+          <h2 className="text-lg font-semibold text-slate-950">{application.first_name} {application.last_name}</h2>
           <Badge className="rounded-md bg-[#085578]/10 text-[#085578]">{statusLabels[application.status]}</Badge>
           {application.platform_applied ? <Badge className="rounded-md bg-[#1e7a4a]/10 text-[#1e7a4a]">Plateforme complétée</Badge> : null}
         </div>
-        <dl className="mt-4 grid gap-3 text-sm text-slate-650 sm:grid-cols-2 lg:grid-cols-3">
+        <dl className="mt-3 grid gap-2 text-sm text-slate-650 sm:grid-cols-2 lg:grid-cols-4">
           <Info label="Ville souhaitée" value={application.city} />
           <Info label="Activité" value={application.current_activity} />
+          <Info label="Origine" value={application.referral_source || 'Non renseigné'} />
           <Info label="E-mail" value={application.email} />
           <Info label="Téléphone" value={application.phone} />
         </dl>
-        <div className="mt-5 rounded-md bg-[#f7faf9] p-4">
+        <div className="mt-4 rounded-md bg-[#f7faf9] p-3">
           <p className="text-sm font-semibold text-[#085578]">Quelques mots sur le profil</p>
-          <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-650">{application.profile_note}</p>
+          <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-650">{profileText}</p>
+          {hasLongProfile ? (
+            <button type="button" onClick={() => setIsExpanded((current) => !current)} className="mt-2 text-sm font-semibold text-[#085578]">
+              {isExpanded ? 'Voir moins' : 'Voir plus'}
+            </button>
+          ) : null}
         </div>
-        <p className="mt-4 text-xs text-slate-500">Reçu le {new Date(application.created_at).toLocaleDateString('fr-FR')}</p>
+        <p className="mt-3 text-xs text-slate-500">Reçu le {new Date(application.created_at).toLocaleDateString('fr-FR')}</p>
       </div>
       <div className="grid gap-3">
-        <Select value={status} onValueChange={(value) => setStatus(value as Status)}>
-          <SelectTrigger className="h-10 w-full bg-white"><SelectValue /></SelectTrigger>
-          <SelectContent>{statuses.slice(1).map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
-        </Select>
+        {application.status === 'ecarte' ? (
+          <p className="rounded-md bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
+            Candidature écartée
+          </p>
+        ) : (
+          <Select value={status} onValueChange={(value) => setStatus(value as Status)}>
+            <SelectTrigger className="h-10 w-full bg-white"><SelectValue /></SelectTrigger>
+            <SelectContent>{editableStatuses.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
+          </Select>
+        )}
         <label className="grid gap-2 text-sm font-medium text-slate-700">
           Commentaire interne
           <Textarea value={comment} onChange={(event) => setComment(event.target.value)} placeholder="Notes, relance, avis sur le profil..." className="min-h-24 bg-white" />
@@ -795,9 +839,15 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
         <Button type="button" variant="outline" className="h-10 justify-start" disabled={isSaving || platformApplied} onClick={() => saveChanges(status, true)}>
           <CheckCircle2 /> {platformApplied ? 'Plateforme déjà complétée' : 'A bien postulé dans la plateforme'}
         </Button>
-        <Button type="button" variant="outline" className="h-10 justify-start border-red-200 text-red-700 hover:bg-red-50" disabled={isSaving} onClick={() => saveChanges('ecarte', platformApplied)}>
-          Écarter
-        </Button>
+        {application.status === 'ecarte' ? (
+          <Button type="button" variant="outline" className="h-10 justify-start border-[#1e7a4a]/25 text-[#1e7a4a] hover:bg-[#eaf4ef]" disabled={isSaving} onClick={() => saveChanges('nouveau', platformApplied)}>
+            Remettre dans la liste principale
+          </Button>
+        ) : (
+          <Button type="button" variant="outline" className="h-10 justify-start border-red-200 text-red-700 hover:bg-red-50" disabled={isSaving} onClick={discardApplication}>
+            Écarter
+          </Button>
+        )}
         <Button type="button" className="brand-button h-10" disabled={isSaving} onClick={() => saveChanges()}>
           <Save /> {isSaving ? 'Enregistrement...' : 'Enregistrer'}
         </Button>
