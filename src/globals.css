@@ -228,6 +228,49 @@ body {
   box-shadow: 0 28px 90px rgb(8 85 120 / 14%);
 }
 
+.quick-apply-panel {
+  overflow: hidden;
+  border: 1px solid rgb(8 85 120 / 12%);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  box-shadow: 0 26px 86px rgb(8 85 120 / 14%);
+}
+
+.school-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.school-strip-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid rgb(30 122 74 / 14%);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  padding: 0.85rem 0.95rem;
+  color: #073f5c;
+  font-size: 0.9rem;
+  font-weight: 650;
+  box-shadow: 0 10px 30px rgb(8 85 120 / 5%);
+}
+
+.flex-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  border: 1px solid rgb(8 85 120 / 12%);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  padding: 1rem;
+  color: #073f5c;
+  font-size: 0.98rem;
+  font-weight: 650;
+  line-height: 1.5;
+  box-shadow: 0 12px 36px rgb(8 85 120 / 6%);
+}
+
 .step-card {
   display: flex;
   gap: 1rem;
@@ -289,6 +332,30 @@ body {
   line-height: 1.45;
 }
 
+.app-card {
+  overflow: hidden;
+  border: 1px solid rgb(8 85 120 / 12%);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  box-shadow: 0 24px 76px rgb(8 85 120 / 12%);
+}
+
+.app-card img {
+  display: block;
+  width: 100%;
+  max-height: 34rem;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.app-card figcaption {
+  border-top: 1px solid rgb(8 85 120 / 10%);
+  padding: 0.85rem 1rem;
+  color: #536879;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
 @media (max-width: 640px) {
   .official-banner {
     align-items: flex-start;
@@ -297,5 +364,13 @@ body {
 
   .official-badge {
     min-width: 0;
+  }
+
+  .school-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .app-card img {
+    max-height: 28rem;
   }
 }

@@ -4,6 +4,7 @@ import {
   ArrowLeft,
   ArrowRight,
   BookOpenCheck,
+  CalendarCheck,
   CheckCircle2,
   Clock3,
   Download,
@@ -112,6 +113,12 @@ const candidateQualities = [
   'Communication sérieuse',
 ];
 
+const schoolFacts = [
+  'Missions uniquement en établissements scolaires',
+  'Élèves accompagnés du CP à la terminale',
+  'Un référent présent dans l’école pour aider et guider',
+];
+
 function App() {
   const path = window.location.pathname;
 
@@ -140,9 +147,17 @@ function HomePage() {
             .
           </p>
         </div>
+        <div className="school-strip mt-4">
+          {schoolFacts.map((fact) => (
+            <div key={fact} className="school-strip-item">
+              <CheckCircle2 className="size-4 text-[#1e7a4a]" />
+              <span>{fact}</span>
+            </div>
+          ))}
+        </div>
       </section>
 
-      <section className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 pb-16 pt-8 sm:px-8 lg:grid-cols-[1fr_0.95fr] lg:pb-20 lg:pt-12">
+      <section className="mx-auto grid w-full max-w-6xl items-start gap-10 px-5 pb-16 pt-8 sm:px-8 lg:grid-cols-[0.82fr_1.18fr] lg:pb-20 lg:pt-12">
         <div className="max-w-3xl">
           <p className="eyebrow mb-4 inline-flex rounded-full border border-[#1e7a4a]/20 bg-[#1e7a4a]/8 px-3 py-1 text-[#1e7a4a]">
             Rejoindre le réseau de tuteurs Étude Alpha
@@ -151,10 +166,9 @@ function HomePage() {
             Devenir tuteur ou surveillant Étude Alpha.
           </h1>
           <p className="mt-6 max-w-2xl body-large text-slate-650">
-            Nous sélectionnons des profils fiables, pédagogues et exigeants pour
-            accompagner les élèves dans leurs devoirs, les aider à progresser et
-            assurer un cadre d’étude sérieux, toujours au sein d’établissements
-            scolaires partenaires.
+            Choisissez vos missions et votre emploi du temps depuis l’application
+            Étude Alpha. Vous pouvez travailler très régulièrement, ou ne prendre
+            aucune mission pendant plusieurs semaines, selon vos disponibilités.
           </p>
           <p className="mt-5 max-w-2xl rounded-md border border-[#ff751f]/25 bg-[#fff7f0] px-4 py-3 text-sm font-semibold leading-6 text-[#8a3b07]">
             Cette étape est volontairement courte : aucun CV n’est demandé. Si
@@ -176,31 +190,83 @@ function HomePage() {
           </div>
         </div>
 
-        <div className="hero-media">
-          <img src="/college.png" alt="Tutrice accompagnant des élèves de collège" className="h-72 w-full object-cover sm:h-[25rem]" />
-          <div className="p-5">
-            <div className="rounded-md bg-[#085578] p-5 text-white">
-              <p className="eyebrow text-white/75">Mission</p>
-              <h2 className="mt-3 panel-title">Un rôle de confiance, auprès des élèves et des familles.</h2>
-            </div>
-            <div className="mt-4 grid gap-3">
-              {strengths.map((item) => (
-                <div key={item.title} className="flex gap-4 rounded-md border border-slate-200 bg-white p-4">
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-white text-[#085578] shadow-sm">
-                    <item.icon className="size-5" />
-                  </span>
-                  <div>
-                    <h3 className="font-semibold text-slate-950">{item.title}</h3>
-                    <p className="mt-1 text-sm leading-6 text-slate-600">{item.text}</p>
-                  </div>
-                </div>
-              ))}
+        <QuickApplyPanel />
+      </section>
+
+      <section className="bg-[#f7faf9]">
+        <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+          <figure className="app-card">
+            <img src="/application-etude-alpha.png" alt="Application Étude Alpha pour gérer ses missions et disponibilités" />
+            <figcaption>
+              L’application Étude Alpha permet de consulter les informations utiles,
+              les séances à venir, les disponibilités et les missions proposées.
+            </figcaption>
+          </figure>
+          <div>
+            <p className="eyebrow text-[#1e7a4a]">Organisation flexible</p>
+            <h2 className="mt-3 section-title text-[#073f5c]">Vous choisissez votre rythme depuis l’application Étude Alpha.</h2>
+            <p className="mt-5 body-large text-slate-650">
+              Les missions sont proposées dans l’application. Vous pouvez les
+              accepter selon vos disponibilités, votre ville, votre niveau
+              d’aisance et le type de mission souhaité : étude, tutorat ou
+              surveillance.
+            </p>
+            <div className="mt-6 grid gap-3">
+              <div className="flex-card">
+                <CalendarCheck className="size-5 text-[#1e7a4a]" />
+                <span>Travailler tous les jours si votre planning le permet.</span>
+              </div>
+              <div className="flex-card">
+                <Clock3 className="size-5 text-[#ff751f]" />
+                <span>Faire une pause complète pendant un mois si vous n’êtes pas disponible.</span>
+              </div>
+              <div className="flex-card">
+                <UserCheck className="size-5 text-[#085578]" />
+                <span>Choisir uniquement les missions qui correspondent à votre profil.</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       <section className="bg-white">
+        <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+          <div className="hero-media">
+            <img src="/college.png" alt="Tutrice accompagnant des élèves de collège" className="h-72 w-full object-cover sm:h-[25rem]" />
+            <div className="p-5">
+              <div className="rounded-md bg-[#085578] p-5 text-white">
+                <p className="eyebrow text-white/75">Cadre des missions</p>
+                <h2 className="mt-3 panel-title">Toujours dans un établissement scolaire, jamais au domicile des familles.</h2>
+              </div>
+              <div className="mt-4 grid gap-3">
+                {strengths.map((item) => (
+                  <div key={item.title} className="flex gap-4 rounded-md border border-slate-200 bg-white p-4">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-white text-[#085578] shadow-sm">
+                      <item.icon className="size-5" />
+                    </span>
+                    <div>
+                      <h3 className="font-semibold text-slate-950">{item.title}</h3>
+                      <p className="mt-1 text-sm leading-6 text-slate-600">{item.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div>
+            <p className="eyebrow text-[#ff751f]">Établissements scolaires</p>
+            <h2 className="mt-3 section-title text-[#073f5c]">Un cadre identifié, avec une personne présente sur place.</h2>
+            <p className="mt-5 body-large text-slate-650">
+              Les missions de tutorat, d’étude ou de surveillance se déroulent
+              exclusivement dans des établissements scolaires partenaires. Sur
+              place, un référent peut aider les intervenants, répondre aux
+              questions et faciliter l’organisation.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f7faf9]">
         <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div>
@@ -365,6 +431,24 @@ function HomePage() {
   );
 }
 
+function QuickApplyPanel() {
+  return (
+    <aside className="quick-apply-panel">
+      <div className="flex flex-col gap-3 border-b border-[#085578]/10 px-5 py-5 sm:px-6">
+        <p className="eyebrow text-[#ff751f]">Candidature super rapide</p>
+        <h2 className="panel-title text-[#073f5c]">Déposez votre profil en 2 minutes.</h2>
+        <p className="text-sm leading-6 text-slate-650">
+          Quelques informations suffisent pour cette première présélection. Aucun
+          CV n’est demandé à cette étape.
+        </p>
+      </div>
+      <div className="px-5 pb-5 sm:px-6">
+        <ApplicationForm compact />
+      </div>
+    </aside>
+  );
+}
+
 function SiteHeader() {
   return (
     <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
@@ -418,7 +502,7 @@ function ApplyPage() {
   );
 }
 
-function ApplicationForm() {
+function ApplicationForm({ compact = false }: { compact?: boolean }) {
   const [activity, setActivity] = useState('');
   const [consent, setConsent] = useState(false);
   const [error, setError] = useState('');
@@ -462,8 +546,8 @@ function ApplicationForm() {
   }
 
   return (
-    <form onSubmit={submitApplication} className="mt-8 grid gap-5">
-      <div className="grid gap-4 sm:grid-cols-2">
+    <form onSubmit={submitApplication} className={`${compact ? 'mt-5 gap-4' : 'mt-8 gap-5'} grid`}>
+      <div className={`grid gap-4 ${compact ? 'sm:grid-cols-2' : 'sm:grid-cols-2'}`}>
         <Field label="Prénom" name="firstName" autoComplete="given-name" />
         <Field label="Nom" name="lastName" autoComplete="family-name" />
         <Field label="Adresse e-mail" name="email" type="email" autoComplete="email" />
