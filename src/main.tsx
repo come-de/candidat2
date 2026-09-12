@@ -50,24 +50,24 @@ const strengths = [
   {
     icon: BookOpenCheck,
     title: 'Aider concrètement',
-    text: 'Accompagner les élèves dans leurs devoirs, leur méthode et leur confiance.',
+    text: 'Guider les élèves avec précision dans leurs devoirs, leur méthode et leur autonomie.',
   },
   {
     icon: HeartHandshake,
-    title: 'Encadrer avec bienveillance',
-    text: 'Créer un cadre sérieux, rassurant et motivant pour chaque famille.',
+    title: 'Tenir un cadre exigeant',
+    text: 'Installer une présence fiable, ponctuelle et structurante auprès des familles.',
   },
   {
     icon: GraduationCap,
     title: 'Faire progresser',
-    text: 'Suivre les besoins de l’élève et l’aider à avancer étape après étape.',
+    text: 'Identifier les priorités, suivre les efforts et faire avancer chaque élève avec régularité.',
   },
 ];
 
 const activities = [
-  'Etudiant',
+  'Étudiant',
   'Enseignant',
-  'Salarie',
+  'Salarié',
   'Independant',
   'En recherche d’emploi',
   'Autre',
@@ -105,19 +105,20 @@ function HomePage() {
       <section className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 pb-16 pt-6 sm:px-8 lg:grid-cols-[1.08fr_0.92fr] lg:pb-24 lg:pt-14">
         <div className="max-w-3xl">
           <p className="eyebrow mb-4 inline-flex rounded-full border border-[#1e7a4a]/20 bg-[#1e7a4a]/8 px-3 py-1 text-[#1e7a4a]">
-            Rejoindre le reseau de tuteurs Etude Alpha
+            Rejoindre le réseau de tuteurs Étude Alpha
           </p>
           <h1 className="max-w-4xl hero-title text-[#073f5c]">
-            Aidez les eleves a progresser dans un cadre clair, humain et exigeant.
+            Accompagner les élèves avec méthode, exigence et sens de la transmission.
           </h1>
           <p className="mt-6 max-w-2xl body-large text-slate-650">
-            Etude Alpha recrute des tuteurs pour accompagner les eleves dans
-            leurs devoirs, renforcer leurs acquis et assurer un encadrement
-            regulier aupres des familles.
+            Étude Alpha sélectionne des tuteurs capables d’assurer un
+            accompagnement sérieux : devoirs, consolidation des acquis,
+            organisation du travail et suivi régulier auprès des familles.
           </p>
           <p className="mt-4 max-w-2xl rounded-md border border-[#ff751f]/25 bg-[#ff751f]/8 px-4 py-3 text-sm font-medium leading-6 text-[#8a3b07]">
-            Ce formulaire est une preselection rapide. Les candidats retenus
-            recevront ensuite un formulaire plus complet a renseigner sur leur profil.
+            Ce formulaire constitue une première étape de présélection. Les
+            candidats retenus seront ensuite invités à compléter un profil plus
+            détaillé.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a href="/postuler" className="brand-button inline-flex h-12 items-center justify-center gap-2 rounded-lg px-5 text-[0.95rem] font-semibold">
@@ -128,21 +129,21 @@ function HomePage() {
             </a>
           </div>
           <div className="mt-8 grid max-w-2xl gap-3 text-sm text-slate-600 sm:grid-cols-3">
-            <span className="inline-flex items-center gap-2"><CheckCircle2 className="size-4 text-[#1e7a4a]" /> Candidature courte</span>
-            <span className="inline-flex items-center gap-2"><Clock3 className="size-4 text-[#ff751f]" /> Reponse rapide</span>
-            <span className="inline-flex items-center gap-2"><ShieldCheck className="size-4 text-[#085578]" /> Donnees protegees</span>
+            <span className="inline-flex items-center gap-2"><CheckCircle2 className="size-4 text-[#1e7a4a]" /> Présélection ciblée</span>
+            <span className="inline-flex items-center gap-2"><Clock3 className="size-4 text-[#ff751f]" /> Étude attentive</span>
+            <span className="inline-flex items-center gap-2"><ShieldCheck className="size-4 text-[#085578]" /> Données protégées</span>
           </div>
         </div>
 
         <div className="overflow-hidden rounded-lg border border-[#085578]/12 bg-white shadow-[0_24px_80px_rgba(8,85,120,0.13)]">
-          <img src="/college.png" alt="Tutrice accompagnant des eleves de college" className="h-64 w-full object-cover sm:h-80" />
+          <img src="/college.png" alt="Tutrice accompagnant des élèves de college" className="h-64 w-full object-cover sm:h-80" />
           <div className="p-5">
             <div className="rounded-md bg-[#085578] p-6 text-white">
               <p className="eyebrow text-white/75">Mission</p>
-              <h2 className="mt-3 panel-title">Accompagner les jeunes avec methode et attention.</h2>
+              <h2 className="mt-3 panel-title">Un rôle de confiance, au service de la progression.</h2>
               <p className="mt-4 text-[0.98rem] leading-7 text-white/78">
-                Nous cherchons des profils fiables, pedagogues et ponctuels,
-                capables de transformer le temps des devoirs en moment de progression.
+                Nous recherchons des profils rigoureux, pédagogues et constants,
+                capables d’apporter un cadre de travail précis et rassurant.
               </p>
             </div>
             <div className="mt-5 grid gap-3">
@@ -169,16 +170,18 @@ function HomePage() {
           </div>
           <div>
             <p className="eyebrow text-[#ff751f]">Ce que vous apportez</p>
-            <h2 className="mt-3 section-title text-[#073f5c]">Une presence qui aide les eleves a tenir le rythme.</h2>
+            <h2 className="mt-3 section-title text-[#073f5c]">Une présence structurante, attentive et responsable.</h2>
             <p className="mt-5 body-large text-slate-650">
-              Les tuteurs Etude Alpha accompagnent les eleves dans la
-              comprehension des consignes, l’organisation du travail et la
-              consolidation des apprentissages.
+              Les tuteurs Étude Alpha accompagnent les élèves dans la
+              compréhension des consignes, l’organisation du travail, la
+              consolidation des apprentissages et la mise en place de bonnes
+              habitudes. La mission exige de la clarté, de la patience et une
+              réelle qualité de suivi.
             </p>
             <p className="mt-5 rounded-md bg-[#eaf4ef] px-4 py-3 text-sm font-medium leading-6 text-[#1e7a4a]">
-              Cette premiere etape sert uniquement a verifier l’adequation du
-              profil. Si votre candidature est retenue, vous serez invite a
-              completer un dossier plus detaille.
+              Cette première étape nous permet d’évaluer l’adéquation générale
+              de votre profil. Les candidats retenus accéderont ensuite à un
+              dossier plus complet.
             </p>
           </div>
         </div>
@@ -190,11 +193,11 @@ function HomePage() {
 function SiteHeader() {
   return (
     <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
-      <a href="/" aria-label="Accueil Etude Alpha">
-        <img src="/logo-etude-alpha.png" alt="L'Etude Alpha" className="h-11 w-auto" />
+      <a href="/" aria-label="Accueil Étude Alpha">
+        <img src="/logo-etude-alpha.png" alt="L'Étude Alpha" className="h-11 w-auto" />
       </a>
       <nav className="flex items-center gap-2">
-        <a href="/admin" className="hidden text-sm font-medium text-slate-600 transition hover:text-[#085578] sm:inline">Espace equipe</a>
+        <a href="/admin" className="hidden text-sm font-medium text-slate-600 transition hover:text-[#085578] sm:inline">Espace équipe</a>
         <a href="/postuler" className="brand-button inline-flex h-10 items-center justify-center rounded-lg px-4 text-sm font-medium">Postuler</a>
       </nav>
     </header>
@@ -207,17 +210,19 @@ function ApplyPage() {
       <div className="mx-auto max-w-3xl">
         <a href="/" className="inline-flex items-center gap-2 text-sm font-medium text-[#085578]"><ArrowLeft className="size-4" /> Retour</a>
         <section className="mt-6 rounded-lg border border-[#085578]/12 bg-white p-5 shadow-[0_18px_60px_rgba(8,85,120,0.10)] sm:p-8">
-          <img src="/logo-etude-alpha.png" alt="L'Etude Alpha" className="h-12 w-auto" />
+          <img src="/logo-etude-alpha.png" alt="L'Étude Alpha" className="h-12 w-auto" />
           <div className="mt-8">
             <p className="eyebrow text-[#ff751f]">Candidature tuteur</p>
-            <h1 className="mt-2 section-title text-[#073f5c]">Postuler en 2 minutes</h1>
+            <h1 className="mt-2 section-title text-[#073f5c]">Formulaire de présélection</h1>
             <p className="mt-3 body-large text-slate-600">
-              Ce formulaire est une premiere preselection. Quelques informations
-              suffisent pour que notre equipe puisse etudier votre profil.
+              Cette première étape nous permet d’identifier les profils les plus
+              en phase avec les exigences d’Étude Alpha : sérieux, pédagogie,
+              fiabilité et capacité à accompagner les élèves avec régularité.
             </p>
             <p className="mt-4 rounded-md border border-[#ff751f]/25 bg-[#ff751f]/8 px-4 py-3 text-sm font-medium leading-6 text-[#8a3b07]">
               Si votre candidature est retenue, un formulaire plus complet vous
-              sera ensuite demande sur votre profil.
+              sera ensuite demandé afin de préciser votre parcours, vos
+              disponibilités et vos matières d’accompagnement.
             </p>
           </div>
           <ApplicationForm />
@@ -273,15 +278,15 @@ function ApplicationForm() {
   return (
     <form onSubmit={submitApplication} className="mt-8 grid gap-5">
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Prenom" name="firstName" autoComplete="given-name" />
+        <Field label="Prénom" name="firstName" autoComplete="given-name" />
         <Field label="Nom" name="lastName" autoComplete="family-name" />
         <Field label="Adresse e-mail" name="email" type="email" autoComplete="email" />
-        <Field label="Numero de telephone" name="phone" type="tel" autoComplete="tel" />
+        <Field label="Numéro de téléphone" name="phone" type="tel" autoComplete="tel" />
         <Field label="Ville dans laquelle vous souhaitez travailler" name="city" autoComplete="address-level2" />
         <label className="grid gap-2 text-sm font-medium text-slate-700">
-          Activite actuelle
+          Activité actuelle
           <Select value={activity} onValueChange={(value) => setActivity(value || '')} required>
-            <SelectTrigger className="h-11 w-full bg-white"><SelectValue placeholder="Choisir une activite" /></SelectTrigger>
+            <SelectTrigger className="h-11 w-full bg-white"><SelectValue placeholder="Choisir une activité" /></SelectTrigger>
             <SelectContent>
               {activities.map((item) => <SelectItem key={item} value={item}>{item}</SelectItem>)}
             </SelectContent>
@@ -289,12 +294,12 @@ function ApplicationForm() {
         </label>
       </div>
       <label className="grid gap-2 text-sm font-medium text-slate-700">
-        Le plus important : Quelques mots sur votre profil
-        <Textarea name="profileNote" required className="min-h-32 bg-white" placeholder="Votre parcours, les matieres que vous aimez accompagner, votre experience avec les eleves..." />
+        Le plus important : quelques mots sur votre profil
+        <Textarea name="profileNote" required className="min-h-32 bg-white" placeholder="Présentez brièvement votre parcours, votre rapport à la pédagogie, les matières que vous pourriez accompagner et ce qui ferait de vous un tuteur fiable." />
       </label>
       <label className="flex items-start gap-3 rounded-md border border-slate-200 bg-[#f7faf9] p-4 text-sm leading-6 text-slate-650">
         <Checkbox checked={consent} onCheckedChange={(checked) => setConsent(checked === true)} required className="mt-1" />
-        <span>J’accepte que mes donnees personnelles soient utilisees par Etude Alpha pour traiter ma candidature et me recontacter.</span>
+        <span>J’accepte que mes données personnelles soient utilisées par Étude Alpha pour traiter ma candidature et me recontacter.</span>
       </label>
       {error ? <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
       <Button type="submit" disabled={isSubmitting} className="brand-button h-12 text-[0.95rem] font-semibold">
@@ -319,14 +324,15 @@ function ConfirmationPage() {
     <main className="flex min-h-screen items-center justify-center bg-[#f7faf9] px-5 py-10">
       <section className="w-full max-w-2xl rounded-lg border border-[#085578]/12 bg-white p-6 text-center shadow-[0_18px_60px_rgba(8,85,120,0.10)] sm:p-10">
         <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-[#1e7a4a]/10 text-[#1e7a4a]"><CheckCircle2 className="size-7" /></div>
-        <h1 className="mt-6 section-title text-[#073f5c]">Candidature envoyee</h1>
+        <h1 className="mt-6 section-title text-[#073f5c]">Candidature bien reçue</h1>
         <p className="mx-auto mt-4 max-w-xl body-large text-slate-600">
-          Merci pour votre interet. L’equipe Etude Alpha va etudier votre profil
-          et reviendra vers vous si votre candidature correspond aux besoins du moment.
-          Les candidats retenus recevront ensuite un formulaire plus complet.
+          Merci pour votre intérêt. L’équipe Étude Alpha examinera votre profil
+          avec attention et reviendra vers vous si votre candidature correspond
+          au niveau d’exigence attendu. Les candidats retenus recevront ensuite
+          un formulaire plus complet.
         </p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <a href="/" className="brand-button inline-flex h-11 items-center justify-center rounded-lg px-5 text-sm font-medium">Retour a l’accueil</a>
+          <a href="/" className="brand-button inline-flex h-11 items-center justify-center rounded-lg px-5 text-sm font-medium">Retour à l’accueil</a>
           {platformUrl ? <a href={platformUrl} className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-[#085578]/20 px-5 text-sm font-medium text-[#085578]">Plateforme principale <ArrowRight className="size-4" /></a> : null}
         </div>
       </section>
@@ -339,8 +345,8 @@ function AdminPage() {
     <main className="min-h-screen bg-[#f7faf9] px-4 py-5 text-foreground sm:px-8">
       <div className="mx-auto max-w-7xl">
         <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <a href="/"><img src="/logo-etude-alpha.png" alt="L'Etude Alpha" className="h-11 w-auto" /></a>
-          <a href="/postuler" className="text-sm font-semibold text-[#085578]">Lien direct formulaire</a>
+          <a href="/"><img src="/logo-etude-alpha.png" alt="L'Étude Alpha" className="h-11 w-auto" /></a>
+          <a href="/postuler" className="text-sm font-semibold text-[#085578]">Lien direct du formulaire</a>
         </header>
         <AdminPanel />
       </div>
@@ -371,7 +377,7 @@ function AdminPanel() {
       setApplications(result.applications || []);
       setSavedPassword(secret);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'Acces impossible.');
+      setError(loadError instanceof Error ? loadError.message : 'Accès impossible.');
     } finally {
       setIsLoading(false);
     }
@@ -385,7 +391,7 @@ function AdminPanel() {
       body: JSON.stringify({ id, status, adminComment }),
     });
     if (!response.ok) {
-      setError('La mise a jour a echoue.');
+      setError('La mise à jour a échoué.');
       return;
     }
     setApplications((current) => current.map((application) => application.id === id ? { ...application, status, admin_comment: adminComment } : application));
@@ -395,8 +401,8 @@ function AdminPanel() {
     return (
       <section className="mt-10 max-w-md rounded-lg border border-[#085578]/12 bg-white p-6 shadow-[0_18px_60px_rgba(8,85,120,0.10)]">
         <div className="flex size-11 items-center justify-center rounded-md bg-[#085578]/10 text-[#085578]"><Lock className="size-5" /></div>
-        <h1 className="mt-5 section-title text-[#073f5c]">Espace equipe</h1>
-        <p className="mt-2 text-sm leading-6 text-slate-600">Connectez-vous avec le mot de passe admin pour consulter et suivre les candidatures.</p>
+        <h1 className="mt-5 section-title text-[#073f5c]">Espace équipe</h1>
+        <p className="mt-2 text-sm leading-6 text-slate-600">Connectez-vous avec le mot de passe administrateur pour consulter, qualifier et suivre les candidatures.</p>
         <form className="mt-6 grid gap-4" onSubmit={(event) => { event.preventDefault(); loadApplications(password); }}>
           <Input type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Mot de passe" className="h-11 bg-white" required />
           {error ? <p className="text-sm text-red-700">{error}</p> : null}
@@ -410,8 +416,8 @@ function AdminPanel() {
     <section className="mt-8">
       <div className="flex flex-col gap-4 rounded-lg border border-[#085578]/12 bg-white p-5 shadow-[0_18px_60px_rgba(8,85,120,0.08)] sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="section-title text-[#073f5c]">Candidatures</h1>
-          <p className="mt-1 text-sm text-slate-600">{visibleApplications.length} candidature(s) affichee(s)</p>
+          <h1 className="section-title text-[#073f5c]">Suivi des candidatures</h1>
+          <p className="mt-1 text-sm text-slate-600">{visibleApplications.length} candidature(s) affichée(s)</p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Select value={filter} onValueChange={(value) => setFilter(value as Status | 'tous')}>
@@ -443,16 +449,16 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
           <Badge className="rounded-md bg-[#085578]/10 text-[#085578]">{statusLabels[application.status]}</Badge>
         </div>
         <dl className="mt-4 grid gap-3 text-sm text-slate-650 sm:grid-cols-2 lg:grid-cols-3">
-          <Info label="Ville souhaitee" value={application.city} />
-          <Info label="Activite" value={application.current_activity} />
+          <Info label="Ville souhaitée" value={application.city} />
+          <Info label="Activité" value={application.current_activity} />
           <Info label="E-mail" value={application.email} />
-          <Info label="Telephone" value={application.phone} />
+          <Info label="Téléphone" value={application.phone} />
         </dl>
         <div className="mt-5 rounded-md bg-[#f7faf9] p-4">
           <p className="text-sm font-semibold text-[#085578]">Quelques mots sur le profil</p>
           <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-650">{application.profile_note}</p>
         </div>
-        <p className="mt-4 text-xs text-slate-500">Recu le {new Date(application.created_at).toLocaleDateString('fr-FR')}</p>
+        <p className="mt-4 text-xs text-slate-500">Reçu le {new Date(application.created_at).toLocaleDateString('fr-FR')}</p>
       </div>
       <div className="grid gap-3">
         <Select value={status} onValueChange={(value) => setStatus(value as Status)}>

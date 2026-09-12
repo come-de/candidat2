@@ -73,7 +73,7 @@ export const handler: Handler = async (event) => {
       return toNetlifyResponse(json({ application: updatedApplication }));
     }
 
-    return toNetlifyResponse(json({ error: 'Methode non autorisee.' }, 405));
+    return toNetlifyResponse(json({ error: 'Méthode non autorisee.' }, 405));
   } catch (error) {
     return toNetlifyResponse(
       json({ error: error instanceof Error ? error.message : 'Erreur serveur.' }, 500),

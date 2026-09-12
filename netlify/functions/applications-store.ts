@@ -40,7 +40,7 @@ export function assertAdmin(request: Request) {
     request.headers.get('x-admin-password') || requestUrl.searchParams.get('password');
 
   if (!configuredPassword || password !== configuredPassword) {
-    return json({ error: 'Acces refuse.' }, 401);
+    return json({ error: 'Accès refuse.' }, 401);
   }
 
   return null;

@@ -9,7 +9,7 @@ const headers = [
   'email',
   'telephone',
   'ville_souhaitee',
-  'activite_actuelle',
+  'activité_actuelle',
   'profil',
   'statut',
   'commentaire',
