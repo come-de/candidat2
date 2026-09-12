@@ -75,7 +75,7 @@ export function validateApplication(input: Record<string, unknown>) {
 }
 
 export async function listApplications() {
-  const store = getStore({ name: 'applications', consistency: 'strong' });
+  const store = getStore('applications');
   const { blobs } = await store.list();
   const applications = await Promise.all(
     blobs.map((blob) => store.get(blob.key, { type: 'json' }) as Promise<Application | null>),
@@ -90,7 +90,7 @@ export async function listApplications() {
 }
 
 export async function saveApplication(application: Application) {
-  const store = getStore({ name: 'applications', consistency: 'strong' });
+  const store = getStore('applications');
   await store.setJSON(application.id, application);
 }
 

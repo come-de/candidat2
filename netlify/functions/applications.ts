@@ -1,5 +1,3 @@
-import type { Handler } from '@netlify/functions';
-
 import {
   assertAdmin,
   createApplication,
@@ -10,54 +8,48 @@ import {
   validateApplication,
 } from './applications-store';
 
-export const handler: Handler = async (event) => {
-  const request = new Request(event.rawUrl, {
-    method: event.httpMethod,
-    headers: event.headers as HeadersInit,
-    body: event.body,
-  });
-
+export default async function handler(request: Request) {
   try {
-    if (event.httpMethod === 'POST') {
-      const input = event.body ? JSON.parse(event.body) : {};
+    if (request.method === 'POST') {
+      const input = await request.json().catch(() => ({}));
       const validationError = validateApplication(input);
 
       if (validationError) {
-        return toNetlifyResponse(json({ error: validationError }, 400));
+        return json({ error: validationError }, 400);
       }
 
       const application = createApplication(input);
       await saveApplication(application);
 
-      return toNetlifyResponse(json({ application }));
+      return json({ application });
     }
 
     const adminError = assertAdmin(request);
     if (adminError) {
-      return toNetlifyResponse(adminError);
+      return adminError;
     }
 
-    if (event.httpMethod === 'GET') {
+    if (request.method === 'GET') {
       const applications = await listApplications();
-      return toNetlifyResponse(json({ applications }));
+      return json({ applications });
     }
 
-    if (event.httpMethod === 'PATCH') {
-      const input = event.body ? JSON.parse(event.body) : {};
+    if (request.method === 'PATCH') {
+      const input = await request.json().catch(() => ({}));
 
       if (typeof input.id !== 'string' || !input.id) {
-        return toNetlifyResponse(json({ error: 'Identifiant manquant.' }, 400));
+        return json({ error: 'Identifiant manquant.' }, 400);
       }
 
       if (!isApplicationStatus(input.status)) {
-        return toNetlifyResponse(json({ error: 'Statut invalide.' }, 400));
+        return json({ error: 'Statut invalide.' }, 400);
       }
 
       const applications = await listApplications();
       const application = applications.find((item) => item.id === input.id);
 
       if (!application) {
-        return toNetlifyResponse(json({ error: 'Candidature introuvable.' }, 404));
+        return json({ error: 'Candidature introuvable.' }, 404);
       }
 
       const updatedApplication = {
@@ -70,21 +62,14 @@ export const handler: Handler = async (event) => {
 
       await saveApplication(updatedApplication);
 
-      return toNetlifyResponse(json({ application: updatedApplication }));
+      return json({ application: updatedApplication });
     }
 
-    return toNetlifyResponse(json({ error: 'Méthode non autorisee.' }, 405));
+    return json({ error: 'Méthode non autorisée.' }, 405);
   } catch (error) {
-    return toNetlifyResponse(
-      json({ error: error instanceof Error ? error.message : 'Erreur serveur.' }, 500),
+    return json(
+      { error: error instanceof Error ? error.message : 'Erreur serveur.' },
+      500,
     );
   }
-};
-
-async function toNetlifyResponse(response: Response) {
-  return {
-    statusCode: response.status,
-    headers: Object.fromEntries(response.headers.entries()),
-    body: await response.text(),
-  };
 }

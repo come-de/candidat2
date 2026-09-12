@@ -1,5 +1,3 @@
-import type { Handler } from '@netlify/functions';
-
 import { assertAdmin, listApplications } from './applications-store';
 
 const headers = [
@@ -9,25 +7,16 @@ const headers = [
   'email',
   'telephone',
   'ville_souhaitee',
-  'activité_actuelle',
+  'activite_actuelle',
   'profil',
   'statut',
   'commentaire',
 ];
 
-export const handler: Handler = async (event) => {
-  const request = new Request(event.rawUrl, {
-    method: event.httpMethod,
-    headers: event.headers as HeadersInit,
-  });
-
+export default async function handler(request: Request) {
   const adminError = assertAdmin(request);
   if (adminError) {
-    return {
-      statusCode: adminError.status,
-      headers: Object.fromEntries(adminError.headers.entries()),
-      body: await adminError.text(),
-    };
+    return adminError;
   }
 
   const applications = await listApplications();
@@ -48,15 +37,13 @@ export const handler: Handler = async (event) => {
     .map((row) => row.map(formatCsvCell).join(','))
     .join('\n');
 
-  return {
-    statusCode: 200,
+  return new Response(csv, {
     headers: {
       'content-type': 'text/csv; charset=utf-8',
       'content-disposition': 'attachment; filename="candidatures-etude-alpha.csv"',
     },
-    body: csv,
-  };
-};
+  });
+}
 
 function formatCsvCell(value: unknown) {
   const text = String(value ?? '');
