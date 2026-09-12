@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   ArrowLeft,
@@ -33,7 +33,7 @@ import {
 import { Textarea } from '../components/ui/textarea';
 import './globals.css';
 
-type Status = 'nouveau' | 'a_contacter' | 'accepte' | 'refuse';
+type Status = 'nouveau' | 'a_contacter' | 'accepte' | 'refuse' | 'ecarte';
 
 type Application = {
   id: string;
@@ -46,6 +46,7 @@ type Application = {
   profile_note: string;
   status: Status;
   admin_comment: string | null;
+  platform_applied?: boolean;
   created_at: string;
 };
 
@@ -77,11 +78,12 @@ const activities = [
 ];
 
 const statuses: { value: Status | 'tous'; label: string }[] = [
-  { value: 'tous', label: 'Tous' },
+  { value: 'tous', label: 'Liste principale' },
   { value: 'nouveau', label: 'Nouveau' },
   { value: 'a_contacter', label: 'À contacter' },
   { value: 'accepte', label: 'Accepté' },
   { value: 'refuse', label: 'Refusé' },
+  { value: 'ecarte', label: 'Écartées' },
 ];
 
 const statusLabels: Record<Status, string> = {
@@ -89,7 +91,10 @@ const statusLabels: Record<Status, string> = {
   a_contacter: 'À contacter',
   accepte: 'Accepté',
   refuse: 'Refusé',
+  ecarte: 'Écartée',
 };
+
+const ADMIN_PASSWORD_STORAGE_KEY = 'etude-alpha-admin-password';
 
 const selectionSteps = [
   {
@@ -583,7 +588,7 @@ function ApplicationForm() {
       </div>
       <label className="grid gap-2 text-sm font-medium text-slate-700">
         Le plus important : quelques mots sur votre profil
-        <Textarea name="profileNote" required className="min-h-36 bg-white text-[0.98rem] leading-7" placeholder="Présentez brièvement votre parcours, votre rapport à la pédagogie, les matières que vous pourriez accompagner, votre sens du cadre et ce qui ferait de vous un intervenant fiable." />
+        <Textarea name="profileNote" required className="min-h-36 bg-white text-[0.98rem] leading-7" placeholder="Présentez brièvement votre parcours, votre rapport à la pédagogie et les matières que vous pourriez accompagner. Indiquez impérativement les études que vous avez suivies, les établissements concernés et les années ou périodes correspondantes." />
       </label>
       <label className="flex items-start gap-3 rounded-md border border-slate-200 bg-[#f7faf9] p-4 text-sm leading-6 text-slate-650">
         <Checkbox checked={consent} onCheckedChange={(checked) => setConsent(checked === true)} required className="mt-1" />
@@ -647,16 +652,27 @@ function AdminPage() {
 
 function AdminPanel() {
   const [password, setPassword] = useState('');
-  const [savedPassword, setSavedPassword] = useState('');
+  const [savedPassword, setSavedPassword] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    return window.localStorage.getItem(ADMIN_PASSWORD_STORAGE_KEY) || '';
+  });
   const [applications, setApplications] = useState<Application[]>([]);
   const [filter, setFilter] = useState<Status | 'tous'>('tous');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const visibleApplications = useMemo(
-    () => filter === 'tous' ? applications : applications.filter((application) => application.status === filter),
+    () => filter === 'tous'
+      ? applications.filter((application) => application.status !== 'ecarte')
+      : applications.filter((application) => application.status === filter),
     [applications, filter],
   );
+
+  useEffect(() => {
+    if (savedPassword) {
+      loadApplications(savedPassword);
+    }
+  }, []);
 
   async function loadApplications(secret = savedPassword || password) {
     setError('');
@@ -667,25 +683,29 @@ function AdminPanel() {
       const result = (await response.json()) as { applications?: Application[] };
       setApplications(result.applications || []);
       setSavedPassword(secret);
+      window.localStorage.setItem(ADMIN_PASSWORD_STORAGE_KEY, secret);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : 'Accès impossible.');
+      window.localStorage.removeItem(ADMIN_PASSWORD_STORAGE_KEY);
+      setSavedPassword('');
     } finally {
       setIsLoading(false);
     }
   }
 
-  async function updateApplication(id: string, status: Status, adminComment: string) {
+  async function updateApplication(id: string, status: Status, adminComment: string, platformApplied: boolean) {
     setError('');
     const response = await fetch('/.netlify/functions/applications', {
       method: 'PATCH',
       headers: { 'content-type': 'application/json', 'x-admin-password': savedPassword },
-      body: JSON.stringify({ id, status, adminComment }),
+      body: JSON.stringify({ id, status, adminComment, platformApplied }),
     });
     if (!response.ok) {
       setError('La mise à jour a échoué.');
-      return;
+      return false;
     }
-    setApplications((current) => current.map((application) => application.id === id ? { ...application, status, admin_comment: adminComment } : application));
+    setApplications((current) => current.map((application) => application.id === id ? { ...application, status, admin_comment: adminComment, platform_applied: platformApplied } : application));
+    return true;
   }
 
   if (!savedPassword) {
@@ -727,10 +747,21 @@ function AdminPanel() {
   );
 }
 
-function ApplicationRow({ application, onSave }: { application: Application; onSave: (id: string, status: Status, adminComment: string) => Promise<void> }) {
+function ApplicationRow({ application, onSave }: { application: Application; onSave: (id: string, status: Status, adminComment: string, platformApplied: boolean) => Promise<boolean> }) {
   const [status, setStatus] = useState<Status>(application.status);
   const [comment, setComment] = useState(application.admin_comment || '');
+  const [platformApplied, setPlatformApplied] = useState(application.platform_applied === true);
   const [isSaving, setIsSaving] = useState(false);
+
+  async function saveChanges(nextStatus = status, nextPlatformApplied = platformApplied) {
+    setIsSaving(true);
+    const saved = await onSave(application.id, nextStatus, comment, nextPlatformApplied);
+    if (saved) {
+      setStatus(nextStatus);
+      setPlatformApplied(nextPlatformApplied);
+    }
+    setIsSaving(false);
+  }
 
   return (
     <article className="grid gap-5 rounded-lg border border-slate-200 bg-white p-5 lg:grid-cols-[1fr_260px]">
@@ -738,6 +769,7 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
         <div className="flex flex-wrap items-center gap-3">
           <h2 className="text-xl font-semibold text-slate-950">{application.first_name} {application.last_name}</h2>
           <Badge className="rounded-md bg-[#085578]/10 text-[#085578]">{statusLabels[application.status]}</Badge>
+          {application.platform_applied ? <Badge className="rounded-md bg-[#1e7a4a]/10 text-[#1e7a4a]">Plateforme complétée</Badge> : null}
         </div>
         <dl className="mt-4 grid gap-3 text-sm text-slate-650 sm:grid-cols-2 lg:grid-cols-3">
           <Info label="Ville souhaitée" value={application.city} />
@@ -756,8 +788,17 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
           <SelectTrigger className="h-10 w-full bg-white"><SelectValue /></SelectTrigger>
           <SelectContent>{statuses.slice(1).map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
         </Select>
-        <Textarea value={comment} onChange={(event) => setComment(event.target.value)} placeholder="Commentaire interne" className="min-h-24 bg-white" />
-        <Button type="button" className="brand-button h-10" disabled={isSaving} onClick={async () => { setIsSaving(true); await onSave(application.id, status, comment); setIsSaving(false); }}>
+        <label className="grid gap-2 text-sm font-medium text-slate-700">
+          Commentaire interne
+          <Textarea value={comment} onChange={(event) => setComment(event.target.value)} placeholder="Notes, relance, avis sur le profil..." className="min-h-24 bg-white" />
+        </label>
+        <Button type="button" variant="outline" className="h-10 justify-start" disabled={isSaving || platformApplied} onClick={() => saveChanges(status, true)}>
+          <CheckCircle2 /> {platformApplied ? 'Plateforme déjà complétée' : 'A bien postulé dans la plateforme'}
+        </Button>
+        <Button type="button" variant="outline" className="h-10 justify-start border-red-200 text-red-700 hover:bg-red-50" disabled={isSaving} onClick={() => saveChanges('ecarte', platformApplied)}>
+          Écarter
+        </Button>
+        <Button type="button" className="brand-button h-10" disabled={isSaving} onClick={() => saveChanges()}>
           <Save /> {isSaving ? 'Enregistrement...' : 'Enregistrer'}
         </Button>
       </div>

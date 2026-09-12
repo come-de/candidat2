@@ -1,6 +1,6 @@
 import { getStore } from '@netlify/blobs';
 
-export type ApplicationStatus = 'nouveau' | 'a_contacter' | 'accepte' | 'refuse';
+export type ApplicationStatus = 'nouveau' | 'a_contacter' | 'accepte' | 'refuse' | 'ecarte';
 
 export type Application = {
   id: string;
@@ -14,6 +14,7 @@ export type Application = {
   consent: boolean;
   status: ApplicationStatus;
   admin_comment: string;
+  platform_applied: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -23,6 +24,7 @@ const statusValues = new Set<ApplicationStatus>([
   'a_contacter',
   'accepte',
   'refuse',
+  'ecarte',
 ]);
 
 export function isApplicationStatus(value: unknown): value is ApplicationStatus {
@@ -109,6 +111,7 @@ export function createApplication(input: Record<string, unknown>): Application {
     consent: true,
     status: 'nouveau',
     admin_comment: '',
+    platform_applied: false,
     created_at: now,
     updated_at: now,
   };

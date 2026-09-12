@@ -57,6 +57,7 @@ export default async function handler(request: Request) {
         status: input.status,
         admin_comment:
           typeof input.adminComment === 'string' ? input.adminComment.trim() : '',
+        platform_applied: input.platformApplied === true,
         updated_at: new Date().toISOString(),
       };
 

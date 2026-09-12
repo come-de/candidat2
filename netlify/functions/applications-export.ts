@@ -10,6 +10,7 @@ const headers = [
   'activite_actuelle',
   'profil',
   'statut',
+  'a_postule_plateforme',
   'commentaire',
 ];
 
@@ -30,6 +31,7 @@ export default async function handler(request: Request) {
     application.current_activity,
     application.profile_note,
     application.status,
+    application.platform_applied ? 'oui' : 'non',
     application.admin_comment,
   ]);
 
