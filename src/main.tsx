@@ -133,37 +133,25 @@ function HomePage() {
     <main className="min-h-screen bg-background text-foreground">
       <SiteHeader />
 
-      <section className="mx-auto w-full max-w-6xl px-5 pb-3 sm:px-8">
-        <div className="official-banner">
-          <span className="official-badge"><ShieldCheck className="size-4" /> Sous-domaine officiel</span>
-          <p>
-            Ce site d’Alpha Education est dédié à la présélection des candidats.
-            Les missions proposées se déroulent uniquement dans des établissements
-            scolaires, du CP à la terminale. Les profils retenus finalisent
-            ensuite leur candidature sur{' '}
-            <a href="https://www.alphaeducation.fr" className="font-semibold text-[#085578]">
-              www.alphaeducation.fr
+      <section className="mx-auto grid w-full max-w-6xl items-center gap-8 px-5 pb-8 pt-3 sm:px-8 sm:pt-7 lg:grid-cols-[0.95fr_1.05fr] lg:pb-12 lg:pt-10">
+        <div className="mobile-hero-card sm:hidden">
+          <img src="/college.png" alt="Tutrice accompagnant des élèves de collège" />
+          <div className="mobile-hero-overlay">
+            <p className="eyebrow text-white/80">Recrutement Étude Alpha</p>
+            <h1>Devenir tuteur ou surveillant Alpha</h1>
+            <p>Missions en établissements scolaires, du CP à la terminale.</p>
+            <a href="/postuler" className="brand-button mobile-full-cta inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold">
+              Postuler en 2 minutes <ArrowRight className="size-4" />
             </a>
-            .
-          </p>
+          </div>
         </div>
-        <div className="school-strip mt-4">
-          {schoolFacts.map((fact) => (
-            <div key={fact} className="school-strip-item">
-              <CheckCircle2 className="size-4 text-[#1e7a4a]" />
-              <span>{fact}</span>
-            </div>
-          ))}
-        </div>
-      </section>
 
-      <section className="mx-auto grid w-full max-w-6xl items-center gap-8 px-5 pb-12 pt-7 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:pb-14 lg:pt-10">
-        <div className="max-w-3xl">
+        <div className="hidden max-w-3xl sm:block">
           <p className="eyebrow mb-4 inline-flex rounded-full border border-[#1e7a4a]/20 bg-[#1e7a4a]/8 px-3 py-1 text-[#1e7a4a]">
             Rejoindre le réseau de tuteurs Étude Alpha
           </p>
           <h1 className="max-w-3xl hero-title text-[#073f5c]">
-            Devenir tuteur ou surveillant Étude Alpha.
+            Devenir tuteur ou surveillant Alpha.
           </h1>
           <p className="mt-6 max-w-2xl body-large text-slate-650">
             Choisissez vos missions et votre emploi du temps depuis l’application
@@ -190,7 +178,7 @@ function HomePage() {
           </div>
         </div>
 
-        <figure className="hero-media compact-hero-media">
+        <figure className="hero-media compact-hero-media hidden sm:block">
           <img src="/college.png" alt="Tutrice accompagnant des élèves de collège" className="h-56 w-full object-cover sm:h-72 lg:h-80" />
           <figcaption className="grid gap-2 p-4 text-sm text-slate-650 sm:grid-cols-3">
             <span className="inline-flex items-center gap-2"><CheckCircle2 className="size-4 text-[#1e7a4a]" /> Établissements</span>
@@ -198,6 +186,29 @@ function HomePage() {
             <span className="inline-flex items-center gap-2"><UserCheck className="size-4 text-[#ff751f]" /> Référent sur place</span>
           </figcaption>
         </figure>
+      </section>
+
+      <section className="mx-auto w-full max-w-6xl px-5 pb-6 sm:px-8">
+        <div className="official-banner">
+          <span className="official-badge"><ShieldCheck className="size-4" /> Sous-domaine officiel</span>
+          <p>
+            Ce site d’Alpha Education est dédié à la présélection des candidats.
+            Les missions ont lieu uniquement dans des établissements scolaires.
+            Les profils retenus finalisent ensuite leur candidature sur{' '}
+            <a href="https://www.alphaeducation.fr" className="font-semibold text-[#085578]">
+              www.alphaeducation.fr
+            </a>
+            .
+          </p>
+        </div>
+        <div className="school-strip mt-3">
+          {schoolFacts.map((fact) => (
+            <div key={fact} className="school-strip-item">
+              <CheckCircle2 className="size-4 text-[#1e7a4a]" />
+              <span>{fact}</span>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="bg-[#f7faf9]">
