@@ -143,35 +143,35 @@ body {
 }
 
 .eyebrow {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 750;
   letter-spacing: 0;
   text-transform: uppercase;
 }
 
 .hero-title {
-  font-size: clamp(2.35rem, 5vw, 4.25rem);
+  font-size: clamp(2.25rem, 4.6vw, 3.8rem);
   font-weight: 760;
   letter-spacing: 0;
-  line-height: 1.02;
+  line-height: 1.04;
 }
 
 .section-title {
-  font-size: clamp(1.65rem, 3vw, 2.35rem);
+  font-size: clamp(1.55rem, 2.6vw, 2.15rem);
   font-weight: 740;
   letter-spacing: 0;
-  line-height: 1.12;
+  line-height: 1.14;
 }
 
 .panel-title {
-  font-size: clamp(1.35rem, 2vw, 1.9rem);
+  font-size: clamp(1.2rem, 1.7vw, 1.55rem);
   font-weight: 720;
   letter-spacing: 0;
-  line-height: 1.18;
+  line-height: 1.2;
 }
 
 .body-large {
-  font-size: 1.03rem;
+  font-size: 1rem;
   line-height: 1.72;
 }
 
@@ -187,4 +187,93 @@ body {
 
 .text-slate-650 {
   color: #536879;
+}
+
+.official-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  border: 1px solid rgb(8 85 120 / 14%);
+  border-radius: 0.5rem;
+  background: rgb(255 255 255 / 88%);
+  padding: 0.85rem 1rem;
+  color: #536879;
+  box-shadow: 0 14px 44px rgb(8 85 120 / 8%);
+}
+
+.official-banner p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.official-badge {
+  display: inline-flex;
+  min-width: max-content;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  background: #eaf4ef;
+  padding: 0.45rem 0.7rem;
+  color: #1e7a4a;
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.hero-media {
+  overflow: hidden;
+  border: 1px solid rgb(8 85 120 / 12%);
+  border-radius: 0.5rem;
+  background: #f7faf9;
+  box-shadow: 0 28px 90px rgb(8 85 120 / 14%);
+}
+
+.step-card {
+  display: flex;
+  gap: 1rem;
+  border: 1px solid rgb(8 85 120 / 12%);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  padding: 1rem;
+  box-shadow: 0 14px 42px rgb(8 85 120 / 6%);
+}
+
+.step-number {
+  display: flex;
+  width: 2.1rem;
+  height: 2.1rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background: #085578;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.quality-card {
+  display: flex;
+  min-height: 4.25rem;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid rgb(30 122 74 / 16%);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  padding: 1rem;
+  color: #073f5c;
+  font-size: 0.98rem;
+  font-weight: 650;
+  box-shadow: 0 12px 36px rgb(30 122 74 / 7%);
+}
+
+@media (max-width: 640px) {
+  .official-banner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .official-badge {
+    min-width: 0;
+  }
 }
