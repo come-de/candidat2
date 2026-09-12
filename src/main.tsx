@@ -102,6 +102,23 @@ function HomePage() {
     <main className="min-h-screen bg-background text-foreground">
       <SiteHeader />
 
+      <section className="mx-auto w-full max-w-6xl px-5 pb-2 sm:px-8">
+        <div className="rounded-lg border border-[#085578]/15 bg-white px-5 py-4 text-sm leading-6 text-slate-650 shadow-[0_12px_36px_rgba(8,85,120,0.08)]">
+          <strong className="font-semibold text-[#073f5c]">
+            Vous êtes sur le sous-domaine officiel d’Alpha Education dédié à la
+            présélection des candidats.
+          </strong>{' '}
+          Si votre profil est retenu, vous serez invité à finaliser votre
+          candidature sur le site{' '}
+          <a href="https://www.alphaeducation.fr" className="font-semibold text-[#085578]">
+            www.alphaeducation.fr
+          </a>
+          , où vous trouverez une présentation de l’Étude Alpha en ligne et les
+          informations liées à l’entretien. L’ensemble du parcours peut se faire
+          en moins de 24h, et vous recevrez probablement un appel de nos services.
+        </div>
+      </section>
+
       <section className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 pb-16 pt-6 sm:px-8 lg:grid-cols-[1.08fr_0.92fr] lg:pb-24 lg:pt-14">
         <div className="max-w-3xl">
           <p className="eyebrow mb-4 inline-flex rounded-full border border-[#1e7a4a]/20 bg-[#1e7a4a]/8 px-3 py-1 text-[#1e7a4a]">
@@ -130,8 +147,8 @@ function HomePage() {
           </div>
           <div className="mt-8 grid max-w-2xl gap-3 text-sm text-slate-600 sm:grid-cols-3">
             <span className="inline-flex items-center gap-2"><CheckCircle2 className="size-4 text-[#1e7a4a]" /> Présélection ciblée</span>
-            <span className="inline-flex items-center gap-2"><Clock3 className="size-4 text-[#ff751f]" /> Étude attentive</span>
-            <span className="inline-flex items-center gap-2"><ShieldCheck className="size-4 text-[#085578]" /> Données protégées</span>
+            <span className="inline-flex items-center gap-2"><Clock3 className="size-4 text-[#ff751f]" /> Parcours possible en 24h</span>
+            <span className="inline-flex items-center gap-2"><ShieldCheck className="size-4 text-[#085578]" /> 1500 tuteurs</span>
           </div>
         </div>
 
@@ -183,6 +200,22 @@ function HomePage() {
               de votre profil. Les candidats retenus accéderont ensuite à un
               dossier plus complet.
             </p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              <div className="rounded-md border border-slate-200 bg-[#f7faf9] p-5">
+                <p className="panel-title text-[#073f5c]">1500</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  tuteurs travaillent déjà avec nous dans un cadre structuré et
+                  exigeant.
+                </p>
+              </div>
+              <div className="rounded-md border border-slate-200 bg-[#f7faf9] p-5">
+                <p className="panel-title text-[#073f5c]">60</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  villes en France sont couvertes par notre réseau
+                  d’accompagnement.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -222,7 +255,8 @@ function ApplyPage() {
             <p className="mt-4 rounded-md border border-[#ff751f]/25 bg-[#ff751f]/8 px-4 py-3 text-sm font-medium leading-6 text-[#8a3b07]">
               Si votre candidature est retenue, un formulaire plus complet vous
               sera ensuite demandé afin de préciser votre parcours, vos
-              disponibilités et vos matières d’accompagnement.
+              disponibilités et vos matières d’accompagnement. Vous serez
+              probablement contacté par téléphone par nos services.
             </p>
           </div>
           <ApplicationForm />
@@ -329,7 +363,10 @@ function ConfirmationPage() {
           Merci pour votre intérêt. L’équipe Étude Alpha examinera votre profil
           avec attention et reviendra vers vous si votre candidature correspond
           au niveau d’exigence attendu. Les candidats retenus recevront ensuite
-          un formulaire plus complet.
+          un formulaire plus complet sur le site d’Alpha Education, puis seront
+          orientés vers une présentation de l’Étude Alpha en ligne et un
+          entretien. Cette suite peut se dérouler en moins de 24h, avec un appel
+          probable de nos services.
         </p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <a href="/" className="brand-button inline-flex h-11 items-center justify-center rounded-lg px-5 text-sm font-medium">Retour à l’accueil</a>
