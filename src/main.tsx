@@ -760,7 +760,7 @@ function AdminPanel() {
         </div>
       </div>
       {error ? <p className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p> : null}
-      <div className="mt-5 grid gap-4">
+      <div className="mt-4 grid gap-2">
         {visibleApplications.map((application) => <ApplicationRow key={application.id} application={application} onSave={updateApplication} />)}
       </div>
     </section>
@@ -772,6 +772,7 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
   const [comment, setComment] = useState(application.admin_comment || '');
   const [platformApplied, setPlatformApplied] = useState(application.platform_applied === true);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showAdminFields, setShowAdminFields] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   async function saveChanges(nextStatus = status, nextPlatformApplied = platformApplied) {
@@ -790,68 +791,81 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
     await saveChanges('ecarte', platformApplied);
   }
 
-  const hasLongProfile = application.profile_note.length > 260;
+  const hasLongProfile = application.profile_note.length > 180;
   const profileText = isExpanded || !hasLongProfile
     ? application.profile_note
-    : `${application.profile_note.slice(0, 260).trim()}...`;
+    : `${application.profile_note.slice(0, 180).trim()}...`;
 
   return (
-    <article className="grid gap-4 rounded-lg border border-slate-200 bg-white p-4 lg:grid-cols-[1fr_240px]">
-      <div>
-        <div className="flex flex-wrap items-center gap-3">
-          <h2 className="text-lg font-semibold text-slate-950">{application.first_name} {application.last_name}</h2>
-          <Badge className="rounded-md bg-[#085578]/10 text-[#085578]">{statusLabels[application.status]}</Badge>
-          {application.platform_applied ? <Badge className="rounded-md bg-[#1e7a4a]/10 text-[#1e7a4a]">Plateforme complétée</Badge> : null}
+    <article className="rounded-lg border border-slate-200 bg-white p-3 shadow-[0_6px_18px_rgba(8,85,120,0.04)]">
+      <div className="grid gap-3 lg:grid-cols-[1fr_auto] lg:items-start">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="text-base font-semibold text-slate-950">{application.first_name} {application.last_name}</h2>
+            <Badge className="rounded-md bg-[#085578]/10 text-[#085578]">{statusLabels[application.status]}</Badge>
+          {platformApplied ? <Badge className="rounded-md bg-[#1e7a4a]/10 text-[#1e7a4a]">Candidature plateforme finalisée</Badge> : null}
+          </div>
+          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-650">
+            <span><strong className="text-slate-700">Ville :</strong> {application.city}</span>
+            <span><strong className="text-slate-700">Activité :</strong> {application.current_activity}</span>
+            <span><strong className="text-slate-700">Origine :</strong> {application.referral_source || 'Non renseigné'}</span>
+            <a className="font-medium text-[#085578]" href={`mailto:${application.email}`}>{application.email}</a>
+            <a className="font-medium text-[#085578]" href={`tel:${application.phone}`}>{application.phone}</a>
+          </div>
+          <p className="mt-2 text-xs text-slate-500">Reçu le {new Date(application.created_at).toLocaleDateString('fr-FR')}</p>
         </div>
-        <dl className="mt-3 grid gap-2 text-sm text-slate-650 sm:grid-cols-2 lg:grid-cols-4">
-          <Info label="Ville souhaitée" value={application.city} />
-          <Info label="Activité" value={application.current_activity} />
-          <Info label="Origine" value={application.referral_source || 'Non renseigné'} />
-          <Info label="E-mail" value={application.email} />
-          <Info label="Téléphone" value={application.phone} />
-        </dl>
-        <div className="mt-4 rounded-md bg-[#f7faf9] p-3">
-          <p className="text-sm font-semibold text-[#085578]">Quelques mots sur le profil</p>
-          <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-650">{profileText}</p>
-          {hasLongProfile ? (
-            <button type="button" onClick={() => setIsExpanded((current) => !current)} className="mt-2 text-sm font-semibold text-[#085578]">
-              {isExpanded ? 'Voir moins' : 'Voir plus'}
-            </button>
-          ) : null}
+
+        <div className="flex flex-wrap gap-2 lg:justify-end">
+          <Button type="button" variant="outline" className="h-8 px-3 text-xs" onClick={() => setShowAdminFields((current) => !current)}>
+            {showAdminFields ? 'Masquer les détails' : 'Voir détails'}
+          </Button>
+          {application.status === 'ecarte' ? (
+            <Button type="button" variant="outline" className="h-8 border-[#1e7a4a]/25 px-3 text-xs text-[#1e7a4a] hover:bg-[#eaf4ef]" disabled={isSaving} onClick={() => saveChanges('nouveau', platformApplied)}>
+              Remettre dans la liste principale
+            </Button>
+          ) : (
+            <Button type="button" variant="outline" className="h-8 border-red-200 px-3 text-xs text-red-700 hover:bg-red-50" disabled={isSaving} onClick={discardApplication}>
+              Écarter : retirer de la liste principale
+            </Button>
+          )}
+          <Button type="button" variant="outline" className="h-8 px-3 text-xs" disabled={isSaving || platformApplied} onClick={() => saveChanges(status, true)}>
+            <CheckCircle2 /> {platformApplied ? 'Candidature plateforme déjà finalisée' : 'Marquer : candidature plateforme finalisée'}
+          </Button>
         </div>
-        <p className="mt-3 text-xs text-slate-500">Reçu le {new Date(application.created_at).toLocaleDateString('fr-FR')}</p>
       </div>
-      <div className="grid gap-3">
-        {application.status === 'ecarte' ? (
-          <p className="rounded-md bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
-            Candidature écartée
-          </p>
-        ) : (
-          <Select value={status} onValueChange={(value) => setStatus(value as Status)}>
-            <SelectTrigger className="h-10 w-full bg-white"><SelectValue /></SelectTrigger>
-            <SelectContent>{editableStatuses.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
-          </Select>
-        )}
-        <label className="grid gap-2 text-sm font-medium text-slate-700">
-          Commentaire interne
-          <Textarea value={comment} onChange={(event) => setComment(event.target.value)} placeholder="Notes, relance, avis sur le profil..." className="min-h-24 bg-white" />
-        </label>
-        <Button type="button" variant="outline" className="h-10 justify-start" disabled={isSaving || platformApplied} onClick={() => saveChanges(status, true)}>
-          <CheckCircle2 /> {platformApplied ? 'Plateforme déjà complétée' : 'A bien postulé dans la plateforme'}
-        </Button>
-        {application.status === 'ecarte' ? (
-          <Button type="button" variant="outline" className="h-10 justify-start border-[#1e7a4a]/25 text-[#1e7a4a] hover:bg-[#eaf4ef]" disabled={isSaving} onClick={() => saveChanges('nouveau', platformApplied)}>
-            Remettre dans la liste principale
-          </Button>
-        ) : (
-          <Button type="button" variant="outline" className="h-10 justify-start border-red-200 text-red-700 hover:bg-red-50" disabled={isSaving} onClick={discardApplication}>
-            Écarter
-          </Button>
-        )}
-        <Button type="button" className="brand-button h-10" disabled={isSaving} onClick={() => saveChanges()}>
-          <Save /> {isSaving ? 'Enregistrement...' : 'Enregistrer'}
-        </Button>
-      </div>
+
+      {showAdminFields ? (
+        <div className="mt-3 grid gap-3 border-t border-slate-200 pt-3 lg:grid-cols-[1fr_240px]">
+          <div className="rounded-md bg-[#f7faf9] p-3">
+            <p className="text-sm font-semibold text-[#085578]">Quelques mots sur le profil</p>
+            <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-650">{profileText}</p>
+            {hasLongProfile ? (
+              <button type="button" onClick={() => setIsExpanded((current) => !current)} className="mt-2 text-sm font-semibold text-[#085578]">
+                {isExpanded ? 'Voir moins' : 'Voir plus'}
+              </button>
+            ) : null}
+          </div>
+          <div className="grid gap-2">
+            {application.status === 'ecarte' ? (
+              <p className="rounded-md bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
+                Candidature masquée de la liste principale
+              </p>
+            ) : (
+              <Select value={status} onValueChange={(value) => setStatus(value as Status)}>
+                <SelectTrigger className="h-9 w-full bg-white"><SelectValue /></SelectTrigger>
+                <SelectContent>{editableStatuses.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
+              </Select>
+            )}
+            <label className="grid gap-2 text-sm font-medium text-slate-700">
+              Commentaire interne
+              <Textarea value={comment} onChange={(event) => setComment(event.target.value)} placeholder="Notes, relance, avis sur le profil..." className="min-h-20 bg-white" />
+            </label>
+            <Button type="button" className="brand-button h-9" disabled={isSaving} onClick={() => saveChanges()}>
+              <Save /> {isSaving ? 'Enregistrement...' : 'Enregistrer'}
+            </Button>
+          </div>
+        </div>
+      ) : null}
     </article>
   );
 }
