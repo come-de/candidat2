@@ -51,18 +51,18 @@ type Application = {
 const strengths = [
   {
     icon: BookOpenCheck,
-    title: 'Aider concrètement',
-    text: 'Guider les élèves avec précision dans leurs devoirs, leur méthode et leur autonomie.',
+    title: 'Du CP à la terminale',
+    text: 'Intervenir auprès d’élèves de niveaux variés, toujours avec une exigence adaptée.',
   },
   {
     icon: HeartHandshake,
-    title: 'Tenir un cadre exigeant',
-    text: 'Installer une présence fiable, ponctuelle et structurante auprès des familles.',
+    title: 'Un cadre scolaire',
+    text: 'Toutes les missions ont lieu dans des établissements scolaires partenaires.',
   },
   {
     icon: GraduationCap,
-    title: 'Faire progresser',
-    text: 'Identifier les priorités, suivre les efforts et faire avancer chaque élève avec régularité.',
+    title: 'Une équipe sur place',
+    text: 'Dans l’école, une personne est présente pour aider, orienter et guider les intervenants.',
   },
 ];
 
@@ -131,7 +131,9 @@ function HomePage() {
           <span className="official-badge"><ShieldCheck className="size-4" /> Sous-domaine officiel</span>
           <p>
             Ce site d’Alpha Education est dédié à la présélection des candidats.
-            Les profils retenus finalisent ensuite leur candidature sur{' '}
+            Les missions proposées se déroulent uniquement dans des établissements
+            scolaires, du CP à la terminale. Les profils retenus finalisent
+            ensuite leur candidature sur{' '}
             <a href="https://www.alphaeducation.fr" className="font-semibold text-[#085578]">
               www.alphaeducation.fr
             </a>
@@ -151,7 +153,8 @@ function HomePage() {
           <p className="mt-6 max-w-2xl body-large text-slate-650">
             Nous sélectionnons des profils fiables, pédagogues et exigeants pour
             accompagner les élèves dans leurs devoirs, les aider à progresser et
-            assurer un cadre d’étude sérieux.
+            assurer un cadre d’étude sérieux, toujours au sein d’établissements
+            scolaires partenaires.
           </p>
           <p className="mt-5 max-w-2xl rounded-md border border-[#ff751f]/25 bg-[#fff7f0] px-4 py-3 text-sm font-semibold leading-6 text-[#8a3b07]">
             Cette étape est volontairement courte : aucun CV n’est demandé. Si
@@ -168,8 +171,8 @@ function HomePage() {
           </div>
           <div className="mt-8 grid max-w-2xl gap-3 text-sm text-slate-600 sm:grid-cols-3">
             <span className="inline-flex items-center gap-2"><CheckCircle2 className="size-4 text-[#1e7a4a]" /> Présélection rapide</span>
-            <span className="inline-flex items-center gap-2"><Clock3 className="size-4 text-[#ff751f]" /> Parcours possible en 24h</span>
-            <span className="inline-flex items-center gap-2"><ShieldCheck className="size-4 text-[#085578]" /> 1500 tuteurs</span>
+            <span className="inline-flex items-center gap-2"><Clock3 className="size-4 text-[#ff751f]" /> Du CP à la terminale</span>
+            <span className="inline-flex items-center gap-2"><ShieldCheck className="size-4 text-[#085578]" /> En établissement</span>
           </div>
         </div>
 
@@ -237,13 +240,14 @@ function HomePage() {
               Les tuteurs Étude Alpha accompagnent les élèves dans la
               compréhension des consignes, l’organisation du travail, la
               consolidation des apprentissages et la mise en place de bonnes
-              habitudes. La mission exige de la clarté, de la patience et une
-              réelle qualité de suivi.
+              habitudes. Les missions se déroulent du CP à la terminale,
+              exclusivement dans des établissements scolaires. La mission exige
+              de la clarté, de la patience et une réelle qualité de suivi.
             </p>
             <p className="mt-5 rounded-md bg-[#eaf4ef] px-4 py-3 text-sm font-medium leading-6 text-[#1e7a4a]">
-              Cette première étape nous permet d’évaluer l’adéquation générale
-              de votre profil. Les candidats retenus accéderont ensuite à un
-              dossier plus complet.
+              Dans chaque établissement, une personne est présente pour aider,
+              orienter et guider les intervenants. Vous n’êtes pas livré à
+              vous-même : le cadre est organisé, identifié et suivi.
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               <div className="rounded-md border border-[#085578]/15 bg-white p-5 shadow-[0_14px_42px_rgba(8,85,120,0.06)]">
@@ -304,6 +308,37 @@ function HomePage() {
         </div>
       </section>
 
+      <section className="bg-white">
+        <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+          <div>
+            <p className="eyebrow text-[#ff751f]">Réseau national</p>
+            <h2 className="mt-3 section-title text-[#073f5c]">Des missions encadrées dans une soixantaine de villes.</h2>
+            <p className="mt-5 body-large text-slate-650">
+              Étude Alpha travaille avec un réseau d’établissements scolaires en
+              France. Les missions, qu’il s’agisse de tutorat ou de surveillance,
+              ont lieu dans ce cadre identifié, avec une organisation locale et
+              une personne présente dans l’école pour accompagner les intervenants.
+            </p>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-md border border-[#085578]/12 bg-[#f7faf9] p-4">
+                <p className="text-[1.35rem] font-bold text-[#073f5c]">1500 tuteurs</p>
+                <p className="mt-1 text-sm leading-6 text-slate-650">déjà engagés auprès des élèves.</p>
+              </div>
+              <div className="rounded-md border border-[#1e7a4a]/16 bg-[#eaf4ef] p-4">
+                <p className="text-[1.35rem] font-bold text-[#123f2b]">CP à terminale</p>
+                <p className="mt-1 text-sm leading-6 text-[#1e7a4a]">dans des établissements scolaires uniquement.</p>
+              </div>
+            </div>
+          </div>
+          <figure className="map-card">
+            <img src="/carte-reseau-alpha.png" alt="Carte du réseau Étude Alpha en France" className="h-full w-full object-cover" />
+            <figcaption>
+              Implantations et missions Étude Alpha sur le territoire français.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
       <section className="bg-[#f7faf9]">
         <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <div>
@@ -312,7 +347,8 @@ function HomePage() {
             <p className="mt-5 body-large text-slate-650">
               Nous ne cherchons pas seulement des connaissances scolaires. Nous
               recherchons des personnes capables d’être présentes, fiables et
-              attentives, avec une vraie tenue dans la relation aux élèves.
+              attentives, avec une vraie tenue dans la relation aux élèves, du
+              CP à la terminale.
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -357,7 +393,7 @@ function ApplyPage() {
               Cette première étape nous permet d’identifier les profils les
               plus en phase avec les exigences d’Étude Alpha : sérieux,
               pédagogie, fiabilité et capacité à accompagner ou surveiller les
-              élèves avec régularité.
+              élèves avec régularité, dans un établissement scolaire.
             </p>
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               <p className="rounded-md border border-[#1e7a4a]/20 bg-[#eaf4ef] px-4 py-3 text-sm font-semibold leading-6 text-[#1e7a4a]">

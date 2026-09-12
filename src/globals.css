@@ -267,6 +267,28 @@ body {
   box-shadow: 0 12px 36px rgb(30 122 74 / 7%);
 }
 
+.map-card {
+  overflow: hidden;
+  border: 1px solid rgb(8 85 120 / 12%);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  box-shadow: 0 24px 76px rgb(8 85 120 / 12%);
+}
+
+.map-card img {
+  display: block;
+  aspect-ratio: 1.22;
+  min-height: 18rem;
+}
+
+.map-card figcaption {
+  border-top: 1px solid rgb(8 85 120 / 10%);
+  padding: 0.85rem 1rem;
+  color: #536879;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
 @media (max-width: 640px) {
   .official-banner {
     align-items: flex-start;
