@@ -1,7 +1,7 @@
 import { assertAdmin, listApplications } from './applications-store';
 
 const headers = [
-  'date',
+  'date_heure',
   'prenom',
   'nom',
   'email',
@@ -11,6 +11,7 @@ const headers = [
   'comment_nous_a_connu',
   'profil',
   'statut',
+  'attribue_a',
   'a_postule_plateforme',
   'commentaire',
 ];
@@ -33,6 +34,7 @@ export default async function handler(request: Request) {
     application.referral_source,
     application.profile_note,
     application.status,
+    application.assigned_to || 'non_attribue',
     application.platform_applied ? 'oui' : 'non',
     application.admin_comment,
   ]);

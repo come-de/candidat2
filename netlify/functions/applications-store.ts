@@ -1,6 +1,7 @@
 import { getStore } from '@netlify/blobs';
 
-export type ApplicationStatus = 'nouveau' | 'a_contacter' | 'accepte' | 'refuse' | 'ecarte';
+export type ApplicationStatus = 'nouveau' | 'en_cours' | 'a_contacter' | 'accepte' | 'refuse' | 'ecarte';
+export type ApplicationAssignee = 'non_attribue' | 'Pierre' | 'Kelly' | 'Julie';
 
 export type Application = {
   id: string;
@@ -16,20 +17,33 @@ export type Application = {
   status: ApplicationStatus;
   admin_comment: string;
   platform_applied: boolean;
+  assigned_to: ApplicationAssignee;
   created_at: string;
   updated_at: string;
 };
 
 const statusValues = new Set<ApplicationStatus>([
   'nouveau',
+  'en_cours',
   'a_contacter',
   'accepte',
   'refuse',
   'ecarte',
 ]);
 
+const assigneeValues = new Set<ApplicationAssignee>([
+  'non_attribue',
+  'Pierre',
+  'Kelly',
+  'Julie',
+]);
+
 export function isApplicationStatus(value: unknown): value is ApplicationStatus {
   return typeof value === 'string' && statusValues.has(value as ApplicationStatus);
+}
+
+export function isApplicationAssignee(value: unknown): value is ApplicationAssignee {
+  return typeof value === 'string' && assigneeValues.has(value as ApplicationAssignee);
 }
 
 export function json(body: unknown, status = 200) {
@@ -115,6 +129,7 @@ export function createApplication(input: Record<string, unknown>): Application {
     status: 'nouveau',
     admin_comment: '',
     platform_applied: false,
+    assigned_to: 'non_attribue',
     created_at: now,
     updated_at: now,
   };

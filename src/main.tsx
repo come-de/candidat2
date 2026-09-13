@@ -33,7 +33,8 @@ import {
 import { Textarea } from '../components/ui/textarea';
 import './globals.css';
 
-type Status = 'nouveau' | 'a_contacter' | 'accepte' | 'refuse' | 'ecarte';
+type Status = 'nouveau' | 'en_cours' | 'a_contacter' | 'accepte' | 'refuse' | 'ecarte';
+type Assignee = 'non_attribue' | 'Pierre' | 'Kelly' | 'Julie';
 
 type Application = {
   id: string;
@@ -48,6 +49,7 @@ type Application = {
   status: Status;
   admin_comment: string | null;
   platform_applied?: boolean;
+  assigned_to?: Assignee;
   created_at: string;
 };
 
@@ -81,6 +83,7 @@ const activities = [
 const statuses: { value: Status | 'tous'; label: string }[] = [
   { value: 'tous', label: 'Liste principale' },
   { value: 'nouveau', label: 'Nouveau' },
+  { value: 'en_cours', label: 'En cours de traitement' },
   { value: 'a_contacter', label: 'À contacter' },
   { value: 'accepte', label: 'Accepté' },
   { value: 'refuse', label: 'Refusé' },
@@ -89,6 +92,7 @@ const statuses: { value: Status | 'tous'; label: string }[] = [
 
 const statusLabels: Record<Status, string> = {
   nouveau: 'Nouveau',
+  en_cours: 'En cours de traitement',
   a_contacter: 'À contacter',
   accepte: 'Accepté',
   refuse: 'Refusé',
@@ -96,6 +100,13 @@ const statusLabels: Record<Status, string> = {
 };
 
 const editableStatuses = statuses.filter((status) => status.value !== 'tous' && status.value !== 'ecarte') as { value: Status; label: string }[];
+const assignees: { value: Assignee | 'tous'; label: string }[] = [
+  { value: 'tous', label: 'Tout le monde' },
+  { value: 'non_attribue', label: 'Non attribuées' },
+  { value: 'Pierre', label: 'Pierre' },
+  { value: 'Kelly', label: 'Kelly' },
+  { value: 'Julie', label: 'Julie' },
+];
 
 const ADMIN_PASSWORD_STORAGE_KEY = 'etude-alpha-admin-password';
 
@@ -580,7 +591,7 @@ function ApplicationForm() {
         <Field label="Adresse e-mail" name="email" type="email" autoComplete="email" />
         <Field label="Numéro de téléphone" name="phone" type="tel" autoComplete="tel" />
         <Field label="Ville dans laquelle vous souhaitez travailler" name="city" autoComplete="address-level2" />
-        <Field label="Comment nous avez-vous connu ?" name="referralSource" placeholder="Ami, école, affiche, réseau social..." />
+        <Field label="Comment nous avez-vous connu ?" name="referralSource" placeholder="Ami, école, affiche, réseau social : précisez lequel..." />
         <label className="grid gap-2 text-sm font-medium text-slate-700">
           Activité actuelle
           <Select value={activity} onValueChange={(value) => setActivity(value || '')} required>
@@ -647,12 +658,31 @@ function AdminPage() {
       <div className="mx-auto max-w-7xl">
         <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <a href="/"><img src="/logo-etude-alpha.png" alt="L'Étude Alpha" className="h-11 w-auto" /></a>
-          <a href="/postuler" className="text-sm font-semibold text-[#085578]">Lien direct du formulaire</a>
+          <nav className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <a href="https://orga-victoire.netlify.app" target="_blank" rel="noreferrer" className="inline-flex h-10 items-center justify-center rounded-lg border border-[#085578]/20 bg-white px-4 text-sm font-semibold text-[#085578]">
+              Espace gestion Alpha (même mot de passe)
+            </a>
+            <a href="/postuler" className="text-sm font-semibold text-[#085578]">Lien direct du formulaire</a>
+          </nav>
         </header>
         <AdminPanel />
       </div>
     </main>
   );
+}
+
+function countApplicationsForDay(applications: Application[], offsetDays: number) {
+  const target = new Date();
+  target.setDate(target.getDate() + offsetDays);
+
+  return applications.filter((application) => {
+    const createdAt = new Date(application.created_at);
+    return (
+      createdAt.getFullYear() === target.getFullYear() &&
+      createdAt.getMonth() === target.getMonth() &&
+      createdAt.getDate() === target.getDate()
+    );
+  }).length;
 }
 
 function AdminPanel() {
@@ -663,18 +693,23 @@ function AdminPanel() {
   });
   const [applications, setApplications] = useState<Application[]>([]);
   const [filter, setFilter] = useState<Status | 'tous'>('tous');
+  const [assigneeFilter, setAssigneeFilter] = useState<Assignee | 'tous'>('tous');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const visibleApplications = useMemo(
-    () => filter === 'tous'
+  const visibleApplications = useMemo(() => {
+    const byStatus = filter === 'tous'
       ? applications.filter((application) => application.status !== 'ecarte')
-      : applications.filter((application) => application.status === filter),
-    [applications, filter],
-  );
+      : applications.filter((application) => application.status === filter);
+
+    if (assigneeFilter === 'tous') return byStatus;
+    return byStatus.filter((application) => (application.assigned_to || 'non_attribue') === assigneeFilter);
+  }, [applications, filter, assigneeFilter]);
 
   const mainApplicationsCount = applications.filter((application) => application.status !== 'ecarte').length;
   const discardedApplicationsCount = applications.filter((application) => application.status === 'ecarte').length;
+  const todayApplicationsCount = countApplicationsForDay(applications, 0);
+  const yesterdayApplicationsCount = countApplicationsForDay(applications, -1);
 
   useEffect(() => {
     if (savedPassword) {
@@ -701,18 +736,18 @@ function AdminPanel() {
     }
   }
 
-  async function updateApplication(id: string, status: Status, adminComment: string, platformApplied: boolean) {
+  async function updateApplication(id: string, status: Status, adminComment: string, platformApplied: boolean, assignedTo: Assignee) {
     setError('');
     const response = await fetch('/.netlify/functions/applications', {
       method: 'PATCH',
       headers: { 'content-type': 'application/json', 'x-admin-password': savedPassword },
-      body: JSON.stringify({ id, status, adminComment, platformApplied }),
+      body: JSON.stringify({ id, status, adminComment, platformApplied, assignedTo }),
     });
     if (!response.ok) {
       setError('La mise à jour a échoué.');
       return false;
     }
-    setApplications((current) => current.map((application) => application.id === id ? { ...application, status, admin_comment: adminComment, platform_applied: platformApplied } : application));
+    setApplications((current) => current.map((application) => application.id === id ? { ...application, status, admin_comment: adminComment, platform_applied: platformApplied, assigned_to: assignedTo } : application));
     return true;
   }
 
@@ -739,8 +774,24 @@ function AdminPanel() {
           <p className="mt-1 text-sm text-slate-600">
             {visibleApplications.length} candidature(s) affichée(s)
           </p>
+          <p className="mt-2 rounded-md bg-[#eaf4ef] px-3 py-2 text-sm font-semibold leading-6 text-[#1e7a4a]">
+            Vous avez eu {yesterdayApplicationsCount} candidat(s) hier, et vous en avez {todayApplicationsCount} aujourd’hui.
+          </p>
         </div>
         <div className="grid gap-2 sm:flex-row">
+          <div className="flex flex-wrap gap-2">
+            {assignees.map((assignee) => (
+              <Button
+                key={assignee.value}
+                type="button"
+                variant={assigneeFilter === assignee.value ? 'default' : 'outline'}
+                onClick={() => setAssigneeFilter(assignee.value)}
+                className={assigneeFilter === assignee.value ? 'brand-button h-8 px-3 text-xs' : 'h-8 px-3 text-xs'}
+              >
+                {assignee.label}
+              </Button>
+            ))}
+          </div>
           <div className="grid grid-cols-2 gap-2">
             <Button type="button" variant={filter === 'tous' ? 'default' : 'outline'} onClick={() => setFilter('tous')} className={filter === 'tous' ? 'brand-button h-10' : 'h-10'}>
               Liste principale ({mainApplicationsCount})
@@ -760,27 +811,29 @@ function AdminPanel() {
         </div>
       </div>
       {error ? <p className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p> : null}
-      <div className="mt-4 grid gap-2">
+      <div className="mt-4 grid gap-2 xl:grid-cols-2">
         {visibleApplications.map((application) => <ApplicationRow key={application.id} application={application} onSave={updateApplication} />)}
       </div>
     </section>
   );
 }
 
-function ApplicationRow({ application, onSave }: { application: Application; onSave: (id: string, status: Status, adminComment: string, platformApplied: boolean) => Promise<boolean> }) {
+function ApplicationRow({ application, onSave }: { application: Application; onSave: (id: string, status: Status, adminComment: string, platformApplied: boolean, assignedTo: Assignee) => Promise<boolean> }) {
   const [status, setStatus] = useState<Status>(application.status);
   const [comment, setComment] = useState(application.admin_comment || '');
   const [platformApplied, setPlatformApplied] = useState(application.platform_applied === true);
+  const [assignedTo, setAssignedTo] = useState<Assignee>(application.assigned_to || 'non_attribue');
   const [isExpanded, setIsExpanded] = useState(false);
   const [showAdminFields, setShowAdminFields] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  async function saveChanges(nextStatus = status, nextPlatformApplied = platformApplied) {
+  async function saveChanges(nextStatus = status, nextPlatformApplied = platformApplied, nextAssignedTo = assignedTo) {
     setIsSaving(true);
-    const saved = await onSave(application.id, nextStatus, comment, nextPlatformApplied);
+    const saved = await onSave(application.id, nextStatus, comment, nextPlatformApplied, nextAssignedTo);
     if (saved) {
       setStatus(nextStatus);
       setPlatformApplied(nextPlatformApplied);
+      setAssignedTo(nextAssignedTo);
     }
     setIsSaving(false);
   }
@@ -795,6 +848,10 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
   const profileText = isExpanded || !hasLongProfile
     ? application.profile_note
     : `${application.profile_note.slice(0, 180).trim()}...`;
+  const receivedAt = new Date(application.created_at).toLocaleString('fr-FR', {
+    dateStyle: 'short',
+    timeStyle: 'short',
+  });
 
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-3 shadow-[0_6px_18px_rgba(8,85,120,0.04)]">
@@ -808,17 +865,27 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
           <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-650">
             <span><strong className="text-slate-700">Ville :</strong> {application.city}</span>
             <span><strong className="text-slate-700">Activité :</strong> {application.current_activity}</span>
+            <span><strong className="text-slate-700">Attribuée à :</strong> {assignedTo === 'non_attribue' ? 'Personne' : assignedTo}</span>
             <span><strong className="text-slate-700">Origine :</strong> {application.referral_source || 'Non renseigné'}</span>
             <a className="font-medium text-[#085578]" href={`mailto:${application.email}`}>{application.email}</a>
             <a className="font-medium text-[#085578]" href={`tel:${application.phone}`}>{application.phone}</a>
           </div>
-          <p className="mt-2 text-xs text-slate-500">Reçu le {new Date(application.created_at).toLocaleDateString('fr-FR')}</p>
+          <p className="mt-2 text-xs text-slate-500">Reçu le {receivedAt}</p>
         </div>
 
         <div className="flex flex-wrap gap-2 lg:justify-end">
+          <Select value={assignedTo} onValueChange={(value) => saveChanges(status, platformApplied, value as Assignee)}>
+            <SelectTrigger className="h-8 w-36 bg-white text-xs"><SelectValue /></SelectTrigger>
+            <SelectContent>{assignees.filter((assignee) => assignee.value !== 'tous').map((assignee) => <SelectItem key={assignee.value} value={assignee.value}>{assignee.label}</SelectItem>)}</SelectContent>
+          </Select>
           <Button type="button" variant="outline" className="h-8 px-3 text-xs" onClick={() => setShowAdminFields((current) => !current)}>
             {showAdminFields ? 'Masquer les détails' : 'Voir détails'}
           </Button>
+          {application.status !== 'ecarte' && status !== 'en_cours' ? (
+            <Button type="button" variant="outline" className="h-8 px-3 text-xs text-[#085578]" disabled={isSaving} onClick={() => saveChanges('en_cours')}>
+              Passer en cours de traitement
+            </Button>
+          ) : null}
           {application.status === 'ecarte' ? (
             <Button type="button" variant="outline" className="h-8 border-[#1e7a4a]/25 px-3 text-xs text-[#1e7a4a] hover:bg-[#eaf4ef]" disabled={isSaving} onClick={() => saveChanges('nouveau', platformApplied)}>
               Remettre dans la liste principale
