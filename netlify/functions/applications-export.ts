@@ -12,6 +12,7 @@ const headers = [
   'statut',
   'attribue_a',
   'a_postule_plateforme',
+  'email_recrutement_envoye',
   'commentaire',
 ];
 
@@ -34,6 +35,7 @@ export default async function handler(request: Request) {
     application.status,
     application.assigned_to || 'non_attribue',
     application.platform_applied ? 'oui' : 'non',
+    application.recruitment_email_sent ? 'oui' : 'non',
     application.admin_comment,
   ]);
 

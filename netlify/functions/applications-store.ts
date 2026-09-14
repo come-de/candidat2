@@ -17,6 +17,7 @@ export type Application = {
   status: ApplicationStatus;
   admin_comment: string;
   platform_applied: boolean;
+  recruitment_email_sent: boolean;
   assigned_to: ApplicationAssignee;
   created_at: string;
   updated_at: string;
@@ -129,6 +130,7 @@ export function createApplication(input: Record<string, unknown>): Application {
     status: 'nouveau',
     admin_comment: '',
     platform_applied: false,
+    recruitment_email_sent: false,
     assigned_to: 'non_attribue',
     created_at: now,
     updated_at: now,

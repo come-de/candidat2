@@ -49,6 +49,7 @@ type Application = {
   status: Status;
   admin_comment: string | null;
   platform_applied?: boolean;
+  recruitment_email_sent?: boolean;
   assigned_to?: Assignee;
   created_at: string;
 };
@@ -768,7 +769,6 @@ function SiteHeader() {
         <img src="/logo-etude-alpha.png" alt="L'Étude Alpha" className="h-11 w-auto" />
       </a>
       <nav className="flex items-center gap-2">
-        <a href="/bonne-etude-alpha" className="hidden text-sm font-medium text-slate-600 transition hover:text-[#085578] md:inline">Bonne Étude Alpha</a>
         <a href="/admin" className="hidden text-sm font-medium text-slate-600 transition hover:text-[#085578] sm:inline">Espace équipe</a>
         <a href="/postuler" className="brand-button inline-flex h-10 items-center justify-center rounded-lg px-4 text-sm font-medium">Postuler</a>
       </nav>
@@ -1157,18 +1157,18 @@ function AdminPanel() {
     }
   }
 
-  async function updateApplication(id: string, status: Status, adminComment: string, platformApplied: boolean, assignedTo: Assignee) {
+  async function updateApplication(id: string, status: Status, adminComment: string, platformApplied: boolean, assignedTo: Assignee, recruitmentEmailSent: boolean) {
     setError('');
     const response = await fetch('/.netlify/functions/applications', {
       method: 'PATCH',
       headers: { 'content-type': 'application/json', 'x-admin-password': savedPassword },
-      body: JSON.stringify({ id, status, adminComment, platformApplied, assignedTo }),
+      body: JSON.stringify({ id, status, adminComment, platformApplied, assignedTo, recruitmentEmailSent }),
     });
     if (!response.ok) {
       setError('La mise à jour a échoué.');
       return false;
     }
-    setApplications((current) => current.map((application) => application.id === id ? { ...application, status, admin_comment: adminComment, platform_applied: platformApplied, assigned_to: assignedTo } : application));
+    setApplications((current) => current.map((application) => application.id === id ? { ...application, status, admin_comment: adminComment, platform_applied: platformApplied, assigned_to: assignedTo, recruitment_email_sent: recruitmentEmailSent } : application));
     return true;
   }
 
@@ -1491,22 +1491,24 @@ function AnnualResponseRow({ response, onSave }: { response: AnnualResponse; onS
   );
 }
 
-function ApplicationRow({ application, onSave }: { application: Application; onSave: (id: string, status: Status, adminComment: string, platformApplied: boolean, assignedTo: Assignee) => Promise<boolean> }) {
+function ApplicationRow({ application, onSave }: { application: Application; onSave: (id: string, status: Status, adminComment: string, platformApplied: boolean, assignedTo: Assignee, recruitmentEmailSent: boolean) => Promise<boolean> }) {
   const [status, setStatus] = useState<Status>(application.status);
   const [comment, setComment] = useState(application.admin_comment || '');
   const [platformApplied, setPlatformApplied] = useState(application.platform_applied === true);
+  const [recruitmentEmailSent, setRecruitmentEmailSent] = useState(application.recruitment_email_sent === true);
   const [assignedTo, setAssignedTo] = useState<Assignee>(application.assigned_to || 'non_attribue');
   const [isExpanded, setIsExpanded] = useState(false);
   const [showAdminFields, setShowAdminFields] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  async function saveChanges(nextStatus = status, nextPlatformApplied = platformApplied, nextAssignedTo = assignedTo) {
+  async function saveChanges(nextStatus = status, nextPlatformApplied = platformApplied, nextAssignedTo = assignedTo, nextRecruitmentEmailSent = recruitmentEmailSent) {
     setIsSaving(true);
-    const saved = await onSave(application.id, nextStatus, comment, nextPlatformApplied, nextAssignedTo);
+    const saved = await onSave(application.id, nextStatus, comment, nextPlatformApplied, nextAssignedTo, nextRecruitmentEmailSent);
     if (saved) {
       setStatus(nextStatus);
       setPlatformApplied(nextPlatformApplied);
       setAssignedTo(nextAssignedTo);
+      setRecruitmentEmailSent(nextRecruitmentEmailSent);
     }
     setIsSaving(false);
   }
@@ -1532,8 +1534,9 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <h2 className="text-base font-semibold text-slate-950">{application.first_name} {application.last_name}</h2>
-            <Badge className="rounded-md bg-[#085578]/10 text-[#085578]">{statusLabels[application.status]}</Badge>
+            <Badge className="rounded-md bg-[#085578]/10 text-[#085578]">{statusLabels[status]}</Badge>
           {platformApplied ? <Badge className="rounded-md bg-[#1e7a4a]/10 text-[#1e7a4a]">Candidature plateforme finalisée</Badge> : null}
+          {recruitmentEmailSent ? <Badge className="rounded-md bg-[#1e7a4a]/10 text-[#1e7a4a]">Email de recrutement envoyé</Badge> : null}
           </div>
           <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-650">
             <span><strong className="text-slate-700">Ville :</strong> {application.city}</span>
@@ -1554,12 +1557,12 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
           <Button type="button" variant="outline" className="h-8 px-3 text-xs" onClick={() => setShowAdminFields((current) => !current)}>
             {showAdminFields ? 'Masquer les détails' : 'Voir détails'}
           </Button>
-          {application.status !== 'ecarte' && status !== 'en_cours' ? (
+          {status !== 'ecarte' && status !== 'en_cours' ? (
             <Button type="button" variant="outline" className="h-8 px-3 text-xs text-[#085578]" disabled={isSaving} onClick={() => saveChanges('en_cours')}>
               Passer en cours de traitement
             </Button>
           ) : null}
-          {application.status === 'ecarte' ? (
+          {status === 'ecarte' ? (
             <Button type="button" variant="outline" className="h-8 border-[#1e7a4a]/25 px-3 text-xs text-[#1e7a4a] hover:bg-[#eaf4ef]" disabled={isSaving} onClick={() => saveChanges('nouveau', platformApplied)}>
               Remettre dans la liste principale
             </Button>
@@ -1570,6 +1573,10 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
           )}
           <Button type="button" variant="outline" className="h-8 px-3 text-xs" disabled={isSaving || platformApplied} onClick={() => saveChanges(status, true)}>
             <CheckCircle2 /> {platformApplied ? 'Candidature plateforme déjà finalisée' : 'Marquer : candidature plateforme finalisée'}
+          </Button>
+          <Button type="button" variant="outline" className="h-8 px-3 text-xs" disabled={isSaving || recruitmentEmailSent} onClick={() => saveChanges(status, platformApplied, assignedTo, true)}>
+            {recruitmentEmailSent ? <CheckCircle2 /> : null}
+            {recruitmentEmailSent ? 'Email de recrutement envoyé' : 'Marquer : email de recrutement envoyé'}
           </Button>
         </div>
       </div>
@@ -1586,7 +1593,7 @@ function ApplicationRow({ application, onSave }: { application: Application; onS
             ) : null}
           </div>
           <div className="grid gap-2">
-            {application.status === 'ecarte' ? (
+            {status === 'ecarte' ? (
               <p className="rounded-md bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
                 Candidature masquée de la liste principale
               </p>

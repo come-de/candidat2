@@ -59,6 +59,7 @@ export default async function handler(request: Request) {
         admin_comment:
           typeof input.adminComment === 'string' ? input.adminComment.trim() : '',
         platform_applied: input.platformApplied === true,
+        recruitment_email_sent: input.recruitmentEmailSent === true,
         assigned_to: isApplicationAssignee(input.assignedTo) ? input.assignedTo : 'non_attribue',
         updated_at: new Date().toISOString(),
       };
