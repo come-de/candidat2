@@ -454,6 +454,86 @@ body {
   accent-color: #085578;
 }
 
+.good-study-hero {
+  background:
+    linear-gradient(180deg, #fbfdfc 0%, #f7faf9 100%);
+  border-bottom: 1px solid rgb(8 85 120 / 10%);
+}
+
+.guide-stat {
+  border: 1px solid rgb(8 85 120 / 12%);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  padding: 0.85rem;
+  box-shadow: 0 10px 30px rgb(8 85 120 / 5%);
+}
+
+.guide-stat span {
+  display: block;
+  color: #073f5c;
+  font-size: 1.05rem;
+  font-weight: 760;
+}
+
+.guide-stat p {
+  margin-top: 0.2rem;
+  color: #536879;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.guide-intro-card,
+.guide-panel,
+.guide-conclusion {
+  border: 1px solid rgb(8 85 120 / 12%);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  padding: 1.25rem;
+  box-shadow: 0 14px 44px rgb(8 85 120 / 8%);
+}
+
+.guide-panel {
+  height: 100%;
+}
+
+.guide-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  border-radius: 0.5rem;
+  padding: 0.72rem 0.8rem;
+  font-size: 0.92rem;
+  font-weight: 610;
+  line-height: 1.5;
+}
+
+.guide-list-item.positive {
+  border: 1px solid rgb(30 122 74 / 14%);
+  background: #f7fbf9;
+  color: #123f2b;
+}
+
+.guide-list-item.positive svg {
+  margin-top: 0.15rem;
+  flex: 0 0 auto;
+  color: #1e7a4a;
+}
+
+.guide-list-item.alert {
+  border: 1px solid rgb(220 38 38 / 14%);
+  background: #fff8f7;
+  color: #6b1f1a;
+}
+
+.guide-alert-dot {
+  width: 0.48rem;
+  height: 0.48rem;
+  flex: 0 0 auto;
+  margin-top: 0.48rem;
+  border-radius: 999px;
+  background: #dc2626;
+}
+
 @media (max-width: 640px) {
   .hero-title {
     font-size: 2rem;
@@ -517,6 +597,12 @@ body {
   }
 
   .question-card {
+    padding: 1rem;
+  }
+
+  .guide-intro-card,
+  .guide-panel,
+  .guide-conclusion {
     padding: 1rem;
   }
 }

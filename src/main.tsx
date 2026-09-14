@@ -69,6 +69,13 @@ type AnnualResponse = {
   updated_at: string;
 };
 
+type PageViewStats = {
+  page: string;
+  total_visits: number;
+  unique_visitors: number;
+  last_visit_at: string | null;
+};
+
 const strengths = [
   {
     icon: BookOpenCheck,
@@ -125,6 +132,8 @@ const assignees: { value: Assignee | 'tous'; label: string }[] = [
 ];
 
 const ADMIN_PASSWORD_STORAGE_KEY = 'etude-alpha-admin-password';
+const GOOD_STUDY_PAGE = 'bonne-etude-alpha';
+const VISITOR_ID_STORAGE_KEY = 'etude-alpha-visitor-id';
 
 const annualIntentLabels: Record<AnnualIntent, string> = {
   continuer: 'Souhaite continuer',
@@ -169,6 +178,7 @@ function App() {
 
   if (path === '/postuler') return <ApplyPage />;
   if (path === '/etude-alpha-2026-2027') return <AnnualQuestionnairePage />;
+  if (path === '/bonne-etude-alpha') return <GoodStudyPage />;
   if (path === '/confirmation') return <ConfirmationPage />;
   if (path === '/admin') return <AdminPage />;
   return <HomePage />;
@@ -513,6 +523,166 @@ function CtaBand({ text }: { text: string }) {
   );
 }
 
+function GoodStudyPage() {
+  useEffect(() => {
+    recordPageVisit(GOOD_STUDY_PAGE);
+  }, []);
+
+  const expectations = [
+    'Aller spontanément vers les élèves et vérifier leur travail.',
+    'Comprendre précisément ce qu’ils ont à faire.',
+    'Expliquer, faire réfléchir, corriger et encourager.',
+    'Organiser intelligemment le groupe et séparer les élèves lorsque cela améliore les conditions de travail.',
+    'Être dynamique, disponible, bienveillant et exigeant.',
+    'Chercher à faire avancer au maximum chaque élève pendant le temps disponible.',
+  ];
+
+  const unacceptableBehaviors = [
+    'indiquer qu’un exercice ou un devoir a été fait alors que ce n’est pas le cas ;',
+    'attendre passivement que les élèves travaillent ;',
+    'refuser d’aider un élève ou lui répondre « débrouille-toi » ;',
+    'rester en retrait pendant toute la séance ;',
+    'avoir des propos malveillants, humiliants ou désagréables envers un élève.',
+  ];
+
+  return (
+    <main className="min-h-screen bg-background text-foreground">
+      <SiteHeader />
+      <section className="good-study-hero">
+        <div className="mx-auto grid max-w-6xl gap-7 px-5 py-8 sm:px-8 sm:py-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div>
+            <a href="/" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-[#085578]"><ArrowLeft className="size-4" /> Retour au site</a>
+            <p className="eyebrow text-[#1e7a4a]">Repères tuteurs Étude Alpha</p>
+            <h1 className="mt-3 hero-title text-[#073f5c]">Qu’est-ce qu’une bonne Étude Alpha ?</h1>
+            <p className="mt-5 body-large text-slate-650">
+              Une bonne Étude Alpha, c’est avant tout une dynamique. Le tuteur
+              n’est pas là uniquement pour surveiller : il est là pour faire
+              progresser les élèves.
+            </p>
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              <div className="guide-stat"><span>Actif</span><p>à chaque séance</p></div>
+              <div className="guide-stat"><span>Clair</span><p>dans le cadre</p></div>
+              <div className="guide-stat"><span>Présent</span><p>auprès des élèves</p></div>
+            </div>
+          </div>
+          <figure className="hero-media">
+            <img src="/lycee.png" alt="Tuteur accompagnant des élèves pendant une séance d’étude" className="h-64 w-full object-cover sm:h-80 lg:h-96" />
+          </figure>
+        </div>
+      </section>
+
+      <section className="bg-white">
+        <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8">
+          <div className="guide-intro-card">
+            <h2 className="section-title text-[#073f5c]">Une séance intense, utile et incarnée.</h2>
+            <div className="mt-5 grid gap-5 text-sm leading-7 text-slate-650 sm:text-[0.98rem]">
+              <p>
+                Même lorsqu’il y a peu d’élèves, le tuteur doit être pleinement
+                actif. Il organise le groupe, sépare les élèves lorsque c’est
+                nécessaire et crée de bonnes conditions de travail.
+              </p>
+              <p>
+                Il doit rapidement comprendre ce que chaque élève a à faire,
+                identifier ses difficultés, l’accompagner et essayer de faire
+                avancer au maximum l’ensemble des élèves pendant la séance.
+              </p>
+              <p>
+                Au bout d’une heure ou d’une heure et demie, il est normal
+                d’être fatigué : accompagner plusieurs élèves correctement
+                demande de l’énergie, de l’attention et de l’implication. On ne
+                doit pas pouvoir terminer une séance en ayant simplement attendu
+                que les élèves travaillent seuls.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f7faf9]">
+        <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:px-8 lg:grid-cols-2">
+          <div className="guide-panel">
+            <div className="flex items-center gap-3">
+              <span className="flex size-10 items-center justify-center rounded-md bg-[#eaf4ef] text-[#1e7a4a]"><CheckCircle2 className="size-5" /></span>
+              <h2 className="section-title text-[#073f5c]">Ce que nous attendons</h2>
+            </div>
+            <ul className="mt-6 grid gap-3">
+              {expectations.map((item) => (
+                <li key={item} className="guide-list-item positive">
+                  <CheckCircle2 className="size-4" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="guide-panel">
+            <div className="flex items-center gap-3">
+              <span className="flex size-10 items-center justify-center rounded-md bg-red-50 text-red-700"><ShieldCheck className="size-5" /></span>
+              <h2 className="section-title text-[#073f5c]">Ce qui est inacceptable</h2>
+            </div>
+            <p className="mt-4 text-sm leading-6 text-slate-650">
+              Certaines attitudes ne correspondent absolument pas à l’esprit
+              Étude Alpha.
+            </p>
+            <ul className="mt-6 grid gap-3">
+              {unacceptableBehaviors.map((item) => (
+                <li key={item} className="guide-list-item alert">
+                  <span className="guide-alert-dot" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white">
+        <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8">
+          <div className="guide-conclusion">
+            <p className="eyebrow text-[#ff751f]">Début d’année</p>
+            <h2 className="mt-3 section-title text-[#073f5c]">Nous comptons vraiment sur l’implication de chacun.</h2>
+            <p className="mt-5 body-large text-slate-650">
+              Étude Alpha repose sur des tuteurs qui ont envie d’aider les
+              élèves, qui s’investissent réellement auprès d’eux et qui savent
+              créer une ambiance à la fois studieuse, dynamique, bienveillante
+              et sympathique.
+            </p>
+            <p className="mt-5 rounded-md bg-[#eaf4ef] px-4 py-3 text-sm font-semibold leading-6 text-[#1e7a4a]">
+              L’objectif n’est pas simplement que les devoirs soient faits :
+              c’est que chaque élève ait réellement bénéficié de l’heure passée
+              avec son tuteur.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function getVisitorId() {
+  if (typeof window === 'undefined') return '';
+
+  const existingVisitorId = window.localStorage.getItem(VISITOR_ID_STORAGE_KEY);
+  if (existingVisitorId) return existingVisitorId;
+
+  const visitorId = window.crypto?.randomUUID ? window.crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
+  window.localStorage.setItem(VISITOR_ID_STORAGE_KEY, visitorId);
+  return visitorId;
+}
+
+function recordPageVisit(page: string) {
+  const visitorId = getVisitorId();
+  if (!visitorId) return;
+
+  fetch('/.netlify/functions/page-views', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ page, visitorId }),
+  }).catch(() => {
+    // Le suivi ne doit jamais gêner la lecture de la page.
+  });
+}
+
 function SiteHeader() {
   return (
     <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
@@ -520,6 +690,7 @@ function SiteHeader() {
         <img src="/logo-etude-alpha.png" alt="L'Étude Alpha" className="h-11 w-auto" />
       </a>
       <nav className="flex items-center gap-2">
+        <a href="/bonne-etude-alpha" className="hidden text-sm font-medium text-slate-600 transition hover:text-[#085578] md:inline">Bonne Étude Alpha</a>
         <a href="/admin" className="hidden text-sm font-medium text-slate-600 transition hover:text-[#085578] sm:inline">Espace équipe</a>
         <a href="/postuler" className="brand-button inline-flex h-10 items-center justify-center rounded-lg px-4 text-sm font-medium">Postuler</a>
       </nav>
@@ -831,6 +1002,7 @@ function AdminPage() {
             <a href="https://orga-victoire.netlify.app" target="_blank" rel="noreferrer" className="inline-flex h-10 items-center justify-center rounded-lg border border-[#085578]/20 bg-white px-4 text-sm font-semibold text-[#085578]">
               Espace gestion Alpha (même mot de passe)
             </a>
+            <a href="/bonne-etude-alpha" className="text-sm font-semibold text-[#085578]">Bonne Étude Alpha</a>
             <a href="/etude-alpha-2026-2027" className="text-sm font-semibold text-[#085578]">Questionnaire 2026-2027</a>
             <a href="/postuler" className="text-sm font-semibold text-[#085578]">Lien direct du formulaire</a>
           </nav>
@@ -856,7 +1028,7 @@ function countApplicationsForDay(applications: Application[], offsetDays: number
 }
 
 function AdminPanel() {
-  const [adminTab, setAdminTab] = useState<'applications' | 'annualResponses'>('applications');
+  const [adminTab, setAdminTab] = useState<'applications' | 'annualResponses' | 'pageViews'>('applications');
   const [password, setPassword] = useState('');
   const [savedPassword, setSavedPassword] = useState(() => {
     if (typeof window === 'undefined') return '';
@@ -956,8 +1128,16 @@ function AdminPanel() {
         >
           Réponses 2026-2027
         </Button>
+        <Button
+          type="button"
+          variant={adminTab === 'pageViews' ? 'default' : 'outline'}
+          onClick={() => setAdminTab('pageViews')}
+          className={adminTab === 'pageViews' ? 'brand-button h-10 px-4' : 'h-10 px-4'}
+        >
+          Consultations
+        </Button>
       </div>
-      {adminTab === 'annualResponses' ? <AnnualResponsesAdmin password={savedPassword} /> : (
+      {adminTab === 'pageViews' ? <PageViewsAdmin password={savedPassword} /> : adminTab === 'annualResponses' ? <AnnualResponsesAdmin password={savedPassword} /> : (
       <>
       <div className="flex flex-col gap-4 rounded-lg border border-[#085578]/12 bg-white p-5 shadow-[0_18px_60px_rgba(8,85,120,0.08)] sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -1008,6 +1188,66 @@ function AdminPanel() {
       </>
       )}
     </section>
+  );
+}
+
+function PageViewsAdmin({ password }: { password: string }) {
+  const [stats, setStats] = useState<PageViewStats | null>(null);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    loadStats();
+  }, []);
+
+  async function loadStats() {
+    setError('');
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/.netlify/functions/page-views?page=${GOOD_STUDY_PAGE}`, { headers: { 'x-admin-password': password } });
+      if (!response.ok) throw new Error('Impossible de charger les consultations.');
+      const result = (await response.json()) as { stats?: PageViewStats };
+      setStats(result.stats || null);
+    } catch (loadError) {
+      setError(loadError instanceof Error ? loadError.message : 'Chargement impossible.');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const lastVisit = stats?.last_visit_at
+    ? new Date(stats.last_visit_at).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })
+    : 'Aucune visite enregistrée';
+
+  return (
+    <>
+      <div className="flex flex-col gap-4 rounded-lg border border-[#085578]/12 bg-white p-5 shadow-[0_18px_60px_rgba(8,85,120,0.08)] sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="section-title text-[#073f5c]">Consultations</h1>
+          <p className="mt-1 text-sm text-slate-600">Page suivie : Qu’est-ce qu’une bonne Étude Alpha ?</p>
+        </div>
+        <Button type="button" variant="outline" onClick={() => loadStats()} className="h-10"><RefreshCcw /> Actualiser</Button>
+      </div>
+      {error ? <p className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p> : null}
+      {isLoading ? <p className="mt-4 text-sm text-slate-600">Chargement des consultations...</p> : null}
+      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <div className="rounded-lg border border-[#085578]/12 bg-white p-5 shadow-[0_10px_32px_rgba(8,85,120,0.06)]">
+          <p className="text-sm font-semibold text-slate-500">Visites totales</p>
+          <p className="mt-2 text-3xl font-bold text-[#073f5c]">{stats?.total_visits ?? 0}</p>
+        </div>
+        <div className="rounded-lg border border-[#1e7a4a]/16 bg-white p-5 shadow-[0_10px_32px_rgba(30,122,74,0.06)]">
+          <p className="text-sm font-semibold text-slate-500">Visiteurs uniques</p>
+          <p className="mt-2 text-3xl font-bold text-[#1e7a4a]">{stats?.unique_visitors ?? 0}</p>
+        </div>
+        <div className="rounded-lg border border-[#ff751f]/18 bg-white p-5 shadow-[0_10px_32px_rgba(255,117,31,0.06)]">
+          <p className="text-sm font-semibold text-slate-500">Dernière visite</p>
+          <p className="mt-2 text-lg font-bold text-[#8a3b07]">{lastVisit}</p>
+        </div>
+      </div>
+      <p className="mt-4 rounded-md bg-[#f7faf9] px-4 py-3 text-sm leading-6 text-slate-650">
+        Les visiteurs uniques sont estimés grâce à un identifiant anonyme conservé dans le navigateur. Cela donne une mesure simple et cohérente avec le site, sans service externe.
+      </p>
+    </>
   );
 }
 
