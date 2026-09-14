@@ -53,6 +53,22 @@ type Application = {
   created_at: string;
 };
 
+type AnnualIntent = 'continuer' | 'arreter';
+type AnnualResponseStatus = 'nouveau' | 'traite';
+
+type AnnualResponse = {
+  id: string;
+  full_name: string;
+  phone: string;
+  intent: AnnualIntent;
+  availability_note: string;
+  experience_note: string;
+  status: AnnualResponseStatus;
+  admin_comment: string;
+  created_at: string;
+  updated_at: string;
+};
+
 const strengths = [
   {
     icon: BookOpenCheck,
@@ -110,6 +126,16 @@ const assignees: { value: Assignee | 'tous'; label: string }[] = [
 
 const ADMIN_PASSWORD_STORAGE_KEY = 'etude-alpha-admin-password';
 
+const annualIntentLabels: Record<AnnualIntent, string> = {
+  continuer: 'Souhaite continuer',
+  arreter: 'Souhaite arrêter',
+};
+
+const annualStatusLabels: Record<AnnualResponseStatus, string> = {
+  nouveau: 'Nouveau',
+  traite: 'Traité',
+};
+
 const selectionSteps = [
   {
     title: 'Présélection rapide',
@@ -142,6 +168,7 @@ function App() {
   const path = window.location.pathname;
 
   if (path === '/postuler') return <ApplyPage />;
+  if (path === '/etude-alpha-2026-2027') return <AnnualQuestionnairePage />;
   if (path === '/confirmation') return <ConfirmationPage />;
   if (path === '/admin') return <AdminPage />;
   return <HomePage />;
@@ -652,6 +679,148 @@ function ConfirmationPage() {
   );
 }
 
+function AnnualQuestionnairePage() {
+  const [intent, setIntent] = useState<AnnualIntent | ''>('');
+  const [confirmationIntent, setConfirmationIntent] = useState<AnnualIntent | null>(null);
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function submitAnnualResponse(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError('');
+    setIsSubmitting(true);
+
+    const form = new FormData(event.currentTarget);
+    const payload = {
+      fullName: String(form.get('fullName') || '').trim(),
+      phone: String(form.get('phone') || '').trim(),
+      intent,
+      availabilityNote: String(form.get('availabilityNote') || '').trim(),
+      experienceNote: String(form.get('experienceNote') || '').trim(),
+    };
+
+    try {
+      const response = await fetch('/.netlify/functions/annual-responses', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const result = (await response.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(result?.error || 'Impossible d’enregistrer votre réponse.');
+      }
+
+      setConfirmationIntent(intent as AnnualIntent);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (submissionError) {
+      setError(submissionError instanceof Error ? submissionError.message : 'Impossible d’enregistrer votre réponse.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  if (confirmationIntent) {
+    const isContinuing = confirmationIntent === 'continuer';
+
+    return (
+      <main className="min-h-screen bg-[#f4f7fb] px-5 py-6 text-foreground sm:px-8">
+        <div className="mx-auto max-w-2xl">
+          <a href="/" className="inline-flex items-center gap-2 text-sm font-medium text-[#085578]"><ArrowLeft className="size-4" /> Retour au site</a>
+          <section className="mt-6 rounded-lg border border-[#085578]/12 bg-white p-6 text-center shadow-[0_18px_60px_rgba(8,85,120,0.10)] sm:p-10">
+            <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-[#1e7a4a]/10 text-[#1e7a4a]"><CheckCircle2 className="size-7" /></div>
+            <img src="/logo-etude-alpha.png" alt="L'Étude Alpha" className="mx-auto mt-6 h-12 w-auto" />
+            <h1 className="mt-7 section-title text-[#073f5c]">Réponse bien enregistrée</h1>
+            <p className="mx-auto mt-4 max-w-xl body-large text-slate-650">
+              {isContinuing
+                ? 'Merci beaucoup, votre réponse a bien été enregistrée. Nous sommes très heureux de pouvoir continuer l’aventure avec vous cette année. Votre engagement auprès des élèves compte réellement, et nous prendrons en compte vos disponibilités pour organiser les prochaines missions.'
+                : 'Merci beaucoup, votre réponse a bien été enregistrée. Nous vous remercions sincèrement pour le travail effectué auprès des élèves et pour votre implication au sein d’Alpha Education. Votre contribution a compté, et nous vous souhaitons une très belle continuation.'}
+            </p>
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <a href="/" className="brand-button inline-flex h-11 items-center justify-center rounded-lg px-5 text-sm font-medium">Retour à l’accueil</a>
+              <button type="button" onClick={() => { setConfirmationIntent(null); setIntent(''); }} className="inline-flex h-11 items-center justify-center rounded-lg border border-[#085578]/20 px-5 text-sm font-medium text-[#085578]">
+                Envoyer une autre réponse
+              </button>
+            </div>
+          </section>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="min-h-screen bg-[#f4f7fb] px-5 py-6 text-foreground sm:px-8">
+      <div className="mx-auto max-w-3xl">
+        <a href="/" className="inline-flex items-center gap-2 text-sm font-medium text-[#085578]"><ArrowLeft className="size-4" /> Retour</a>
+        <section className="mt-6 overflow-hidden rounded-lg border border-[#085578]/12 bg-white shadow-[0_18px_60px_rgba(8,85,120,0.10)]">
+          <div className="h-2 bg-[#5b45e9]" />
+          <div className="p-5 sm:p-8">
+            <img src="/logo-etude-alpha.png" alt="L'Étude Alpha" className="h-12 w-auto" />
+            <p className="mt-8 eyebrow text-[#5b45e9]">Questionnaire intervenants</p>
+            <h1 className="mt-2 section-title text-[#073f5c]">Étude Alpha 2026 - 2027</h1>
+            <p className="mt-3 body-large text-slate-600">
+              Ce court formulaire nous permet d’anticiper l’année à venir avec
+              les intervenants qui souhaitent poursuivre l’aventure, et de
+              recueillir quelques mots de ceux qui arrêtent après leur engagement
+              auprès des élèves.
+            </p>
+          </div>
+        </section>
+
+        <form onSubmit={submitAnnualResponse} className="mt-5 grid gap-4">
+          <section className="question-card">
+            <Field label="Votre numéro de téléphone au format 06... ou 07... sans espace" name="phone" type="tel" autoComplete="tel" placeholder="0612345678" />
+          </section>
+
+          <section className="question-card">
+            <label className="grid gap-2 text-sm font-medium text-slate-700">
+              Votre nom et prénom
+              <Textarea name="fullName" required className="min-h-20 bg-white" placeholder="Nom et prénom" />
+            </label>
+          </section>
+
+          <section className="question-card">
+            <p className="text-sm font-semibold text-slate-900">Souhaitez-vous arrêter l’Étude Alpha ?</p>
+            <div className="mt-5 grid gap-3">
+              <label className="annual-radio-option">
+                <input type="radio" name="intent" value="arreter" checked={intent === 'arreter'} onChange={() => setIntent('arreter')} required />
+                <span>Oui, je souhaite arrêter</span>
+              </label>
+              <label className="annual-radio-option">
+                <input type="radio" name="intent" value="continuer" checked={intent === 'continuer'} onChange={() => setIntent('continuer')} required />
+                <span>Non, je souhaite continuer</span>
+              </label>
+            </div>
+          </section>
+
+          {intent === 'continuer' ? (
+            <section className="question-card">
+              <label className="grid gap-2 text-sm font-medium text-slate-700">
+                Si vous souhaitez continuer, n’hésitez pas à nous en dire plus sur vos disponibilités
+                <Textarea name="availabilityNote" required className="min-h-32 bg-white text-[0.98rem] leading-7" placeholder="Jours possibles, fréquence souhaitée, villes ou établissements préférés, périodes d’indisponibilité..." />
+              </label>
+            </section>
+          ) : null}
+
+          {intent === 'arreter' ? (
+            <section className="question-card">
+              <label className="grid gap-2 text-sm font-medium text-slate-700">
+                Si vous souhaitez arrêter, n’hésitez pas à nous dire quelques mots sur votre expérience chez Alpha Education
+                <Textarea name="experienceNote" required className="min-h-32 bg-white text-[0.98rem] leading-7" placeholder="Votre retour d’expérience, ce que vous avez apprécié, ce qui pourrait être amélioré..." />
+              </label>
+            </section>
+          ) : null}
+
+          {error ? <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
+          <Button type="submit" disabled={isSubmitting || !intent} className="brand-button h-12 text-[0.95rem] font-semibold">
+            {isSubmitting ? 'Enregistrement...' : 'Envoyer ma réponse'} <Send />
+          </Button>
+        </form>
+      </div>
+    </main>
+  );
+}
+
 function AdminPage() {
   return (
     <main className="min-h-screen bg-[#f7faf9] px-4 py-5 text-foreground sm:px-8">
@@ -662,6 +831,7 @@ function AdminPage() {
             <a href="https://orga-victoire.netlify.app" target="_blank" rel="noreferrer" className="inline-flex h-10 items-center justify-center rounded-lg border border-[#085578]/20 bg-white px-4 text-sm font-semibold text-[#085578]">
               Espace gestion Alpha (même mot de passe)
             </a>
+            <a href="/etude-alpha-2026-2027" className="text-sm font-semibold text-[#085578]">Questionnaire 2026-2027</a>
             <a href="/postuler" className="text-sm font-semibold text-[#085578]">Lien direct du formulaire</a>
           </nav>
         </header>
@@ -686,6 +856,7 @@ function countApplicationsForDay(applications: Application[], offsetDays: number
 }
 
 function AdminPanel() {
+  const [adminTab, setAdminTab] = useState<'applications' | 'annualResponses'>('applications');
   const [password, setPassword] = useState('');
   const [savedPassword, setSavedPassword] = useState(() => {
     if (typeof window === 'undefined') return '';
@@ -768,6 +939,26 @@ function AdminPanel() {
 
   return (
     <section className="mt-8">
+      <div className="mb-4 flex flex-wrap gap-2 rounded-lg border border-[#085578]/12 bg-white p-2 shadow-[0_10px_32px_rgba(8,85,120,0.06)]">
+        <Button
+          type="button"
+          variant={adminTab === 'applications' ? 'default' : 'outline'}
+          onClick={() => setAdminTab('applications')}
+          className={adminTab === 'applications' ? 'brand-button h-10 px-4' : 'h-10 px-4'}
+        >
+          Candidatures
+        </Button>
+        <Button
+          type="button"
+          variant={adminTab === 'annualResponses' ? 'default' : 'outline'}
+          onClick={() => setAdminTab('annualResponses')}
+          className={adminTab === 'annualResponses' ? 'brand-button h-10 px-4' : 'h-10 px-4'}
+        >
+          Réponses 2026-2027
+        </Button>
+      </div>
+      {adminTab === 'annualResponses' ? <AnnualResponsesAdmin password={savedPassword} /> : (
+      <>
       <div className="flex flex-col gap-4 rounded-lg border border-[#085578]/12 bg-white p-5 shadow-[0_18px_60px_rgba(8,85,120,0.08)] sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="section-title text-[#073f5c]">Suivi des candidatures</h1>
@@ -814,7 +1005,171 @@ function AdminPanel() {
       <div className="mt-4 grid gap-2 xl:grid-cols-2">
         {visibleApplications.map((application) => <ApplicationRow key={application.id} application={application} onSave={updateApplication} />)}
       </div>
+      </>
+      )}
     </section>
+  );
+}
+
+function AnnualResponsesAdmin({ password }: { password: string }) {
+  const [responses, setResponses] = useState<AnnualResponse[]>([]);
+  const [intentFilter, setIntentFilter] = useState<AnnualIntent | 'tous'>('tous');
+  const [statusFilter, setStatusFilter] = useState<AnnualResponseStatus | 'tous'>('tous');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const visibleResponses = useMemo(() => {
+    return responses.filter((response) => {
+      const matchesIntent = intentFilter === 'tous' || response.intent === intentFilter;
+      const matchesStatus = statusFilter === 'tous' || response.status === statusFilter;
+      return matchesIntent && matchesStatus;
+    });
+  }, [responses, intentFilter, statusFilter]);
+
+  useEffect(() => {
+    loadResponses();
+  }, []);
+
+  async function loadResponses() {
+    setError('');
+    setIsLoading(true);
+    try {
+      const response = await fetch('/.netlify/functions/annual-responses', { headers: { 'x-admin-password': password } });
+      if (!response.ok) throw new Error('Impossible de charger les réponses 2026-2027.');
+      const result = (await response.json()) as { responses?: AnnualResponse[] };
+      setResponses(result.responses || []);
+    } catch (loadError) {
+      setError(loadError instanceof Error ? loadError.message : 'Chargement impossible.');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function updateResponse(id: string, status: AnnualResponseStatus, adminComment: string) {
+    setError('');
+    const response = await fetch('/.netlify/functions/annual-responses', {
+      method: 'PATCH',
+      headers: { 'content-type': 'application/json', 'x-admin-password': password },
+      body: JSON.stringify({ id, status, adminComment }),
+    });
+    if (!response.ok) {
+      setError('La mise à jour a échoué.');
+      return false;
+    }
+    setResponses((current) => current.map((item) => item.id === id ? { ...item, status, admin_comment: adminComment } : item));
+    return true;
+  }
+
+  return (
+    <>
+      <div className="flex flex-col gap-4 rounded-lg border border-[#085578]/12 bg-white p-5 shadow-[0_18px_60px_rgba(8,85,120,0.08)] sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="section-title text-[#073f5c]">Réponses 2026-2027</h1>
+          <p className="mt-1 text-sm text-slate-600">
+            {visibleResponses.length} réponse(s) affichée(s)
+          </p>
+        </div>
+        <div className="grid gap-2 sm:grid-cols-[160px_150px_auto_auto]">
+          <Select value={intentFilter} onValueChange={(value) => setIntentFilter(value as AnnualIntent | 'tous')}>
+            <SelectTrigger className="h-10 w-full bg-white"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="tous">Toutes les réponses</SelectItem>
+              <SelectItem value="continuer">Souhaite continuer</SelectItem>
+              <SelectItem value="arreter">Souhaite arrêter</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as AnnualResponseStatus | 'tous')}>
+            <SelectTrigger className="h-10 w-full bg-white"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="tous">Tous les statuts</SelectItem>
+              <SelectItem value="nouveau">Nouveau</SelectItem>
+              <SelectItem value="traite">Traité</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button type="button" variant="outline" onClick={() => loadResponses()} className="h-10"><RefreshCcw /> Actualiser</Button>
+          <Button type="button" onClick={() => { window.location.href = `/.netlify/functions/annual-responses-export?password=${encodeURIComponent(password)}`; }} className="brand-button h-10"><Download /> Export CSV</Button>
+        </div>
+      </div>
+      {error ? <p className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p> : null}
+      {isLoading ? <p className="mt-4 text-sm text-slate-600">Chargement des réponses...</p> : null}
+      <div className="mt-4 grid gap-2 xl:grid-cols-2">
+        {visibleResponses.map((response) => <AnnualResponseRow key={response.id} response={response} onSave={updateResponse} />)}
+      </div>
+    </>
+  );
+}
+
+function AnnualResponseRow({ response, onSave }: { response: AnnualResponse; onSave: (id: string, status: AnnualResponseStatus, adminComment: string) => Promise<boolean> }) {
+  const [status, setStatus] = useState<AnnualResponseStatus>(response.status);
+  const [comment, setComment] = useState(response.admin_comment || '');
+  const [showDetails, setShowDetails] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const receivedAt = new Date(response.created_at).toLocaleString('fr-FR', {
+    dateStyle: 'short',
+    timeStyle: 'short',
+  });
+  const responseText = response.intent === 'continuer' ? response.availability_note : response.experience_note;
+
+  async function saveChanges(nextStatus = status) {
+    setIsSaving(true);
+    const saved = await onSave(response.id, nextStatus, comment);
+    if (saved) setStatus(nextStatus);
+    setIsSaving(false);
+  }
+
+  return (
+    <article className="rounded-lg border border-slate-200 bg-white p-3 shadow-[0_6px_18px_rgba(8,85,120,0.04)]">
+      <div className="grid gap-3 lg:grid-cols-[1fr_auto] lg:items-start">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="text-base font-semibold text-slate-950">{response.full_name}</h2>
+            <Badge className={response.intent === 'continuer' ? 'rounded-md bg-[#1e7a4a]/10 text-[#1e7a4a]' : 'rounded-md bg-[#ff751f]/10 text-[#8a3b07]'}>
+              {annualIntentLabels[response.intent]}
+            </Badge>
+            <Badge className="rounded-md bg-[#085578]/10 text-[#085578]">{annualStatusLabels[status]}</Badge>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-650">
+            <a className="font-medium text-[#085578]" href={`tel:${response.phone}`}>{response.phone}</a>
+            <span>Reçu le {receivedAt}</span>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-2 lg:justify-end">
+          <Button type="button" variant="outline" className="h-8 px-3 text-xs" onClick={() => setShowDetails((current) => !current)}>
+            {showDetails ? 'Masquer' : 'Voir détails'}
+          </Button>
+          {status !== 'traite' ? (
+            <Button type="button" variant="outline" className="h-8 px-3 text-xs text-[#1e7a4a]" disabled={isSaving} onClick={() => saveChanges('traite')}>
+              Marquer comme traité
+            </Button>
+          ) : null}
+        </div>
+      </div>
+
+      {showDetails ? (
+        <div className="mt-3 grid gap-3 border-t border-slate-200 pt-3 lg:grid-cols-[1fr_240px]">
+          <div className="rounded-md bg-[#f7faf9] p-3">
+            <p className="text-sm font-semibold text-[#085578]">{response.intent === 'continuer' ? 'Disponibilités' : 'Retour d’expérience'}</p>
+            <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-650">{responseText}</p>
+          </div>
+          <div className="grid gap-2">
+            <Select value={status} onValueChange={(value) => setStatus(value as AnnualResponseStatus)}>
+              <SelectTrigger className="h-9 w-full bg-white"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="nouveau">Nouveau</SelectItem>
+                <SelectItem value="traite">Traité</SelectItem>
+              </SelectContent>
+            </Select>
+            <label className="grid gap-2 text-sm font-medium text-slate-700">
+              Commentaire interne
+              <Textarea value={comment} onChange={(event) => setComment(event.target.value)} placeholder="Note interne, relance éventuelle..." className="min-h-20 bg-white" />
+            </label>
+            <Button type="button" className="brand-button h-9" disabled={isSaving} onClick={() => saveChanges()}>
+              <Save /> {isSaving ? 'Enregistrement...' : 'Enregistrer'}
+            </Button>
+          </div>
+        </div>
+      ) : null}
+    </article>
   );
 }
 

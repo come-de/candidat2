@@ -430,6 +430,30 @@ body {
   line-height: 1.45;
 }
 
+.question-card {
+  border: 1px solid rgb(8 85 120 / 12%);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  padding: 1.25rem;
+  box-shadow: 0 10px 32px rgb(8 85 120 / 7%);
+}
+
+.annual-radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #102533;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.annual-radio-option input {
+  width: 1.15rem;
+  height: 1.15rem;
+  accent-color: #085578;
+}
+
 @media (max-width: 640px) {
   .hero-title {
     font-size: 2rem;
@@ -490,5 +514,9 @@ body {
   .cta-band a,
   .mobile-full-cta {
     width: 100%;
+  }
+
+  .question-card {
+    padding: 1rem;
   }
 }
