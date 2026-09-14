@@ -537,6 +537,29 @@ function GoodStudyPage() {
     'Chercher à faire avancer au maximum chaque élève pendant le temps disponible.',
   ];
 
+  const concreteActions = [
+    'Je circule dans la salle et je vais vers les élèves.',
+    'Je regarde les cahiers, les agendas et les consignes données.',
+    'Je vérifie ce qui est réellement fait, pas seulement ce qui est annoncé.',
+    'Je sépare les élèves si le calme ou la concentration l’exige.',
+    'Je relance les élèves qui décrochent ou qui attendent sans avancer.',
+    'Je termine avec un point rapide sur ce qui a progressé pendant la séance.',
+  ];
+
+  const goodSessionSignals = [
+    'Le tuteur est mobile, attentif et disponible.',
+    'Les élèves savent ce qu’ils doivent faire.',
+    'Le calme est installé et maintenu avec bienveillance.',
+    'Les devoirs sont vérifiés et les blocages sont traités.',
+  ];
+
+  const weakSessionSignals = [
+    'Le tuteur reste assis en retrait pendant la séance.',
+    'Les élèves sont livrés à eux-mêmes.',
+    'Les devoirs sont déclarés faits sans vraie vérification.',
+    'Le groupe manque de cadre, de rythme ou de relance.',
+  ];
+
   const unacceptableBehaviors = [
     'indiquer qu’un exercice ou un devoir a été fait alors que ce n’est pas le cas ;',
     'attendre passivement que les élèves travaillent ;',
@@ -553,16 +576,16 @@ function GoodStudyPage() {
           <div>
             <a href="/" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-[#085578]"><ArrowLeft className="size-4" /> Retour au site</a>
             <p className="eyebrow text-[#1e7a4a]">Repères tuteurs Étude Alpha</p>
-            <h1 className="mt-3 hero-title text-[#073f5c]">Qu’est-ce qu’une bonne Étude Alpha ?</h1>
+            <h1 className="mt-3 hero-title text-[#073f5c]">Une bonne Étude Alpha se voit dès les premières minutes.</h1>
             <p className="mt-5 body-large text-slate-650">
-              Une bonne Étude Alpha, c’est avant tout une dynamique. Le tuteur
-              n’est pas là uniquement pour surveiller : il est là pour faire
-              progresser les élèves.
+              Le tuteur est actif, organise le groupe, vérifie le travail et
+              fait progresser les élèves. Une bonne Étude Alpha, c’est avant
+              tout une dynamique.
             </p>
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
-              <div className="guide-stat"><span>Actif</span><p>à chaque séance</p></div>
-              <div className="guide-stat"><span>Clair</span><p>dans le cadre</p></div>
-              <div className="guide-stat"><span>Présent</span><p>auprès des élèves</p></div>
+              <div className="guide-stat"><span>Organiser</span><p>le groupe et le calme</p></div>
+              <div className="guide-stat"><span>Aider</span><p>avec patience et exigence</p></div>
+              <div className="guide-stat"><span>Faire avancer</span><p>chaque élève présent</p></div>
             </div>
           </div>
           <figure className="hero-media">
@@ -574,26 +597,78 @@ function GoodStudyPage() {
       <section className="bg-white">
         <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8">
           <div className="guide-intro-card">
-            <h2 className="section-title text-[#073f5c]">Une séance intense, utile et incarnée.</h2>
+            <h2 className="section-title text-[#073f5c]">La vraie difficulté n’est pas la matière.</h2>
             <div className="mt-5 grid gap-5 text-sm leading-7 text-slate-650 sm:text-[0.98rem]">
+              <p>
+                Les tuteurs connaissent les matières qu’ils accompagnent. Le
+                plus exigeant, dans une Étude Alpha, est souvent ailleurs :
+                obtenir le calme, poser un cadre, rester bienveillant, garder
+                une vraie énergie et aider plusieurs élèves sans laisser le
+                groupe se disperser.
+              </p>
               <p>
                 Même lorsqu’il y a peu d’élèves, le tuteur doit être pleinement
                 actif. Il organise le groupe, sépare les élèves lorsque c’est
                 nécessaire et crée de bonnes conditions de travail.
               </p>
               <p>
-                Il doit rapidement comprendre ce que chaque élève a à faire,
-                identifier ses difficultés, l’accompagner et essayer de faire
-                avancer au maximum l’ensemble des élèves pendant la séance.
-              </p>
-              <p>
-                Au bout d’une heure ou d’une heure et demie, il est normal
-                d’être fatigué : accompagner plusieurs élèves correctement
-                demande de l’énergie, de l’attention et de l’implication. On ne
-                doit pas pouvoir terminer une séance en ayant simplement attendu
-                que les élèves travaillent seuls.
+                L’enjeu est de tenir le cadre tout en accompagnant réellement
+                chaque élève. Le tuteur doit rapidement comprendre ce que chacun
+                a à faire, identifier les difficultés et faire avancer au maximum
+                l’ensemble des élèves pendant la séance.
               </p>
             </div>
+            <p className="guide-key-sentence">
+              On ne doit pas pouvoir terminer une séance en ayant simplement
+              attendu que les élèves travaillent seuls.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f7faf9]">
+        <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8">
+          <div className="guide-panel">
+            <div className="flex items-center gap-3">
+              <span className="flex size-10 items-center justify-center rounded-md bg-[#085578]/10 text-[#085578]"><CalendarCheck className="size-5" /></span>
+              <h2 className="section-title text-[#073f5c]">Pendant la séance, concrètement</h2>
+            </div>
+            <div className="mt-6 guide-check-grid">
+              {concreteActions.map((item) => (
+                <div key={item} className="guide-list-item positive">
+                  <CheckCircle2 className="size-4" />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white">
+        <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:px-8 lg:grid-cols-2">
+          <div className="guide-panel session-compare good">
+            <h2 className="section-title text-[#073f5c]">Bonne séance</h2>
+            <ul className="mt-6 grid gap-3">
+              {goodSessionSignals.map((item) => (
+                <li key={item} className="guide-list-item positive">
+                  <CheckCircle2 className="size-4" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="guide-panel session-compare weak">
+            <h2 className="section-title text-[#073f5c]">Mauvaise séance</h2>
+            <ul className="mt-6 grid gap-3">
+              {weakSessionSignals.map((item) => (
+                <li key={item} className="guide-list-item alert">
+                  <span className="guide-alert-dot" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
@@ -651,6 +726,9 @@ function GoodStudyPage() {
               L’objectif n’est pas simplement que les devoirs soient faits :
               c’est que chaque élève ait réellement bénéficié de l’heure passée
               avec son tuteur.
+            </p>
+            <p className="mt-5 text-[1.1rem] font-bold leading-7 text-[#073f5c]">
+              Une Étude Alpha réussie, c’est une heure utile pour chaque élève.
             </p>
           </div>
         </div>

@@ -492,8 +492,34 @@ body {
   box-shadow: 0 14px 44px rgb(8 85 120 / 8%);
 }
 
+.guide-key-sentence {
+  margin-top: 1.25rem;
+  border-left: 4px solid #ff751f;
+  border-radius: 0.5rem;
+  background: #fff7f0;
+  padding: 1rem;
+  color: #7b3407;
+  font-size: 1.04rem;
+  font-weight: 760;
+  line-height: 1.55;
+}
+
 .guide-panel {
   height: 100%;
+}
+
+.guide-check-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.session-compare.good {
+  border-color: rgb(30 122 74 / 18%);
+}
+
+.session-compare.weak {
+  border-color: rgb(220 38 38 / 16%);
 }
 
 .guide-list-item {
@@ -604,5 +630,14 @@ body {
   .guide-panel,
   .guide-conclusion {
     padding: 1rem;
+  }
+
+  .guide-check-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .guide-key-sentence {
+    padding: 0.9rem;
+    font-size: 0.98rem;
   }
 }
