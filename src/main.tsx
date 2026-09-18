@@ -742,56 +742,53 @@ function GoodStudyPage() {
 function StaffingPage() {
   useNoIndexPage('Staffing Étude Alpha');
 
-  const staffingInputs = [
+  const availabilityTabs = [
     {
-      title: 'Vos disponibilités',
-      text: 'Elles nous indiquent les créneaux sur lesquels nous pouvons raisonnablement vous proposer une séance.',
+      title: 'Les établissements déjà proposés',
+      text: 'Vous indiquez vos disponibilités sur des lieux que vous connaissez déjà ou qui vous ont été proposés.',
     },
     {
-      title: 'Vos intérêts',
-      text: 'Ils nous aident à repérer les séances, lieux ou formats qui vous conviennent le mieux.',
+      title: 'Les autres établissements disponibles',
+      text: 'Vous pouvez aussi vous rendre disponible sur des établissements que vous ne connaissez pas encore.',
     },
   ];
 
-  const lastMinuteReasons = [
-    'un nouveau besoin d’un établissement',
-    'un remplacement à organiser',
-    'une séance encore non staffée',
+  const availabilityWays = [
+    {
+      title: 'D’une semaine sur l’autre',
+      text: 'Avant que nous préparions les plannings de la semaine suivante, indiquez toutes les disponibilités que vous avez réellement.',
+    },
+    {
+      title: 'Au fur et à mesure',
+      text: 'Dès qu’une nouvelle disponibilité apparaît, même ponctuelle ou du jour pour le lendemain, ajoutez-la immédiatement.',
+    },
   ];
 
   return (
     <main className="min-h-screen bg-background text-foreground">
       <SiteHeader />
       <section className="staffing-hero">
-        <div className="mx-auto grid max-w-6xl gap-7 px-5 py-8 sm:px-8 sm:py-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <div className="mx-auto grid max-w-6xl gap-7 px-5 py-7 sm:px-8 sm:py-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <div>
             <a href="/" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-[#085578]"><ArrowLeft className="size-4" /> Retour au site</a>
             <p className="eyebrow text-[#1e7a4a]">Planning et séances</p>
-            <h1 className="mt-3 hero-title text-[#073f5c]">Disponibilités + intérêts = les deux informations essentielles.</h1>
+            <h1 className="staffing-title mt-3 text-[#073f5c]">Mettez vos disponibilités dans l’appli dès que vous le pouvez.</h1>
             <p className="mt-5 body-large text-slate-650">
-              Chez Alpha Éducation, le staffing repose en grande partie sur ce
-              que vous renseignez dans l’application. Plus nous connaissons vos
-              disponibilités et vos intérêts, plus nous pouvons facilement vous
-              proposer et vous attribuer des séances.
+              Dès que vous avez la moindre disponibilité, même ponctuelle,
+              ajoutez-la dans l’application. C’est cette information qui nous
+              permet de savoir que nous pouvons vous proposer des séances.
             </p>
             <div className="staffing-equation mt-6">
-              <span>Disponibilités</span>
-              <strong>+</strong>
-              <span>Intérêts</span>
+              <span>J’ai une disponibilité</span>
+              <strong>→</strong>
+              <span>Je la mets dans l’appli</span>
               <strong>=</strong>
-              <span>Séances proposées</span>
+              <span>Alpha peut me proposer une séance</span>
             </div>
           </div>
-          <div className="app-screenshot-placeholder">
-            <div>
-              <p className="eyebrow text-[#085578]">Capture d’écran à ajouter</p>
-              <h2>Emplacement application</h2>
-              <p>
-                Ajoutez ici la capture montrant où renseigner vos disponibilités
-                et vos intérêts dans l’application Étude Alpha.
-              </p>
-            </div>
-          </div>
+          <figure className="staffing-app-visual">
+            <img src="/disponibilites-appli-alpha.png" alt="Capture de l’application Étude Alpha rappelant de renseigner ses disponibilités" />
+          </figure>
         </div>
       </section>
 
@@ -803,9 +800,9 @@ function StaffingPage() {
               <p className="eyebrow">À retenir</p>
               <h2>Vous voulez travailler la semaine prochaine ?</h2>
               <p>
-                Pensez à mettre à jour vos disponibilités et vos intérêts avant
-                jeudi soir. Le planning de la semaine suivante est principalement
-                construit le vendredi.
+                Pensez à mettre à jour vos disponibilités avant jeudi soir. Le
+                planning de la semaine suivante est principalement construit le
+                vendredi.
               </p>
             </div>
           </div>
@@ -815,16 +812,16 @@ function StaffingPage() {
       <section className="bg-[#f7faf9]">
         <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:px-8 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <p className="eyebrow text-[#ff751f]">Comment ça fonctionne</p>
-            <h2 className="mt-3 section-title text-[#073f5c]">Nous regardons en permanence les informations renseignées dans l’application.</h2>
+            <p className="eyebrow text-[#ff751f]">Deux onglets à utiliser</p>
+            <h2 className="mt-3 section-title text-[#073f5c]">Dans l’application, vous pouvez renseigner vos disponibilités à deux endroits.</h2>
             <p className="mt-5 body-large text-slate-650">
-              Les disponibilités déclarées et les intérêts manifestés constituent
-              l’une des principales bases utilisées pour attribuer les séances
-              et construire les plannings.
+              Les deux onglets “Disponibilités” sont utiles. Plus vos créneaux
+              sont complets, plus nous pouvons construire les plannings
+              efficacement.
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
-            {staffingInputs.map((item) => (
+            {availabilityTabs.map((item) => (
               <article key={item.title} className="staffing-info-card">
                 <CheckCircle2 className="size-5 text-[#1e7a4a]" />
                 <h3>{item.title}</h3>
@@ -836,30 +833,45 @@ function StaffingPage() {
       </section>
 
       <section className="bg-white">
+        <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8">
+          <div className="mb-5 max-w-3xl">
+            <p className="eyebrow text-[#1e7a4a]">Les deux bons réflexes</p>
+            <h2 className="mt-3 section-title text-[#073f5c]">L’idéal est de faire les deux.</h2>
+          </div>
+          <div className="grid gap-4 lg:grid-cols-2">
+            {availabilityWays.map((item, index) => (
+              <article key={item.title} className="staffing-panel">
+                <div className="staffing-number">{index + 1}</div>
+                <h3 className="mt-4 text-xl font-bold leading-tight text-[#073f5c]">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-650">{item.text}</p>
+              </article>
+            ))}
+          </div>
+          <p className="mt-5 guide-key-sentence">
+            Dès que vous savez que vous êtes disponible, indiquez-le dans
+            l’application. Même une disponibilité ponctuelle peut nous aider.
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-[#f7faf9]">
         <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:px-8 lg:grid-cols-2">
           <div className="staffing-panel">
-            <h2 className="section-title text-[#073f5c]">Même après jeudi, indiquez vos disponibilités.</h2>
+            <h2 className="section-title text-[#073f5c]">Même après jeudi, ce n’est jamais inutile.</h2>
             <p className="mt-4 body-large text-slate-650">
-              Il ne faut pas penser qu’une fois le jeudi passé, il est inutile
-              d’ajouter des disponibilités. Nous ajustons les plannings en
-              permanence.
+              Nous ajustons les plannings en permanence. Une disponibilité
+              ajoutée au dernier moment peut permettre de répondre à un nouveau
+              besoin, un remplacement ou une séance qui n’est pas encore
+              attribuée.
             </p>
             <p className="mt-4 rounded-md bg-[#eaf4ef] px-4 py-3 text-sm font-semibold leading-6 text-[#1e7a4a]">
-              Dès que vous savez que vous êtes disponible, même du jour pour le
-              lendemain, indiquez-le dans l’application.
+              Vous êtes disponible demain ? Ajoutez-le aujourd’hui dans
+              l’application.
             </p>
-            <ul className="mt-5 grid gap-2">
-              {lastMinuteReasons.map((reason) => (
-                <li key={reason} className="guide-list-item positive">
-                  <CheckCircle2 className="size-4" />
-                  <span>{reason}</span>
-                </li>
-              ))}
-            </ul>
           </div>
 
           <div className="staffing-panel commitment">
-            <h2 className="section-title text-[#073f5c]">Une disponibilité est un engagement.</h2>
+            <h2 className="section-title text-[#073f5c]">Une disponibilité reste un engagement.</h2>
             <p className="mt-4 body-large text-slate-650">
               Renseignez beaucoup de disponibilités lorsque vous en avez
               réellement : cela nous donne davantage de possibilités pour
@@ -879,15 +891,15 @@ function StaffingPage() {
         </div>
       </section>
 
-      <section className="bg-[#f7faf9]">
+      <section className="bg-white">
         <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8">
           <div className="staffing-final-card">
             <p className="eyebrow text-[#ff751f]">Le réflexe à prendre</p>
-            <h2>Plus vos informations sont à jour, plus le staffing est simple.</h2>
+            <h2>J’ai une disponibilité → je la mets dans l’appli.</h2>
             <p>
-              Mettez régulièrement à jour vos disponibilités et vos intérêts,
-              particulièrement le mercredi et le jeudi, mais aussi dès qu’une
-              nouvelle disponibilité apparaît.
+              Mettez vos disponibilités à jour régulièrement, particulièrement
+              le mercredi et le jeudi pour la semaine suivante, mais aussi dès
+              qu’une nouvelle disponibilité apparaît.
             </p>
           </div>
         </div>

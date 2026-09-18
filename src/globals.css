@@ -565,6 +565,13 @@ body {
   background: linear-gradient(180deg, #fbfdfc 0%, #f7faf9 100%);
 }
 
+.staffing-title {
+  font-size: clamp(2.55rem, 5.3vw, 5.15rem);
+  font-weight: 820;
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
 .staffing-equation {
   display: flex;
   flex-wrap: wrap;
@@ -595,52 +602,35 @@ body {
   color: #ff751f;
 }
 
-.app-screenshot-placeholder {
-  display: flex;
-  min-height: 23rem;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed rgb(8 85 120 / 28%);
+.staffing-app-visual {
+  overflow: hidden;
   border-radius: 0.5rem;
-  background:
-    linear-gradient(135deg, rgb(8 85 120 / 7%) 0%, rgb(30 122 74 / 7%) 100%),
-    #ffffff;
-  padding: 1.25rem;
-  text-align: center;
-  box-shadow: 0 18px 54px rgb(8 85 120 / 10%);
+  background: #ffffff;
+  box-shadow: 0 22px 62px rgb(8 85 120 / 14%);
 }
 
-.app-screenshot-placeholder h2 {
-  margin-top: 0.55rem;
-  color: #073f5c;
-  font-size: 1.45rem;
-  font-weight: 760;
-  line-height: 1.15;
-}
-
-.app-screenshot-placeholder p:not(.eyebrow) {
-  max-width: 22rem;
-  margin-top: 0.75rem;
-  color: #536879;
-  font-size: 0.95rem;
-  line-height: 1.6;
+.staffing-app-visual img {
+  display: block;
+  width: 100%;
+  max-height: 32rem;
+  object-fit: cover;
 }
 
 .staffing-deadline-card {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
-  border: 1px solid rgb(255 117 31 / 24%);
+  border: 1px solid rgb(30 122 74 / 22%);
   border-radius: 0.5rem;
-  background: #fff7f0;
+  background: #eaf4ef;
   padding: 1.2rem;
-  color: #8a3b07;
-  box-shadow: 0 14px 44px rgb(255 117 31 / 10%);
+  color: #145a37;
+  box-shadow: 0 14px 44px rgb(30 122 74 / 10%);
 }
 
 .staffing-deadline-card svg {
   flex: 0 0 auto;
-  color: #ff751f;
+  color: #1e7a4a;
 }
 
 .staffing-deadline-card h2 {
@@ -652,7 +642,7 @@ body {
 
 .staffing-deadline-card p:not(.eyebrow) {
   margin-top: 0.65rem;
-  color: #7b3407;
+  color: #19583a;
   font-size: 0.98rem;
   line-height: 1.6;
 }
@@ -683,6 +673,19 @@ body {
 
 .staffing-panel {
   height: 100%;
+}
+
+.staffing-number {
+  display: inline-flex;
+  width: 2.25rem;
+  height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #eaf4ef;
+  color: #1e7a4a;
+  font-size: 1rem;
+  font-weight: 800;
 }
 
 .staffing-panel.commitment {
@@ -790,8 +793,29 @@ body {
     font-size: 0.98rem;
   }
 
-  .app-screenshot-placeholder {
-    min-height: 18rem;
+  .staffing-title {
+    font-size: 2.25rem;
+    line-height: 1;
+  }
+
+  .staffing-app-visual {
+    order: -1;
+  }
+
+  .staffing-equation {
+    gap: 0.35rem;
+  }
+
+  .staffing-equation span,
+  .staffing-equation strong {
+    min-height: 2rem;
+    padding: 0.35rem 0.55rem;
+    font-size: 0.78rem;
+  }
+
+  .staffing-app-visual img {
+    max-height: 13rem;
+    object-position: center top;
   }
 
   .staffing-deadline-card {
