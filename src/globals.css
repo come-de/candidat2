@@ -583,6 +583,60 @@ body {
   line-height: 1.45;
 }
 
+.calendar-reminder-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 42rem;
+  border: 1px solid rgb(8 85 120 / 12%);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  padding: 0.8rem;
+  box-shadow: 0 10px 30px rgb(8 85 120 / 6%);
+}
+
+.calendar-reminder-card p {
+  margin: 0;
+  color: #536879;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.calendar-reminder-title {
+  color: #073f5c !important;
+  font-size: 0.95rem !important;
+  font-weight: 760;
+}
+
+.calendar-reminder-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: flex-end;
+}
+
+.calendar-reminder-actions a {
+  display: inline-flex;
+  min-height: 2.05rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.45rem;
+  padding: 0.35rem 0.65rem;
+  background: #eaf4ef;
+  color: #1e7a4a;
+  font-size: 0.78rem;
+  font-weight: 760;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.calendar-reminder-actions a:hover {
+  background: #1e7a4a;
+  color: #ffffff;
+}
+
 .staffing-equation {
   display: flex;
   flex-wrap: wrap;
@@ -813,6 +867,20 @@ body {
     display: flex;
     font-size: 0.94rem;
     line-height: 1.4;
+  }
+
+  .calendar-reminder-card {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .calendar-reminder-actions {
+    justify-content: stretch;
+  }
+
+  .calendar-reminder-actions a {
+    flex: 1 1 8.5rem;
   }
 
   .staffing-app-visual {

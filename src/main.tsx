@@ -134,7 +134,10 @@ const assignees: { value: Assignee | 'tous'; label: string }[] = [
 
 const ADMIN_PASSWORD_STORAGE_KEY = 'etude-alpha-admin-password';
 const GOOD_STUDY_PAGE = 'bonne-etude-alpha';
+const STAFFING_GOOGLE_CALENDAR_CLICK = 'staffing-calendar-google';
+const STAFFING_ICS_CALENDAR_CLICK = 'staffing-calendar-ics';
 const VISITOR_ID_STORAGE_KEY = 'etude-alpha-visitor-id';
+const GOOGLE_CALENDAR_REMINDER_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Mettre%20%C3%A0%20jour%20mes%20disponibilit%C3%A9s%20%C3%89tude%20Alpha&details=Pensez%20%C3%A0%20renseigner%20vos%20disponibilit%C3%A9s%20dans%20l%E2%80%99application%20%C3%89tude%20Alpha%20pour%20les%20s%C3%A9ances%20de%20la%20semaine%20suivante.&dates=20260923T180000/20260923T181500&recur=RRULE%3AFREQ%3DWEEKLY%3BBYDAY%3DWE';
 
 const annualIntentLabels: Record<AnnualIntent, string> = {
   continuer: 'Souhaite continuer',
@@ -777,6 +780,29 @@ function StaffingPage() {
               Deux façons de faire : avant jeudi soir, tout au long de la
               semaine, ou idéalement les deux.
             </p>
+            <div className="calendar-reminder-card mt-5">
+              <div>
+                <p className="calendar-reminder-title">Je mets un rappel dans mon agenda</p>
+                <p>Un rappel chaque mercredi pour penser à mettre mes disponibilités à jour.</p>
+              </div>
+              <div className="calendar-reminder-actions">
+                <a
+                  href={GOOGLE_CALENDAR_REMINDER_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => recordPageVisit(STAFFING_GOOGLE_CALENDAR_CLICK)}
+                >
+                  Google Calendar
+                </a>
+                <a
+                  href="/rappel-disponibilites-etude-alpha.ics"
+                  download
+                  onClick={() => recordPageVisit(STAFFING_ICS_CALENDAR_CLICK)}
+                >
+                  Apple / Outlook
+                </a>
+              </div>
+            </div>
             <p className="mt-5 body-large text-slate-650">
               Dès que vous avez la moindre disponibilité, même ponctuelle,
               ajoutez-la dans l’application. C’est cette information qui nous
@@ -1460,6 +1486,8 @@ function AdminPanel() {
 
 function PageViewsAdmin({ password }: { password: string }) {
   const [stats, setStats] = useState<PageViewStats | null>(null);
+  const [googleCalendarStats, setGoogleCalendarStats] = useState<PageViewStats | null>(null);
+  const [icsCalendarStats, setIcsCalendarStats] = useState<PageViewStats | null>(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -1471,10 +1499,15 @@ function PageViewsAdmin({ password }: { password: string }) {
     setError('');
     setIsLoading(true);
     try {
-      const response = await fetch(`/.netlify/functions/page-views?page=${GOOD_STUDY_PAGE}`, { headers: { 'x-admin-password': password } });
-      if (!response.ok) throw new Error('Impossible de charger les consultations.');
-      const result = (await response.json()) as { stats?: PageViewStats };
-      setStats(result.stats || null);
+      const pages = [GOOD_STUDY_PAGE, STAFFING_GOOGLE_CALENDAR_CLICK, STAFFING_ICS_CALENDAR_CLICK];
+      const responses = await Promise.all(
+        pages.map((page) => fetch(`/.netlify/functions/page-views?page=${page}`, { headers: { 'x-admin-password': password } })),
+      );
+      if (responses.some((response) => !response.ok)) throw new Error('Impossible de charger les consultations.');
+      const results = await Promise.all(responses.map((response) => response.json() as Promise<{ stats?: PageViewStats }>));
+      setStats(results[0]?.stats || null);
+      setGoogleCalendarStats(results[1]?.stats || null);
+      setIcsCalendarStats(results[2]?.stats || null);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : 'Chargement impossible.');
     } finally {
@@ -1514,6 +1547,25 @@ function PageViewsAdmin({ password }: { password: string }) {
       <p className="mt-4 rounded-md bg-[#f7faf9] px-4 py-3 text-sm leading-6 text-slate-650">
         Les visiteurs uniques sont estimés grâce à un identifiant anonyme conservé dans le navigateur. Cela donne une mesure simple et cohérente avec le site, sans service externe.
       </p>
+      <div className="mt-6 rounded-lg border border-[#085578]/12 bg-white p-5 shadow-[0_10px_32px_rgba(8,85,120,0.06)]">
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-lg font-bold text-[#073f5c]">Clics sur les rappels agenda</h2>
+            <p className="text-sm text-slate-600">Page suivie : Staffing tuteurs</p>
+          </div>
+          <a href="/staffing-etude-alpha" className="text-sm font-semibold text-[#085578]">Ouvrir la page</a>
+        </div>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <div className="rounded-md bg-[#f7faf9] p-4">
+            <p className="text-sm font-semibold text-slate-500">Google Calendar</p>
+            <p className="mt-2 text-3xl font-bold text-[#073f5c]">{googleCalendarStats?.total_visits ?? 0}</p>
+          </div>
+          <div className="rounded-md bg-[#f7faf9] p-4">
+            <p className="text-sm font-semibold text-slate-500">Apple / Outlook</p>
+            <p className="mt-2 text-3xl font-bold text-[#1e7a4a]">{icsCalendarStats?.total_visits ?? 0}</p>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

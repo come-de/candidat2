@@ -9,7 +9,11 @@ type PageView = {
   created_at: string;
 };
 
-const trackedPages = new Set(['bonne-etude-alpha']);
+const trackedPages = new Set([
+  'bonne-etude-alpha',
+  'staffing-calendar-google',
+  'staffing-calendar-ics',
+]);
 
 function isTrackedPage(page: unknown): page is string {
   return typeof page === 'string' && trackedPages.has(page);
