@@ -184,6 +184,7 @@ function App() {
   if (path === '/etude-alpha-2026-2027') return <AnnualQuestionnairePage />;
   if (path === '/bonne-etude-alpha') return <GoodStudyPage />;
   if (path === '/staffing-etude-alpha') return <StaffingPage />;
+  if (path === '/rappel-dispos') return <CalendarReminderPage />;
   if (path === '/confirmation') return <ConfirmationPage />;
   if (path === '/admin') return <AdminPage />;
   return <HomePage />;
@@ -946,6 +947,50 @@ function StaffingPage() {
           </div>
         </div>
       </section>
+    </main>
+  );
+}
+
+function CalendarReminderPage() {
+  useNoIndexPage('Rappel disponibilités');
+
+  return (
+    <main className="calendar-page min-h-screen bg-[#f7faf9] px-5 py-6 text-foreground sm:px-8">
+      <div className="mx-auto flex min-h-[calc(100vh-3rem)] max-w-xl flex-col justify-center">
+        <div className="calendar-page-card">
+          <img src="/logo-etude-alpha.png" alt="L'Étude Alpha" className="h-12 w-auto" />
+          <p className="eyebrow mt-8 text-[#1e7a4a]">Rappel agenda</p>
+          <h1>Penser à mettre mes disponibilités dans l’appli.</h1>
+          <p className="mt-4 body-large text-slate-650">
+            Ajoutez un rappel hebdomadaire à votre agenda pour penser à mettre
+            vos disponibilités Étude Alpha à jour.
+          </p>
+          <div className="calendar-page-actions">
+            <a
+              href="/rappel-disponibilites-etude-alpha.ics"
+              download
+              onClick={() => recordPageVisit(STAFFING_ICS_CALENDAR_CLICK)}
+            >
+              Je suis sur iPhone
+            </a>
+            <a
+              href={GOOGLE_CALENDAR_REMINDER_URL}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => recordPageVisit(STAFFING_GOOGLE_CALENDAR_CLICK)}
+            >
+              Je suis sur Android
+            </a>
+          </div>
+          <p className="mt-5 text-sm leading-6 text-slate-600">
+            Le rappel est prévu chaque mercredi à 18h, avant la préparation des
+            plannings de la semaine suivante.
+          </p>
+          <a href="/staffing-etude-alpha" className="mt-7 inline-flex text-sm font-semibold text-[#085578]">
+            Comprendre le fonctionnement du staffing
+          </a>
+        </div>
+      </div>
     </main>
   );
 }
