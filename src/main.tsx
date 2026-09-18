@@ -137,7 +137,8 @@ const GOOD_STUDY_PAGE = 'bonne-etude-alpha';
 const STAFFING_GOOGLE_CALENDAR_CLICK = 'staffing-calendar-google';
 const STAFFING_ICS_CALENDAR_CLICK = 'staffing-calendar-ics';
 const VISITOR_ID_STORAGE_KEY = 'etude-alpha-visitor-id';
-const GOOGLE_CALENDAR_REMINDER_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Mettre%20%C3%A0%20jour%20mes%20disponibilit%C3%A9s%20%C3%89tude%20Alpha&details=Pensez%20%C3%A0%20renseigner%20vos%20disponibilit%C3%A9s%20dans%20l%E2%80%99application%20%C3%89tude%20Alpha%20pour%20les%20s%C3%A9ances%20de%20la%20semaine%20suivante.&dates=20260922T180000/20260922T181500&recur=RRULE%3AFREQ%3DWEEKLY%3BBYDAY%3DTU%2CWE';
+const GOOGLE_CALENDAR_TUESDAY_REMINDER_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Mettre%20%C3%A0%20jour%20mes%20disponibilit%C3%A9s%20%C3%89tude%20Alpha&details=Pensez%20%C3%A0%20renseigner%20vos%20disponibilit%C3%A9s%20dans%20l%E2%80%99application%20%C3%89tude%20Alpha%20pour%20les%20s%C3%A9ances%20de%20la%20semaine%20suivante.&dates=20260922T180000/20260922T181500&recur=RRULE%3AFREQ%3DWEEKLY%3BBYDAY%3DTU';
+const GOOGLE_CALENDAR_WEDNESDAY_REMINDER_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Mettre%20%C3%A0%20jour%20mes%20disponibilit%C3%A9s%20%C3%89tude%20Alpha&details=Pensez%20%C3%A0%20renseigner%20vos%20disponibilit%C3%A9s%20dans%20l%E2%80%99application%20%C3%89tude%20Alpha%20pour%20les%20s%C3%A9ances%20de%20la%20semaine%20suivante.&dates=20260923T180000/20260923T181500&recur=RRULE%3AFREQ%3DWEEKLY%3BBYDAY%3DWE';
 
 const annualIntentLabels: Record<AnnualIntent, string> = {
   continuer: 'Souhaite continuer',
@@ -793,12 +794,20 @@ function StaffingPage() {
                 iOS
               </a>
               <a
-                href={GOOGLE_CALENDAR_REMINDER_URL}
+                href={GOOGLE_CALENDAR_TUESDAY_REMINDER_URL}
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => recordPageVisit(STAFFING_GOOGLE_CALENDAR_CLICK)}
               >
-                Android
+                Android mardi
+              </a>
+              <a
+                href={GOOGLE_CALENDAR_WEDNESDAY_REMINDER_URL}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => recordPageVisit(STAFFING_GOOGLE_CALENDAR_CLICK)}
+              >
+                Android mercredi
               </a>
             </div>
           ) : (
@@ -973,13 +982,22 @@ function CalendarReminderPage() {
             >
               Je suis sur iPhone
             </a>
+            <p className="calendar-page-choice-note">Sur Android, ajoutez les deux rappels Google :</p>
             <a
-              href={GOOGLE_CALENDAR_REMINDER_URL}
+              href={GOOGLE_CALENDAR_TUESDAY_REMINDER_URL}
               target="_blank"
               rel="noreferrer"
               onClick={() => recordPageVisit(STAFFING_GOOGLE_CALENDAR_CLICK)}
             >
-              Je suis sur Android
+              Ajouter le rappel du mardi
+            </a>
+            <a
+              href={GOOGLE_CALENDAR_WEDNESDAY_REMINDER_URL}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => recordPageVisit(STAFFING_GOOGLE_CALENDAR_CLICK)}
+            >
+              Ajouter le rappel du mercredi
             </a>
           </div>
           <p className="mt-5 text-sm leading-6 text-slate-600">
