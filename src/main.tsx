@@ -137,7 +137,7 @@ const GOOD_STUDY_PAGE = 'bonne-etude-alpha';
 const STAFFING_GOOGLE_CALENDAR_CLICK = 'staffing-calendar-google';
 const STAFFING_ICS_CALENDAR_CLICK = 'staffing-calendar-ics';
 const VISITOR_ID_STORAGE_KEY = 'etude-alpha-visitor-id';
-const GOOGLE_CALENDAR_REMINDER_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Mettre%20%C3%A0%20jour%20mes%20disponibilit%C3%A9s%20%C3%89tude%20Alpha&details=Pensez%20%C3%A0%20renseigner%20vos%20disponibilit%C3%A9s%20dans%20l%E2%80%99application%20%C3%89tude%20Alpha%20pour%20les%20s%C3%A9ances%20de%20la%20semaine%20suivante.&dates=20260923T180000/20260923T181500&recur=RRULE%3AFREQ%3DWEEKLY%3BBYDAY%3DWE';
+const GOOGLE_CALENDAR_REMINDER_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Mettre%20%C3%A0%20jour%20mes%20disponibilit%C3%A9s%20%C3%89tude%20Alpha&details=Pensez%20%C3%A0%20renseigner%20vos%20disponibilit%C3%A9s%20dans%20l%E2%80%99application%20%C3%89tude%20Alpha%20pour%20les%20s%C3%A9ances%20de%20la%20semaine%20suivante.&dates=20260922T180000/20260922T181500&recur=RRULE%3AFREQ%3DWEEKLY%3BBYDAY%3DTU%2CWE';
 
 const annualIntentLabels: Record<AnnualIntent, string> = {
   continuer: 'Souhaite continuer',
@@ -962,8 +962,8 @@ function CalendarReminderPage() {
           <p className="eyebrow mt-8 text-[#1e7a4a]">Rappel agenda</p>
           <h1>Penser à mettre mes disponibilités dans l’appli.</h1>
           <p className="mt-4 body-large text-slate-650">
-            Ajoutez un rappel hebdomadaire à votre agenda pour penser à mettre
-            vos disponibilités Étude Alpha à jour.
+            Ajoutez deux rappels hebdomadaires à votre agenda pour penser à
+            mettre vos disponibilités Étude Alpha à jour.
           </p>
           <div className="calendar-page-actions">
             <a
@@ -983,8 +983,8 @@ function CalendarReminderPage() {
             </a>
           </div>
           <p className="mt-5 text-sm leading-6 text-slate-600">
-            Le rappel est prévu chaque mercredi à 18h, avant la préparation des
-            plannings de la semaine suivante.
+            Les rappels sont prévus chaque mardi et mercredi à 18h, avant la
+            préparation des plannings de la semaine suivante.
           </p>
           <a href="/staffing-etude-alpha" className="mt-7 inline-flex text-sm font-semibold text-[#085578]">
             Comprendre le fonctionnement du staffing
