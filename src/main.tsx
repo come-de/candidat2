@@ -744,6 +744,7 @@ function GoodStudyPage() {
 
 function StaffingPage() {
   useNoIndexPage('Staffing Étude Alpha');
+  const [isCalendarChoiceOpen, setIsCalendarChoiceOpen] = useState(false);
 
   const availabilityTabs = [
     {
@@ -770,6 +771,40 @@ function StaffingPage() {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <SiteHeader />
+      <div className="calendar-reminder-strip">
+        <div className="calendar-reminder-strip-inner">
+          <button
+            type="button"
+            className="calendar-reminder-trigger"
+            onClick={() => setIsCalendarChoiceOpen((isOpen) => !isOpen)}
+            aria-expanded={isCalendarChoiceOpen}
+          >
+            <CalendarCheck className="size-4" />
+            Je mets un rappel dans mon agenda
+          </button>
+          {isCalendarChoiceOpen ? (
+            <div className="calendar-reminder-actions">
+              <a
+                href="/rappel-disponibilites-etude-alpha.ics"
+                download
+                onClick={() => recordPageVisit(STAFFING_ICS_CALENDAR_CLICK)}
+              >
+                iOS
+              </a>
+              <a
+                href={GOOGLE_CALENDAR_REMINDER_URL}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => recordPageVisit(STAFFING_GOOGLE_CALENDAR_CLICK)}
+              >
+                Android
+              </a>
+            </div>
+          ) : (
+            <p>Choisissez iOS ou Android au clic.</p>
+          )}
+        </div>
+      </div>
       <section className="staffing-hero">
         <div className="mx-auto grid max-w-6xl gap-7 px-5 py-7 sm:px-8 sm:py-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <div>
@@ -780,29 +815,6 @@ function StaffingPage() {
               Deux façons de faire : avant jeudi soir, tout au long de la
               semaine, ou idéalement les deux.
             </p>
-            <div className="calendar-reminder-card mt-5">
-              <div>
-                <p className="calendar-reminder-title">Je mets un rappel dans mon agenda</p>
-                <p>Un rappel chaque mercredi pour penser à mettre mes disponibilités à jour.</p>
-              </div>
-              <div className="calendar-reminder-actions">
-                <a
-                  href={GOOGLE_CALENDAR_REMINDER_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={() => recordPageVisit(STAFFING_GOOGLE_CALENDAR_CLICK)}
-                >
-                  Google Calendar
-                </a>
-                <a
-                  href="/rappel-disponibilites-etude-alpha.ics"
-                  download
-                  onClick={() => recordPageVisit(STAFFING_ICS_CALENDAR_CLICK)}
-                >
-                  Apple / Outlook
-                </a>
-              </div>
-            </div>
             <p className="mt-5 body-large text-slate-650">
               Dès que vous avez la moindre disponibilité, même ponctuelle,
               ajoutez-la dans l’application. C’est cette information qui nous
