@@ -773,6 +773,10 @@ function StaffingPage() {
             <a href="/" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-[#085578]"><ArrowLeft className="size-4" /> Retour au site</a>
             <p className="eyebrow text-[#1e7a4a]">Planning et séances</p>
             <h1 className="staffing-title mt-3 text-[#073f5c]">Mettez vos disponibilités dans l’appli dès que vous le pouvez.</h1>
+            <p className="staffing-subtitle mt-4">
+              Deux façons de faire : avant jeudi soir, tout au long de la
+              semaine, ou idéalement les deux.
+            </p>
             <p className="mt-5 body-large text-slate-650">
               Dès que vous avez la moindre disponibilité, même ponctuelle,
               ajoutez-la dans l’application. C’est cette information qui nous

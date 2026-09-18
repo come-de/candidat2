@@ -566,10 +566,21 @@ body {
 }
 
 .staffing-title {
-  font-size: clamp(2.55rem, 5.3vw, 5.15rem);
+  font-size: clamp(2.25rem, 4.4vw, 4.2rem);
   font-weight: 820;
-  line-height: 0.98;
+  line-height: 1.03;
   letter-spacing: 0;
+}
+
+.staffing-subtitle {
+  display: inline-flex;
+  max-width: 42rem;
+  border-left: 4px solid #1e7a4a;
+  padding: 0.55rem 0 0.55rem 0.85rem;
+  color: #145a37;
+  font-size: 1.02rem;
+  font-weight: 760;
+  line-height: 1.45;
 }
 
 .staffing-equation {
@@ -794,8 +805,14 @@ body {
   }
 
   .staffing-title {
-    font-size: 2.25rem;
-    line-height: 1;
+    font-size: 1.95rem;
+    line-height: 1.04;
+  }
+
+  .staffing-subtitle {
+    display: flex;
+    font-size: 0.94rem;
+    line-height: 1.4;
   }
 
   .staffing-app-visual {
