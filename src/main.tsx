@@ -180,6 +180,7 @@ function App() {
   if (path === '/postuler') return <ApplyPage />;
   if (path === '/etude-alpha-2026-2027') return <AnnualQuestionnairePage />;
   if (path === '/bonne-etude-alpha') return <GoodStudyPage />;
+  if (path === '/staffing-etude-alpha') return <StaffingPage />;
   if (path === '/confirmation') return <ConfirmationPage />;
   if (path === '/admin') return <AdminPage />;
   return <HomePage />;
@@ -738,6 +739,177 @@ function GoodStudyPage() {
   );
 }
 
+function StaffingPage() {
+  useNoIndexPage('Staffing Étude Alpha');
+
+  const staffingInputs = [
+    {
+      title: 'Vos disponibilités',
+      text: 'Elles nous indiquent les créneaux sur lesquels nous pouvons raisonnablement vous proposer une séance.',
+    },
+    {
+      title: 'Vos intérêts',
+      text: 'Ils nous aident à repérer les séances, lieux ou formats qui vous conviennent le mieux.',
+    },
+  ];
+
+  const lastMinuteReasons = [
+    'un nouveau besoin d’un établissement',
+    'un remplacement à organiser',
+    'une séance encore non staffée',
+  ];
+
+  return (
+    <main className="min-h-screen bg-background text-foreground">
+      <SiteHeader />
+      <section className="staffing-hero">
+        <div className="mx-auto grid max-w-6xl gap-7 px-5 py-8 sm:px-8 sm:py-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+          <div>
+            <a href="/" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-[#085578]"><ArrowLeft className="size-4" /> Retour au site</a>
+            <p className="eyebrow text-[#1e7a4a]">Planning et séances</p>
+            <h1 className="mt-3 hero-title text-[#073f5c]">Disponibilités + intérêts = les deux informations essentielles.</h1>
+            <p className="mt-5 body-large text-slate-650">
+              Chez Alpha Éducation, le staffing repose en grande partie sur ce
+              que vous renseignez dans l’application. Plus nous connaissons vos
+              disponibilités et vos intérêts, plus nous pouvons facilement vous
+              proposer et vous attribuer des séances.
+            </p>
+            <div className="staffing-equation mt-6">
+              <span>Disponibilités</span>
+              <strong>+</strong>
+              <span>Intérêts</span>
+              <strong>=</strong>
+              <span>Séances proposées</span>
+            </div>
+          </div>
+          <div className="app-screenshot-placeholder">
+            <div>
+              <p className="eyebrow text-[#085578]">Capture d’écran à ajouter</p>
+              <h2>Emplacement application</h2>
+              <p>
+                Ajoutez ici la capture montrant où renseigner vos disponibilités
+                et vos intérêts dans l’application Étude Alpha.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white">
+        <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8">
+          <div className="staffing-deadline-card">
+            <Clock3 className="size-6" />
+            <div>
+              <p className="eyebrow">À retenir</p>
+              <h2>Vous voulez travailler la semaine prochaine ?</h2>
+              <p>
+                Pensez à mettre à jour vos disponibilités et vos intérêts avant
+                jeudi soir. Le planning de la semaine suivante est principalement
+                construit le vendredi.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f7faf9]">
+        <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:px-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <p className="eyebrow text-[#ff751f]">Comment ça fonctionne</p>
+            <h2 className="mt-3 section-title text-[#073f5c]">Nous regardons en permanence les informations renseignées dans l’application.</h2>
+            <p className="mt-5 body-large text-slate-650">
+              Les disponibilités déclarées et les intérêts manifestés constituent
+              l’une des principales bases utilisées pour attribuer les séances
+              et construire les plannings.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {staffingInputs.map((item) => (
+              <article key={item.title} className="staffing-info-card">
+                <CheckCircle2 className="size-5 text-[#1e7a4a]" />
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white">
+        <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:px-8 lg:grid-cols-2">
+          <div className="staffing-panel">
+            <h2 className="section-title text-[#073f5c]">Même après jeudi, indiquez vos disponibilités.</h2>
+            <p className="mt-4 body-large text-slate-650">
+              Il ne faut pas penser qu’une fois le jeudi passé, il est inutile
+              d’ajouter des disponibilités. Nous ajustons les plannings en
+              permanence.
+            </p>
+            <p className="mt-4 rounded-md bg-[#eaf4ef] px-4 py-3 text-sm font-semibold leading-6 text-[#1e7a4a]">
+              Dès que vous savez que vous êtes disponible, même du jour pour le
+              lendemain, indiquez-le dans l’application.
+            </p>
+            <ul className="mt-5 grid gap-2">
+              {lastMinuteReasons.map((reason) => (
+                <li key={reason} className="guide-list-item positive">
+                  <CheckCircle2 className="size-4" />
+                  <span>{reason}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="staffing-panel commitment">
+            <h2 className="section-title text-[#073f5c]">Une disponibilité est un engagement.</h2>
+            <p className="mt-4 body-large text-slate-650">
+              Renseignez beaucoup de disponibilités lorsque vous en avez
+              réellement : cela nous donne davantage de possibilités pour
+              construire les plannings.
+            </p>
+            <p className="mt-4 guide-key-sentence">
+              Ne renseignez comme disponible qu’un créneau sur lequel vous êtes
+              réellement disponible.
+            </p>
+            <p className="mt-4 text-sm leading-6 text-slate-650">
+              Lorsqu’une séance est attribuée et que le planning est établi,
+              nous comptons sur vous pour assurer la séance. Une disponibilité
+              renseignée ne doit donc pas être une simple possibilité
+              hypothétique.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f7faf9]">
+        <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8">
+          <div className="staffing-final-card">
+            <p className="eyebrow text-[#ff751f]">Le réflexe à prendre</p>
+            <h2>Plus vos informations sont à jour, plus le staffing est simple.</h2>
+            <p>
+              Mettez régulièrement à jour vos disponibilités et vos intérêts,
+              particulièrement le mercredi et le jeudi, mais aussi dès qu’une
+              nouvelle disponibilité apparaît.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function useNoIndexPage(title: string) {
+  useEffect(() => {
+    document.title = `${title} | Étude Alpha`;
+    const existingRobotsMeta = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
+    const robotsMeta = existingRobotsMeta || document.createElement('meta');
+    robotsMeta.name = 'robots';
+    robotsMeta.content = 'noindex, nofollow';
+
+    if (!existingRobotsMeta) {
+      document.head.appendChild(robotsMeta);
+    }
+  }, [title]);
+}
+
 function getVisitorId() {
   if (typeof window === 'undefined') return '';
 
@@ -1080,6 +1252,7 @@ function AdminPage() {
             <a href="https://orga-victoire.netlify.app" target="_blank" rel="noreferrer" className="inline-flex h-10 items-center justify-center rounded-lg border border-[#085578]/20 bg-white px-4 text-sm font-semibold text-[#085578]">
               Espace gestion Alpha (même mot de passe)
             </a>
+            <a href="/staffing-etude-alpha" className="text-sm font-semibold text-[#085578]">Staffing tuteurs</a>
             <a href="/bonne-etude-alpha" className="text-sm font-semibold text-[#085578]">Bonne Étude Alpha</a>
             <a href="/etude-alpha-2026-2027" className="text-sm font-semibold text-[#085578]">Questionnaire 2026-2027</a>
             <a href="/postuler" className="text-sm font-semibold text-[#085578]">Lien direct du formulaire</a>

@@ -560,6 +560,155 @@ body {
   background: #dc2626;
 }
 
+.staffing-hero {
+  border-bottom: 1px solid rgb(8 85 120 / 10%);
+  background: linear-gradient(180deg, #fbfdfc 0%, #f7faf9 100%);
+}
+
+.staffing-equation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.staffing-equation span,
+.staffing-equation strong {
+  display: inline-flex;
+  min-height: 2.35rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 760;
+}
+
+.staffing-equation span {
+  border: 1px solid rgb(8 85 120 / 14%);
+  background: #ffffff;
+  color: #073f5c;
+  box-shadow: 0 8px 24px rgb(8 85 120 / 5%);
+}
+
+.staffing-equation strong {
+  color: #ff751f;
+}
+
+.app-screenshot-placeholder {
+  display: flex;
+  min-height: 23rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed rgb(8 85 120 / 28%);
+  border-radius: 0.5rem;
+  background:
+    linear-gradient(135deg, rgb(8 85 120 / 7%) 0%, rgb(30 122 74 / 7%) 100%),
+    #ffffff;
+  padding: 1.25rem;
+  text-align: center;
+  box-shadow: 0 18px 54px rgb(8 85 120 / 10%);
+}
+
+.app-screenshot-placeholder h2 {
+  margin-top: 0.55rem;
+  color: #073f5c;
+  font-size: 1.45rem;
+  font-weight: 760;
+  line-height: 1.15;
+}
+
+.app-screenshot-placeholder p:not(.eyebrow) {
+  max-width: 22rem;
+  margin-top: 0.75rem;
+  color: #536879;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.staffing-deadline-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  border: 1px solid rgb(255 117 31 / 24%);
+  border-radius: 0.5rem;
+  background: #fff7f0;
+  padding: 1.2rem;
+  color: #8a3b07;
+  box-shadow: 0 14px 44px rgb(255 117 31 / 10%);
+}
+
+.staffing-deadline-card svg {
+  flex: 0 0 auto;
+  color: #ff751f;
+}
+
+.staffing-deadline-card h2 {
+  margin-top: 0.3rem;
+  font-size: clamp(1.25rem, 2.2vw, 1.85rem);
+  font-weight: 780;
+  line-height: 1.14;
+}
+
+.staffing-deadline-card p:not(.eyebrow) {
+  margin-top: 0.65rem;
+  color: #7b3407;
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.staffing-info-card,
+.staffing-panel,
+.staffing-final-card {
+  border: 1px solid rgb(8 85 120 / 12%);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  padding: 1.15rem;
+  box-shadow: 0 12px 36px rgb(8 85 120 / 7%);
+}
+
+.staffing-info-card h3 {
+  margin-top: 0.8rem;
+  color: #073f5c;
+  font-size: 1.05rem;
+  font-weight: 750;
+}
+
+.staffing-info-card p {
+  margin-top: 0.45rem;
+  color: #536879;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.staffing-panel {
+  height: 100%;
+}
+
+.staffing-panel.commitment {
+  border-color: rgb(255 117 31 / 20%);
+}
+
+.staffing-final-card {
+  text-align: center;
+}
+
+.staffing-final-card h2 {
+  margin-top: 0.5rem;
+  color: #073f5c;
+  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+  font-weight: 780;
+  line-height: 1.16;
+}
+
+.staffing-final-card p:not(.eyebrow) {
+  max-width: 42rem;
+  margin: 1rem auto 0;
+  color: #536879;
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
 @media (max-width: 640px) {
   .hero-title {
     font-size: 2rem;
@@ -639,5 +788,20 @@ body {
   .guide-key-sentence {
     padding: 0.9rem;
     font-size: 0.98rem;
+  }
+
+  .app-screenshot-placeholder {
+    min-height: 18rem;
+  }
+
+  .staffing-deadline-card {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .staffing-info-card,
+  .staffing-panel,
+  .staffing-final-card {
+    padding: 1rem;
   }
 }
