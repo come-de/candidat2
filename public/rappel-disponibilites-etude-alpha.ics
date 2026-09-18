@@ -4,21 +4,7 @@ PRODID:-//Alpha Education//Disponibilites Etude Alpha//FR
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-UID:rappel-disponibilites-mardi-etude-alpha@alphaeducation.fr
-DTSTAMP:20260918T120000Z
-DTSTART:20260922T180000
-DURATION:PT15M
-RRULE:FREQ=WEEKLY;BYDAY=TU
-SUMMARY:Mettre a jour mes disponibilites Etude Alpha
-DESCRIPTION:Pensez a renseigner vos disponibilites dans l'application Etude Alpha pour les seances de la semaine suivante.
-BEGIN:VALARM
-ACTION:DISPLAY
-DESCRIPTION:Mettre a jour mes disponibilites Etude Alpha
-TRIGGER:-PT1H
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-UID:rappel-disponibilites-mercredi-etude-alpha@alphaeducation.fr
+UID:rappel-disponibilites-etude-alpha@alphaeducation.fr
 DTSTAMP:20260918T120000Z
 DTSTART:20260923T180000
 DURATION:PT15M

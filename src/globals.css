@@ -813,14 +813,6 @@ body {
   margin-top: 1.4rem;
 }
 
-.calendar-page-choice-note {
-  margin: 0.2rem 0 -0.15rem;
-  color: #536879;
-  font-size: 0.86rem;
-  font-weight: 700;
-  line-height: 1.4;
-}
-
 .calendar-page-actions a {
   display: flex;
   min-height: 3.25rem;
