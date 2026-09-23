@@ -138,6 +138,7 @@ const STAFFING_GOOGLE_CALENDAR_CLICK = 'staffing-calendar-google';
 const STAFFING_ICS_CALENDAR_CLICK = 'staffing-calendar-ics';
 const VISITOR_ID_STORAGE_KEY = 'etude-alpha-visitor-id';
 const GOOGLE_CALENDAR_REMINDER_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Mettre%20%C3%A0%20jour%20mes%20disponibilit%C3%A9s%20%C3%89tude%20Alpha&details=Pensez%20%C3%A0%20renseigner%20vos%20disponibilit%C3%A9s%20dans%20l%E2%80%99application%20%C3%89tude%20Alpha%20pour%20les%20s%C3%A9ances%20de%20la%20semaine%20suivante.&dates=20260923T180000/20260923T181500&recur=RRULE%3AFREQ%3DWEEKLY%3BBYDAY%3DWE';
+const ALPHA_CANDIDATE_SIGNUP_URL = 'https://www.alphaeducation.fr/candidates/sign_up';
 
 const annualIntentLabels: Record<AnnualIntent, string> = {
   continuer: 'Souhaite continuer',
@@ -151,16 +152,16 @@ const annualStatusLabels: Record<AnnualResponseStatus, string> = {
 
 const selectionSteps = [
   {
-    title: 'Présélection rapide',
-    text: 'Vous nous transmettez l’essentiel de votre profil, sans CV à cette étape.',
+    title: 'Découverte de l’Étude Alpha',
+    text: 'Cette page vous présente le cadre des missions, l’organisation et le niveau d’exigence attendu.',
   },
   {
-    title: 'Échange avec l’équipe',
-    text: 'Si votre profil correspond, vous recevrez probablement un appel de nos services.',
+    title: 'Candidature sur Alpha Education',
+    text: 'Vous poursuivez ensuite votre candidature sur la plateforme officielle Alpha Education.',
   },
   {
-    title: 'Parcours Alpha Education',
-    text: 'Vous complétez ensuite votre profil, découvrez l’Étude Alpha en ligne et passez un entretien.',
+    title: 'Présentation et entretien',
+    text: 'Vous complétez votre profil, découvrez l’Étude Alpha en ligne et échangez avec l’équipe.',
   },
 ];
 
@@ -180,7 +181,7 @@ const schoolFacts = [
 function App() {
   const path = window.location.pathname;
 
-  if (path === '/postuler') return <ApplyPage />;
+  if (path === '/postuler') return <ExternalApplyRedirect />;
   if (path === '/etude-alpha-2026-2027') return <AnnualQuestionnairePage />;
   if (path === '/bonne-etude-alpha') return <GoodStudyPage />;
   if (path === '/staffing-etude-alpha') return <StaffingPage />;
@@ -199,11 +200,11 @@ function HomePage() {
         <div className="mobile-hero-card sm:hidden">
           <img src="/college.png" alt="Tutrice accompagnant des élèves de collège" />
           <div className="mobile-hero-overlay">
-            <p className="eyebrow text-white/80">Recrutement Étude Alpha</p>
+            <p className="eyebrow text-white/80">Présentation Étude Alpha</p>
             <h1>Devenir tuteur ou surveillant Alpha</h1>
             <p>Missions en établissements scolaires, du CP à la terminale.</p>
-            <a href="/postuler" className="brand-button mobile-full-cta inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold">
-              Postuler en 2 minutes <ArrowRight className="size-4" />
+            <a href={ALPHA_CANDIDATE_SIGNUP_URL} className="brand-button mobile-full-cta inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold">
+              Postuler sur Alpha Education <ArrowRight className="size-4" />
             </a>
           </div>
         </div>
@@ -221,20 +222,20 @@ function HomePage() {
             aucune mission pendant plusieurs semaines, selon vos disponibilités.
           </p>
           <p className="mt-5 max-w-2xl rounded-md border border-[#ff751f]/25 bg-[#fff7f0] px-4 py-3 text-sm font-semibold leading-6 text-[#8a3b07]">
-            Cette étape est volontairement courte : aucun CV n’est demandé. Si
-            votre profil est retenu, la suite du parcours peut souvent être
-            réalisée en moins de 24h.
+            Cette page présente l’Étude Alpha, les missions proposées et le
+            cadre d’intervention. La candidature se fait ensuite directement
+            sur la plateforme officielle Alpha Education.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a href="/postuler" className="brand-button mobile-full-cta inline-flex h-12 items-center justify-center gap-2 rounded-lg px-5 text-[0.95rem] font-semibold">
-              Postuler en 2 minutes <ArrowRight className="size-4" />
+            <a href={ALPHA_CANDIDATE_SIGNUP_URL} className="brand-button mobile-full-cta inline-flex h-12 items-center justify-center gap-2 rounded-lg px-5 text-[0.95rem] font-semibold">
+              Postuler sur Alpha Education <ArrowRight className="size-4" />
             </a>
             <a href="#mission" className="hidden h-12 items-center justify-center rounded-lg border border-[#085578]/20 px-5 text-[0.95rem] font-semibold text-[#085578] sm:inline-flex">
               Comprendre la mission
             </a>
           </div>
           <div className="mt-8 grid max-w-2xl gap-3 text-sm text-slate-600 sm:grid-cols-3">
-            <span className="inline-flex items-center gap-2"><CheckCircle2 className="size-4 text-[#1e7a4a]" /> Présélection rapide</span>
+            <span className="inline-flex items-center gap-2"><CheckCircle2 className="size-4 text-[#1e7a4a]" /> Présentation claire</span>
             <span className="inline-flex items-center gap-2"><Clock3 className="size-4 text-[#ff751f]" /> Du CP à la terminale</span>
             <span className="inline-flex items-center gap-2"><ShieldCheck className="size-4 text-[#085578]" /> En établissement</span>
           </div>
@@ -254,11 +255,12 @@ function HomePage() {
         <div className="official-banner">
           <span className="official-badge"><ShieldCheck className="size-4" /> Sous-domaine officiel</span>
           <p>
-            Ce site d’Alpha Education est dédié à la présélection des candidats.
-            Les missions ont lieu uniquement dans des établissements scolaires.
-            Les profils retenus finalisent ensuite leur candidature sur{' '}
-            <a href="https://www.alphaeducation.fr" className="font-semibold text-[#085578]">
-              www.alphaeducation.fr
+            Ce site d’Alpha Education présente l’Étude Alpha et le cadre des
+            missions proposées aux futurs tuteurs et surveillants. Les missions
+            ont lieu uniquement dans des établissements scolaires. Pour
+            candidater, rendez-vous ensuite sur{' '}
+            <a href={ALPHA_CANDIDATE_SIGNUP_URL} className="font-semibold text-[#085578]">
+              la plateforme Alpha Education
             </a>
             .
           </p>
@@ -305,8 +307,8 @@ function HomePage() {
                 <span>Choisir uniquement les missions qui correspondent à votre profil.</span>
               </div>
             </div>
-            <a href="/postuler" className="brand-button mobile-full-cta mt-6 inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold">
-              Postuler en 2 minutes <ArrowRight className="size-4" />
+            <a href={ALPHA_CANDIDATE_SIGNUP_URL} className="brand-button mobile-full-cta mt-6 inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold">
+              Postuler sur Alpha Education <ArrowRight className="size-4" />
             </a>
           </div>
         </div>
@@ -323,8 +325,8 @@ function HomePage() {
               place, un référent peut aider les intervenants, répondre aux
               questions et faciliter l’organisation.
             </p>
-            <a href="/postuler" className="brand-button mobile-full-cta mt-6 inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold">
-              Commencer la présélection <ArrowRight className="size-4" />
+            <a href={ALPHA_CANDIDATE_SIGNUP_URL} className="brand-button mobile-full-cta mt-6 inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold">
+              Déposer ma candidature <ArrowRight className="size-4" />
             </a>
           </div>
           <div className="school-proof-grid">
@@ -348,12 +350,12 @@ function HomePage() {
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div>
               <p className="eyebrow text-[#ff751f]">Parcours candidat</p>
-              <h2 className="mt-3 section-title text-[#073f5c]">Une sélection claire, sans lourdeur inutile.</h2>
+              <h2 className="mt-3 section-title text-[#073f5c]">Comprendre l’Étude Alpha avant de candidater.</h2>
               <p className="mt-5 body-large text-slate-650">
-                Le formulaire sert uniquement à repérer les profils les plus
-                adaptés. Les informations détaillées, la présentation de l’Étude
-                Alpha en ligne et l’entretien interviennent ensuite pour les
-                candidats présélectionnés.
+                Cette page vous permet de comprendre le cadre, les missions et
+                l’organisation. La candidature complète se fait ensuite sur le
+                site Alpha Education, avec les informations nécessaires pour
+                poursuivre le parcours.
               </p>
             </div>
             <div className="grid gap-3">
@@ -368,7 +370,7 @@ function HomePage() {
               ))}
             </div>
           </div>
-          <CtaBand text="Prêt à nous transmettre votre profil ?" />
+          <CtaBand text="Prêt à découvrir le parcours candidat complet ?" />
         </div>
       </section>
 
@@ -508,7 +510,7 @@ function HomePage() {
           </div>
         </div>
         <div className="mx-auto max-w-6xl px-5 pb-10 sm:px-8">
-          <CtaBand text="La première étape ne prend que quelques minutes." />
+          <CtaBand text="Votre candidature se poursuit sur la plateforme Alpha Education." />
         </div>
       </section>
     </main>
@@ -519,13 +521,37 @@ function CtaBand({ text }: { text: string }) {
   return (
     <div className="cta-band mt-8">
       <div>
-        <p className="eyebrow text-[#ff751f]">Candidature rapide</p>
+        <p className="eyebrow text-[#ff751f]">Candidature Alpha Education</p>
         <p className="mt-1 font-semibold text-[#073f5c]">{text}</p>
       </div>
-      <a href="/postuler" className="brand-button mobile-full-cta inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold">
-        Postuler en 2 minutes <ArrowRight className="size-4" />
+      <a href={ALPHA_CANDIDATE_SIGNUP_URL} className="brand-button mobile-full-cta inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold">
+        Postuler sur Alpha Education <ArrowRight className="size-4" />
       </a>
     </div>
+  );
+}
+
+function ExternalApplyRedirect() {
+  useEffect(() => {
+    window.location.replace(ALPHA_CANDIDATE_SIGNUP_URL);
+  }, []);
+
+  return (
+    <main className="min-h-screen bg-[#f7faf9] px-5 py-8 text-foreground sm:px-8">
+      <div className="mx-auto flex min-h-[70vh] max-w-xl flex-col justify-center">
+        <div className="rounded-lg border border-[#085578]/12 bg-white p-6 shadow-[0_18px_60px_rgba(8,85,120,0.08)]">
+          <img src="/logo-etude-alpha.png" alt="L'Étude Alpha" className="h-12 w-auto" />
+          <h1 className="mt-6 text-2xl font-bold text-[#073f5c]">Redirection vers Alpha Education</h1>
+          <p className="mt-3 text-sm leading-6 text-slate-650">
+            La candidature se fait désormais sur la plateforme officielle Alpha
+            Education.
+          </p>
+          <a href={ALPHA_CANDIDATE_SIGNUP_URL} className="brand-button mt-5 inline-flex h-11 items-center justify-center rounded-lg px-5 text-sm font-semibold">
+            Continuer vers la candidature
+          </a>
+        </div>
+      </div>
+    </main>
   );
 }
 
@@ -1041,7 +1067,7 @@ function SiteHeader() {
       </a>
       <nav className="flex items-center gap-2">
         <a href="/admin" className="hidden text-sm font-medium text-slate-600 transition hover:text-[#085578] sm:inline">Espace équipe</a>
-        <a href="/postuler" className="brand-button inline-flex h-10 items-center justify-center rounded-lg px-4 text-sm font-medium">Postuler</a>
+        <a href={ALPHA_CANDIDATE_SIGNUP_URL} className="brand-button inline-flex h-10 items-center justify-center rounded-lg px-4 text-sm font-medium">Postuler</a>
       </nav>
     </header>
   );
@@ -1354,7 +1380,7 @@ function AdminPage() {
             <a href="/staffing-etude-alpha" className="text-sm font-semibold text-[#085578]">Staffing tuteurs</a>
             <a href="/bonne-etude-alpha" className="text-sm font-semibold text-[#085578]">Bonne Étude Alpha</a>
             <a href="/etude-alpha-2026-2027" className="text-sm font-semibold text-[#085578]">Questionnaire 2026-2027</a>
-            <a href="/postuler" className="text-sm font-semibold text-[#085578]">Lien direct du formulaire</a>
+            <a href={ALPHA_CANDIDATE_SIGNUP_URL} className="text-sm font-semibold text-[#085578]">Candidature Alpha Education</a>
           </nav>
         </header>
         <AdminPanel />
